@@ -1,0 +1,57 @@
+File names£º
+
+%TEMP%\KB943729.log
+
+%TEMP%\CVRG72B5.tmp.cvr
+
+%TEMP%\CVRG1A6B.tmp.cvr
+
+%TEMP%\CVRG38D9.tmp.cvr
+
+%TEMP%\~DF1E06.tmp
+
+%HOMEPATH%\ntuser.dat.LOG3
+
+%HOMEPATH%\AppData\Local\Adobe\AdobeUpdater.exe
+
+Registry keys£º
+
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ScreenSaver
+
+HKCU\Software\Microsoft\Windows NT\CurrentVersion\Explorer\ScreenSaver
+
+Mutex£º
+
+{531511FA-190D-5D85-8A4A-279F2F592CC7}
+
+Hijacked CLSID£º
+
+{D9144DCD-E998-4ECA-AB6A-DCD83CCBA16D}
+
+{08244EE6-92F0-47F2-9FC9-929BAA2E7235}
+
+{4E14FBA2-2E22-11D1-9964-00C04FBBB345}
+
+{B5F8350B-0548-48B1-A6EE-88BD00B4A5E7}
+
+{603D3801-BD81-11D0-A3A5-00C04FD706EC}
+
+{F82B4EF1-93A9-4DDE-8015-F7950A1A6E31}
+
+{9207D8C7-E7C8-412E-87F8-2E61171BD291}
+
+{A3B3C46C-05D8-429B-BF66-87068B4CE563}
+
+{0997898B-0713-11D2-A4AA-00C04F8EEB3E}
+
+{603D3801-BD81-11D0-A3A5-00C04FD706EC}
+
+Files£º
+
+%APPDATA%\kb6867.bin (simplified log file)
+
+%APPDATA%\Microsoft\local_update_checker.js (JScript backdoor)
+
+%APPDATA%\Microsoft\google_update_checker.js (JScript backdoor)
+
+{1299CF18-C4F5-4B6A-BB0F-2299F0398E27}
