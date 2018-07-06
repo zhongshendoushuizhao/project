@@ -1,0 +1,698 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Power ScheDule</title>
+<style type="text/css">
+	div.fixed-width{
+		width:120px;
+	}
+
+	div.clear{
+		float: clear;
+	}
+
+	div.margin-top-20{
+		margin-top:20px
+	}
+
+	div.right{
+		float: right;
+	}
+
+	div.top{
+		vertical-align: top;
+		min-width: 0px;
+	}
+
+	div.combobox-container div.combobox-wrap input.combobox-text.slt-fixed-width
+	{
+		width:70px;
+	}
+</style>
+</head>
+
+<body>
+
+<div class="func-container">
+	<div id="power_control">
+		<!-- <span id="title_note"></span> -->
+
+		<form id="power_status_form">
+
+			<input id="power_schedule_status" name="enable"/>
+
+			<div>
+
+				<input id="schedule_start_hour" name="start_hour"/>
+				<span>:</span>
+				<input id="schedule_start_min" name="start_min"/>
+
+				<span class="time-seperate">-</span>
+
+				<input id="schedule_end_hour" name="end_hour"/>
+				<span>:</span>
+				<input id="schedule_end_min" name="end_min"/>
+
+				<div class="margin-top-20  top">
+					<input id="day" name="day"  class=""/>
+
+					<div id="weekday_cnt" class="inline-block" style="width:370px">
+						<input id="mon" name="mon" type="checkbox"/>
+						<input id="tue" name="tue" type="checkbox"/>
+						<input id="wed" name="wed" type="checkbox"/>
+						<input id="thu" name="thu" type="checkbox"/>
+						<input id="fri" name="fri" type="checkbox"/>
+						<input id="sat" name="sat" type="checkbox"/>
+						<input id="sun" name="sun" type="checkbox"/>
+					</div>
+				</div>
+
+				<!-- <div class="clear"></div> -->
+				<p class="note">
+					<span class="title note-title"></span>
+					<span class="text" id="title_note"></span>
+				</p>
+				
+			</div>
+
+			
+		
+			<button id="power_save" style="margin-top:0px;"></button>
+			
+		</form>
+			
+	</div>
+
+
+	<!-- <div id="note_cnt" class="steps part-separate">
+    	<h5 class="title" id="note_title"></h5>
+    	<p><span class="step" id="step1"></span><span id="note1"></span></p>
+    	<p><span class="step" id="step2"></span><span id="note2"></span></p>
+    </div> -->
+
+    <div id="power_alert_cnt">
+		<h4 class="title"  id="power_confirm_cnt">
+			<span class="icon"></span>
+	 		<span class="text" id="power_confirm_content"></span>
+	 	</h4>
+	</div> 
+
+	<div id="power_help"></div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+	$("div#power_control").panel({
+		title: $.su.CHAR.POWER_SCHEDULE.TITLE,
+		collapsible: false
+	});
+
+	$(".note-title").html($.su.CHAR.OPERATION.NOTE);
+	$("#title_note").html($.su.CHAR.POWER_SCHEDULE.TITLE_NOTE);
+
+	var scheduleProxy = new $.su.Proxy({
+		url: "./data/power.json"
+	});
+	var scheduleCheck = new $.su.Proxy({
+		url: "./data/powerCheck.json"
+	});
+
+	var formObj = $("form#power_status_form").form({
+		proxy: scheduleProxy,
+		fields: [
+			{name: "enable"},
+			{name: "start_hour"},
+			{name: "start_min"},
+			{name: "end_hour"},
+			{name: "end_min"},
+			{name: "day"},
+			{name: "mon"},
+			{name: "tue"},
+			{name: "wed"},
+			{name: "thu"},
+			{name: "fri"},
+			{name: "sat"},
+			{name: "sun"}
+		],
+		submitBtn: null
+		/*validator: function(){
+
+			var startHour = parseInt( $('input#schedule_start_hour').combobox('getValue')[0] );
+			var startMinute = parseInt( $('input#schedule_start_min').combobox('getValue')[0] );
+
+			var endHour = parseInt( $('input#schedule_end_hour').combobox('getValue')[0] );
+			var endMinute = parseInt( $('input#schedule_end_min').combobox('getValue')[0] );
+
+			if( startHour > endHour ){
+				$('input#schedule_start_hour').combobox('setError');
+				$('input#schedule_end_hour').combobox('setError');
+				return false;
+			}else if( (startHour==endHour) && (startMinute>=endMinute) ){
+				$('input#schedule_start_min').combobox('setError');
+				$('input#schedule_end_min').combobox('setError');
+				return false;
+			}
+
+			return true;
+
+		}*/
+	});
+
+
+
+	$('input#power_schedule_status').checkbox({
+		fieldLabel: null,
+		cls:"margin-right-10",
+		items:[
+			{boxlabel: $.su.CHAR.POWER_SCHEDULE.POWER_SCHEDULE_ENABLE, inputValue:'on', uncheckedValue:'off', name:'enable'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		if(newValue.length == 0 || newValue[0]=='off'){
+			$('input#schedule_start_hour').combobox('disable');
+			$('input#schedule_start_min').combobox('disable');
+			$('input#schedule_end_hour').combobox('disable');
+			$('input#schedule_end_min').combobox('disable');
+
+			$('input#day').combobox('disable');
+			$("input#mon").checkbox("disable");
+			$("input#tue").checkbox("disable");
+			$("input#wed").checkbox("disable");
+			$("input#thu").checkbox("disable");
+			$("input#fri").checkbox("disable");
+			$("input#sat").checkbox("disable");
+			$("input#sun").checkbox("disable");
+			
+
+		}else{
+			$('input#schedule_start_hour').combobox('enable');
+			$('input#schedule_start_min').combobox('enable');
+			$('input#schedule_end_hour').combobox('enable');
+			$('input#schedule_end_min').combobox('enable');
+
+
+			$('input#day').combobox('enable');
+			$("input#mon").checkbox("enable");
+			$("input#tue").checkbox("enable");
+			$("input#wed").checkbox("enable");
+			$("input#thu").checkbox("enable");
+			$("input#fri").checkbox("enable");
+			$("input#sat").checkbox("enable");
+			$("input#sun").checkbox("enable");
+		}
+	});
+
+	$('input#schedule_start_hour').combobox({
+		fieldLabel: $.su.CHAR.POWER_SCHEDULE.POWER_OFF,
+		labelCls: 's',
+		inputCls: 's',
+		errorTipsCls:"centerError",
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR0, value:'0'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR1, value: '1'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR2, value: '2'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR3, value: '3'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR4, value: '4'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR5, value: '5'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR6, value: '6'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR7, value: '7'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR8, value: '8'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR9, value: '9'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR10, value: '10'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR11, value: '11'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR12, value: '12'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR13, value: '13'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR14, value: '14'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR15, value: '15'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR16, value: '16'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR17, value: '17'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR18, value: '18'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR19, value: '19'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR20, value: '20'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR21, value: '21'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR22, value: '22'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR23, value: '23'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame();
+	});
+
+	$('input#schedule_start_min').combobox({
+		fieldLabel: null,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN0, value:'0'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN1, value: '1'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN2, value: '2'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN3, value: '3'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN4, value: '4'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN5, value: '5'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN6, value: '6'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN7, value: '7'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN8, value: '8'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN9, value: '9'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN10, value: '10'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN11, value: '11'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN12, value: '12'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN13, value: '13'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN14, value: '14'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN15, value: '15'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN16, value: '16'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN17, value: '17'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN18, value: '18'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN19, value: '19'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN20, value: '20'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN21, value: '21'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN22, value: '22'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN23, value: '23'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN24, value: '24'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN25, value: '25'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN26, value: '26'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN27, value: '27'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN28, value: '28'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN29, value: '29'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN30, value: '30'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN31, value: '31'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN32, value: '32'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN33, value: '33'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN34, value: '34'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN35, value: '35'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN36, value: '36'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN37, value: '37'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN38, value: '38'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN39, value: '39'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN40, value: '40'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN41, value: '41'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN42, value: '42'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN43, value: '43'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN44, value: '44'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN45, value: '45'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN46, value: '46'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN47, value: '47'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN48, value: '48'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN49, value: '49'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN50, value: '50'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN51, value: '51'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN52, value: '52'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN53, value: '53'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN54, value: '54'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN55, value: '55'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN56, value: '56'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN57, value: '57'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN58, value: '58'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN59, value: '59'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame();
+	});
+
+	$('input#schedule_end_hour').combobox({
+		fieldLabel: null,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR0, value:'0'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR1, value: '1'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR2, value: '2'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR3, value: '3'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR4, value: '4'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR5, value: '5'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR6, value: '6'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR7, value: '7'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR8, value: '8'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR9, value: '9'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR10, value: '10'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR11, value: '11'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR12, value: '12'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR13, value: '13'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR14, value: '14'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR15, value: '15'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR16, value: '16'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR17, value: '17'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR18, value: '18'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR19, value: '19'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR20, value: '20'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR21, value: '21'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR22, value: '22'},
+			{name: $.su.CHAR.POWER_SCHEDULE.HOUR23, value: '23'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame();
+	});
+
+	$('input#schedule_end_min').combobox({
+		fieldLabel: null,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN0, value:'0'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN1, value: '1'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN2, value: '2'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN3, value: '3'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN4, value: '4'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN5, value: '5'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN6, value: '6'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN7, value: '7'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN8, value: '8'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN9, value: '9'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN10, value: '10'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN11, value: '11'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN12, value: '12'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN13, value: '13'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN14, value: '14'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN15, value: '15'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN16, value: '16'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN17, value: '17'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN18, value: '18'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN19, value: '19'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN20, value: '20'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN21, value: '21'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN22, value: '22'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN23, value: '23'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN24, value: '24'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN25, value: '25'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN26, value: '26'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN27, value: '27'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN28, value: '28'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN29, value: '29'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN30, value: '30'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN31, value: '31'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN32, value: '32'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN33, value: '33'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN34, value: '34'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN35, value: '35'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN36, value: '36'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN37, value: '37'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN38, value: '38'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN39, value: '39'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN40, value: '40'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN41, value: '41'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN42, value: '42'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN43, value: '43'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN44, value: '44'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN45, value: '45'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN46, value: '46'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN47, value: '47'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN48, value: '48'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN49, value: '49'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN50, value: '50'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN51, value: '51'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN52, value: '52'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN53, value: '53'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN54, value: '54'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN55, value: '55'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN56, value: '56'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN57, value: '57'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN58, value: '58'},
+			{name: $.su.CHAR.POWER_SCHEDULE.MIN59, value: '59'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame();
+	});
+
+	var dayFlag = true;
+
+	$("input#day").combobox({
+		fieldLabel: $.su.CHAR.POWER_SCHEDULE.DAY_LBL,
+		labelCls: 's',
+		// inputCls: 's',
+		inputCls:"slt-fixed-width",
+		cls: 'inline-block top',
+		items:[
+			{name: $.su.CHAR.POWER_SCHEDULE.EVERYDAY, value:'0'},
+			{name: $.su.CHAR.POWER_SCHEDULE.WEEKDAY, value:'1'},
+			{name: $.su.CHAR.POWER_SCHEDULE.WEEKEND, value:'2'},
+			{name: $.su.CHAR.POWER_SCHEDULE.CUSTOM, value:'3'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		if( dayFlag && newValue == 0)
+		{
+			$("input#mon").checkbox("setValue", "on");
+			$("input#tue").checkbox("setValue", "on");
+			$("input#wed").checkbox("setValue", "on");
+			$("input#thu").checkbox("setValue", "on");
+			$("input#fri").checkbox("setValue", "on");
+			$("input#sat").checkbox("setValue", "on");
+			$("input#sun").checkbox("setValue", "on");
+		}
+		if( dayFlag && newValue == 1)
+		{
+			$("input#mon").checkbox("setValue", "on");
+			$("input#tue").checkbox("setValue", "on");
+			$("input#wed").checkbox("setValue", "on");
+			$("input#thu").checkbox("setValue", "on");
+			$("input#fri").checkbox("setValue", "on");
+			$("input#sat").checkbox("setValue", "off");
+			$("input#sun").checkbox("setValue", "off");
+		}
+		if( dayFlag && newValue == 2)
+		{
+			$("input#mon").checkbox("setValue", "off");
+			$("input#tue").checkbox("setValue", "off");
+			$("input#wed").checkbox("setValue", "off");
+			$("input#thu").checkbox("setValue", "off");
+			$("input#fri").checkbox("setValue", "off");
+			$("input#sat").checkbox("setValue", "on");
+			$("input#sun").checkbox("setValue", "on");
+		}
+		if( dayFlag && newValue == 3)
+		{
+			$("input#mon").checkbox("setValue", "off");
+			$("input#tue").checkbox("setValue", "off");
+			$("input#wed").checkbox("setValue", "off");
+			$("input#thu").checkbox("setValue", "off");
+			$("input#fri").checkbox("setValue", "off");
+			$("input#sat").checkbox("setValue", "off");
+			$("input#sun").checkbox("setValue", "off");
+		}
+	});
+
+	function checkDays(){
+
+		dayFlag = false;
+
+		$("input#day").combobox("setNormal");
+		if( $("input#mon").checkbox('getValue').length==1 && $("input#tue").checkbox('getValue').length==1 && $("input#wed").checkbox('getValue').length==1 && $("input#thu").checkbox('getValue').length==1 && $("input#fri").checkbox('getValue').length==1 && $("input#sat").checkbox('getValue').length==1 && $("input#sun").checkbox('getValue').length==1 ){
+			$("input#day").combobox('setValue', '0');
+		}else if( ($("input#mon").checkbox('getValue').length==1 && $("input#tue").checkbox('getValue').length==1 && $("input#wed").checkbox('getValue').length==1 && $("input#thu").checkbox('getValue').length==1 && $("input#fri").checkbox('getValue').length==1) && ($("input#sat").checkbox('getValue').length==0 && $("input#sun").checkbox('getValue').length==0) ){
+			$("input#day").combobox('setValue', '1');
+		}else if( ($("input#mon").checkbox('getValue').length==0 && $("input#tue").checkbox('getValue').length==0 && $("input#wed").checkbox('getValue').length==0 && $("input#thu").checkbox('getValue').length==0 && $("input#fri").checkbox('getValue').length==0) && ($("input#sat").checkbox('getValue').length==1 && $("input#sun").checkbox('getValue').length==1) ){
+			$("input#day").combobox('setValue', '2');
+		}else{
+			$("input#day").combobox('setValue', '3');
+		}
+
+		var o = setTimeout( function(){ dayFlag = true}, 500);
+	}
+
+	$("input#mon").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.POWER_SCHEDULE.MONDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		checkDays();
+	});
+
+	$("input#tue").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.POWER_SCHEDULE.TUESDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		checkDays();
+	});
+
+	$("input#wed").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.POWER_SCHEDULE.WEDNESDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		checkDays();
+	});
+
+	$("input#thu").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.POWER_SCHEDULE.THURSDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		checkDays();
+	});
+
+	$("input#fri").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.POWER_SCHEDULE.FRIDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		checkDays();
+	});
+
+	$("input#sat").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.POWER_SCHEDULE.SATURDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		checkDays();
+	});
+
+	$("input#sun").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.POWER_SCHEDULE.SUNDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		checkDays();
+	});
+	function checkSame(){
+		$("form#power_status_form").find("button").button("enable")
+		$('input#schedule_start_min').combobox('setNormal');
+		$('input#schedule_end_min').combobox('setNormal');
+		$('input#schedule_start_hour').combobox('setNormal');
+		$('input#schedule_end_hour').combobox('setNormal');
+		var startHour = parseInt( $('input#schedule_start_hour').combobox('getValue')[0] );
+		var startMinute = parseInt( $('input#schedule_start_min').combobox('getValue')[0] );
+		var endHour = parseInt( $('input#schedule_end_hour').combobox('getValue')[0] );
+		var endMinute = parseInt( $('input#schedule_end_min').combobox('getValue')[0] );
+		if((startHour==endHour)&&(startMinute==endMinute)){
+			$("form#power_status_form").find("button").button("disable")
+			$('input#schedule_start_hour').combobox('setError',$.su.CHAR.ERROR["00000114"]);
+			$('input#schedule_start_min').combobox('setError');
+			$('input#schedule_end_hour').combobox('setError');
+			$('input#schedule_end_min').combobox('setError');
+		}
+	}
+	$("#power_save").button({
+		text: $.su.CHAR.POWER_SCHEDULE.SAVE,
+		handler: function(){
+
+			$('input#schedule_start_min').combobox('setNormal');
+			$('input#schedule_end_min').combobox('setNormal');
+			$('input#schedule_start_hour').combobox('setNormal');
+			$('input#schedule_end_hour').combobox('setNormal');
+			var startHour = parseInt( $('input#schedule_start_hour').combobox('getValue')[0] );
+			var startMinute = parseInt( $('input#schedule_start_min').combobox('getValue')[0] );
+
+			var endHour = parseInt( $('input#schedule_end_hour').combobox('getValue')[0] );
+			var endMinute = parseInt( $('input#schedule_end_min').combobox('getValue')[0] );
+
+			/*if( startHour > endHour ){
+				$('input#schedule_start_hour').combobox('setError',$.su.CHAR.ERROR["00000112"]);
+				$('input#schedule_end_hour').combobox('setError');
+				return false;
+			}else if( (startHour==endHour) && (startMinute>=endMinute) ){
+				$('input#schedule_start_min').combobox('setError',$.su.CHAR.ERROR["00000112"]);
+				$('input#schedule_end_min').combobox('setError');
+				return false;
+			}*/
+			//console.log(1)
+			if($('input#power_schedule_status').checkbox("getValue").length==0){
+				$(formObj).form("doSubmit");
+				return;
+			}else if((startHour==endHour)&&(startMinute==endMinute)){
+				$('input#schedule_start_hour').combobox('setError',$.su.CHAR.ERROR["00000114"]);
+				$('input#schedule_start_min').combobox('setError');
+				$('input#schedule_end_hour').combobox('setError');
+				$('input#schedule_end_min').combobox('setError');
+				
+			}else if( ($("input#mon").checkbox('getValue').length==0 && $("input#tue").checkbox('getValue').length==0 && $("input#wed").checkbox('getValue').length==0 && $("input#thu").checkbox('getValue').length==0 && $("input#fri").checkbox('getValue').length==0) && ($("input#sat").checkbox('getValue').length==0 && $("input#sun").checkbox('getValue').length==0) ){
+				$("input#day").combobox("setError",$.su.CHAR.ERROR["00000079"]);
+			}else{
+				scheduleCheck.read({}, function(data){
+					var day=new Date(data.date).getDay();
+						hour=parseInt(data.time.split(":")[0]),
+						min=parseInt(data.time.split(":")[1]);
+					var weekArray=["sun","mon","tue","wed","thu","fri","sat"];
+					if(data.ntp_status == "connected"){
+						//endHour>startHour   即表示同一天的情况
+						if((endHour>startHour)||( (startHour==endHour) && (startMinute<endMinute) )){
+							if($("input#"+weekArray[day]+"").checkbox('getValue').length==1){
+								if(hour>startHour&&hour<endHour){
+									$("#power_alert_cnt").msg("show");
+									return ;
+								}else if((hour==startHour&&min>=startMinute&&hour!=endHour)||
+										 (hour==endHour&&min<endMinute&&hour!=startHour)||
+										 (hour==startHour&&startHour==endHour&&min>=startMinute&&min<endMinute)
+										){
+									$("#power_alert_cnt").msg("show");
+									return ;
+								}
+							}
+						}else if((endHour<startHour)||((startHour==endHour) && (startMinute>endMinute))){//endHour在之后一天的情况
+							if(( ((hour > startHour)||(hour == startHour && min >= startMinute)) && ($("input#"+weekArray[day]+"").checkbox('getValue').length==1) )||
+								( ((hour < endHour) || (hour == endHour && min < endMinute)) && ($("input#"+weekArray[(day+6)%7]+"").checkbox('getValue').length==1) )){
+								$("#power_alert_cnt").msg("show");
+								return ;
+							}
+						}
+					}
+					$(formObj).form("doSubmit");
+				});
+			}
+		},
+		cls: "submit"
+	});
+
+	$("#power_confirm_content").html($.su.CHAR.POWER_SCHEDULE.SUBMIT_NOTE);
+
+	$("#power_alert_cnt").msg({
+		okHandler:function(){
+			$(formObj).form("doSubmit");
+		},
+		cancelHandler:function(){
+			return true;
+		},
+		cls: 'warning reboot-confirm-size',
+		yesText: $.su.CHAR.POWER_SCHEDULE.RIGHT,
+		noText: $.su.CHAR.POWER_SCHEDULE.NEXT,
+   	    closeBtn: false,
+		type: "confirm"
+	});
+
+	// $("h5#note_title").html($.su.CHAR.POWER_SCHEDULE.NOTE);
+	// $("#step1").html("1:");
+	// $("#step2").html("2:");
+
+	// $("#note1").html($.su.CHAR.POWER_SCHEDULE.NOTE1);
+	// $("#note2").html($.su.CHAR.POWER_SCHEDULE.NOTE2);
+
+
+
+	var helpLED = new $.su.Help({
+		container: "div#power_help",
+		content: ['POWER_SCHEDULE']
+	});
+
+
+});
+//]]>
+</script>	
+</body>
+</html>

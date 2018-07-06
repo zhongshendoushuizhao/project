@@ -1,0 +1,51 @@
+{
+	"timeout": false,
+	"success": true,
+	"data": {
+			"enable": "on",
+			"ssid": "TP-Link_0BEC_5G",
+			"hidden": "on",
+			"encryption": "wep",
+			
+			"psk_version": "wpa",
+			"psk_cipher": "aes",
+			"psk_key": "12345656",
+
+
+			"wpa_version": "wpa",
+			"wpa_cipher": "aes",
+			"server": "1.2.3.3",
+			"port": "77",
+			"wpa_key": "4667788",
+
+				
+			"wep_mode": "open",
+			"wep_select": "2",
+		
+			"wep_format1": "hex",
+			"wep_type1": "128",
+			"wep_key1": "111",
+			
+			"wep_format2": "hex",
+			"wep_type2": "128",
+			"wep_key2": "222",
+			
+			"wep_format3": "hex",
+			"wep_type3": "128",
+			"wep_key3": "333",
+			
+			"wep_format4": "hex",
+			"wep_type4": "128",
+			"wep_key4": "444",
+			
+			"hwmode": "nac",
+			"htmode": "20",
+			"channel": "12",
+			"disabled":"off",
+			"txpower": "middle",
+			
+			"wireless_2g_disabled":"off",
+			"wireless_2g_disabled_all":"off"
+	}
+	
+}

@@ -1,0 +1,27 @@
+{
+	"timeout": false,
+	"success": true,
+	"data": [
+        {"value": "bg_BG", "name": "BG_BG"},
+        {"value": "cs_CZ", "name": "CS_CZ"},
+        {"value": "de_DE", "name": "DE_DE"},
+        {"value": "en_US", "name": "EN_US"},
+        {"value": "es_ES", "name": "ES_ES"},
+        {"value": "es_LA", "name": "ES_LA"},
+        {"value": "fr_FR", "name": "FR_FR"},
+        {"value": "it_IT", "name": "IT_IT"},
+        {"value": "ja_JP", "name": "JA_JP"},
+        {"value": "ko_KR", "name": "KO_KR"},
+        {"value": "nl_NL", "name": "NL_NL"},
+        {"value": "pl_PL", "name": "PL_PL"},
+        {"value": "pt_BR", "name": "PT_BR"},
+        {"value": "pt_PT", "name": "PT_PT"},
+        {"value": "ro_RO", "name": "RO_RO"},
+        {"value": "ru_RU", "name": "RU_RU"},
+        {"value": "sk_SK", "name": "SK_SK"},
+        {"value": "tr_TR", "name": "TR_TR"},
+        {"value": "uk_UA", "name": "UK_UA"},
+        {"value": "vi_VN", "name": "VI_VN"},
+        {"value": "zh_TW", "name": "ZH_TW"}
+	]
+}

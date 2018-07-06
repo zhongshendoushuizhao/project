@@ -1,0 +1,837 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>LED</title>
+</head>
+
+<body>
+<div class="func-container">
+	<div id="time_cnt">
+	 	<form id="time_setting">
+	 		<input type="text"  id="flag" name="flag" class="hidden" value="" />
+	 		<input type="text"  id="time_current_time" name="current_time" value="" />
+			<!-- <input type="text"  id="time_set_type" name="type" value="" /> -->
+			<div id="auto_cnt">
+				<input type="text"  id="time_set_zone" name="time_zone" value="" />
+				<!-- <input type="text"  id="time_set_ntp1" name="ntp_svr1" value="" />
+		    	<input type="text"  id="time_set_ntp2" name="ntp_svr2" value="" />
+		    	<div class=" part-seperate">
+		    		<button type="button" id="getGmt" name="getGmt" value=""></button>
+		    	
+		    		<input id="dyndns-status" name="status" />
+				</div> -->
+			</div>
+	    	
+			<!-- <div id="manual_cnt">
+	    		<input type="text"  id="time_set_date" name="date" value="" />
+	    		<input type="text"  id="time_set_time" name="time" value="" />
+			</div> -->
+	    	
+
+	    	<!-- <p class="note">
+	    		<span class="title note-title"></span>
+	    		<span class="text" id="time-set-note"></span>
+	    	</p> -->
+		</form>
+	</div>
+
+	<div id="dst_cnt">
+		<form id="time_dst">
+	    	<input type="text"  id="time_set_daylight" name="dst_enable" value="" />
+	    	<div class="widget-container">
+	    		<input type="text"  id="start_year" name="start_year" value="" />
+	    		
+		    	<input type="text"  id="start_month" name="start_month" value="" />
+		    	<span id="start_m"></span>
+		    	<input type="text"  id="start_week" name="start_week" value="" />
+		    	<span  id="start_w"></span>
+		    	<input type="text"  id="start_day" name="start_day" value="" />
+		    	<span  id="start_d"></span>
+		    	<input type="text"  id="start_hour" name="start_hour" value="" />
+		    	<span  id="start_h"></span>
+	    	</div>
+	    	
+			<div class="widget-container">
+		    	<input type="text"  id="end_year" name="end_year" value="" />
+		    	
+		    	<input type="text"  id="end_month" name="end_month" value="" />
+		    	<span  id="end_m"></span>
+		    	<input type="text"  id="end_week" name="end_week" value=""/>
+		    	<span  id="end_w"></span>
+		    	<input type="text"  id="end_day" name="end_day" value="" />
+		    	<span  id="end_d"></span>
+		    	<input type="text"  id="end_hour" name="end_hour" value="" />
+		    	<span  id="end_h"></span>
+		    	<input type="text"  id="time_set_statu" name="dst_status" value="" />
+		    </div>
+	    </form>
+	 </div>
+	<div id="help_time_setting"></div>
+</div>
+
+<script type="text/javascript">
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+	var TIME_SET_URL = "./data/time.set.json";
+	var TIME_DST_URL = "./data/time.dst.json";
+
+	var TIME_SET_URL_NEW = $.su.url("/admin/time?form=settings");
+	var TIME_DST_URL_NEW = $.su.url("/admin/time?form=dst");
+
+	var sysTimeHash = "";
+	var startTimeHash = "";
+	var endTimeHash = "";
+	var sysTimeYear = "2013";
+	var dst_status="";
+
+	var t_getgmt = 0;
+
+
+	function parseFormat(value, width)
+	{
+		var value = value.toString();
+		while (value.length < width) value = "0" + value;
+		return value;
+	}
+
+
+	function get_time_format()
+	{
+		var start_month =  $("input#start_month").combobox("getSelectedIndex")+1;
+		var start_week =  $("input#start_week").combobox("getSelectedIndex")+1;
+		var start_weekday =  $("input#start_day").combobox("getSelectedIndex")+1;
+		var start_hour =  $("input#start_hour").combobox("getSelectedIndex");
+
+
+
+		var end_month =  $("input#end_month").combobox("getSelectedIndex")+1;
+		var end_week =  $("input#end_week").combobox("getSelectedIndex")+1;
+		var end_weekday =  $("input#end_day").combobox("getSelectedIndex")+1;
+		var end_hour =  $("input#end_hour").combobox("getSelectedIndex");
+
+		//start month 1st day is week @fWeek
+		var sdObj = new Date(sysTimeYear, start_month-1, 1);
+		var sfWeek = parseInt(sdObj.getDay());
+			
+		//end month 1st day is week @eWeek
+		var edObj = new Date(sysTimeYear, end_month-1, 1);
+		var efWeek = parseInt(edObj.getDay());
+		
+		//var start_day = start_week * 7 - sfWeek + start_weekday + 1 + (start_weekday < sfWeek ? 7 : 0);
+		//var end_day = end_week * 7 - efWeek + end_weekday + 1 + (end_weekday < efWeek ? 7 : 0);
+		var start_day = 7-sfWeek+1 + (sfWeek > start_weekday ? (start_week-1) :(start_week-2))*7 + start_weekday;
+		start_day=start_day>new Date(sysTimeYear, start_month, 0).getDate()?(start_day-7):start_day;
+		var end_day = 7-efWeek+1 + (efWeek > end_weekday ? (end_week-1) :(end_week-2))*7 + end_weekday;
+		end_day=end_day>new Date(sysTimeYear, end_month, 0).getDate()?(end_day-7):end_day;
+		
+		startTimeHash = parseFormat(start_month, 2) + parseFormat(start_day, 2) + parseFormat(start_hour, 2);
+		endTimeHash = parseFormat(end_month, 2) + parseFormat(end_day, 2) + parseFormat(end_hour, 2);
+		//console.log(startTimeHash, endTimeHash);
+		if (startTimeHash < endTimeHash)
+		{
+			if ( (sysTimeHash < endTimeHash) || ((sysTimeHash == endTimeHash) && (dst_status=="up")))
+			{
+				$("#start_year").textbox("setValue", sysTimeYear);
+				$("#end_year").textbox("setValue", sysTimeYear);
+			}
+			else
+			{
+				$("#start_year").textbox("setValue", sysTimeYear+1);
+				$("#end_year").textbox("setValue", sysTimeYear+1);
+			}
+		}
+		else
+		{
+			if ( (sysTimeHash < endTimeHash) || ((sysTimeHash == endTimeHash) && (dst_status=="up")))
+			{
+				$("#start_year").textbox("setValue", sysTimeYear-1);
+				$("#end_year").textbox("setValue", sysTimeYear);
+			}
+			else
+			{
+				$("#start_year").textbox("setValue", sysTimeYear);
+				$("#end_year").textbox("setValue", sysTimeYear+1);
+			}
+		}
+	} 
+
+	$("div.func-container").page({
+		title: $.su.CHAR.TIMESET.TITLE,
+		help: ""	//可能是个调用的id 也可能是个url
+	});
+
+
+
+
+	$("div#time_cnt").panel({
+		title: $.su.CHAR.TIMESET.TITLE,
+		collapsible: false
+	});
+
+	$("div#dst_cnt").panel({
+		title: $.su.CHAR.TIMESET.DAYLIGHT_SAVING,
+		collapsible: false
+	});
+
+
+	
+
+
+	//$("#auto_cnt").fieldset({
+	//	fields: [
+	//		{name: "timezone"},
+	//		{name: "ntp_svr1"},
+	//		{name: "ntp_svr2"}
+	//	]
+	//});
+
+	//$("#auto_cnt").fieldset("hide");
+
+	//$("#manual_cnt").fieldset({
+	//	fields: [
+	//		{name: "date"},
+	//		{name: "time"}
+	//	]
+	//});
+
+	//$("#manual_cnt").fieldset("hide");
+
+
+	$("#time_current_time").textbox({
+		fieldLabel: $.su.CHAR.TIMESET.CURRENT_TIME,
+		labelCls:'s',
+		readOnly:true
+	});
+
+	$("#flag").textbox({
+		cls:'hidden',
+		readOnly:true
+	});
+	$("#flag").textbox("setValue","false");
+	//$("#time_set_type").radio({
+	//	fieldLabel: $.su.CHAR.TIMESET.SET_TIME,
+	//	items:[
+	//		{boxlabel: $.su.CHAR.TIMESET.AUTOMATIC, inputValue: "auto", id:"radio-1"},
+	//		{boxlabel: $.su.CHAR.TIMESET.MANUAL, inputValue: "manual", id:"radio-2"}
+	//	],
+	//	columns:2
+	//}).on("ev_change", function(e, oldValue, newValue){
+	//	// console.log(newValue);
+	//	if(newValue == "auto")
+	//	{
+	//		$("#auto_cnt").fieldset("show");
+	//		$("#manual_cnt").fieldset("hide");
+	//		$("p.note").show();
+	//	}
+	//	else
+	//	{
+	//		$("#auto_cnt").fieldset("hide");
+	//		$("#manual_cnt").fieldset("show");
+	//		$("p.note").hide();
+	//	}
+	//})
+
+
+	$("input#time_set_zone").combobox({
+		fieldLabel: $.su.CHAR.TIMESET.ZONE,
+		//tips: "The tips of combo multi.",
+		labelCls:'s',
+		inputCls:'xxxl',
+		items: [
+			
+			// {"value": "0", "name": $.su.CHAR.TIMESET.Eniwetok},
+			// {"value": "60", "name": $.su.CHAR.TIMESET.Midway},
+			// {"value": "120", "name": $.su.CHAR.TIMESET.Hawaii},
+			// {"value": "180", "name": $.su.CHAR.TIMESET.Alaska},
+			// {"value": "240", "name": $.su.CHAR.TIMESET.Pacific},
+			// {"value": "300", "name": $.su.CHAR.TIMESET.Mountain},
+			// {"value": "360", "name": $.su.CHAR.TIMESET.Central},
+			// {"value": "420", "name": $.su.CHAR.TIMESET.Eastern},
+			// {"value": "450", "name": $.su.CHAR.TIMESET.Caracas},
+			
+			// {"value": "480", "name": $.su.CHAR.TIMESET.Atlantic},
+			// {"value": "510", "name": $.su.CHAR.TIMESET.Newfoundland},
+			// {"value": "540", "name": $.su.CHAR.TIMESET.Brasilia},
+			// {"value": "600", "name": $.su.CHAR.TIMESET.MidAtlantic},
+			// {"value": "660", "name": $.su.CHAR.TIMESET.Azores},
+			// {"value": "720", "name": $.su.CHAR.TIMESET.Greenwich},
+			// {"value": "780", "name": $.su.CHAR.TIMESET.Berlin},
+			// {"value": "840", "name": $.su.CHAR.TIMESET.Athens},
+			// {"value": "900", "name": $.su.CHAR.TIMESET.Baghdad},
+			// {"value": "930", "name": $.su.CHAR.TIMESET.Teheran},
+			// {"value": "960", "name": $.su.CHAR.TIMESET.Abu},
+			// {"value": "990", "name": $.su.CHAR.TIMESET.Kabul},
+			// {"value": "1020", "name": $.su.CHAR.TIMESET.Islamabad},
+			// {"value": "1050", "name": $.su.CHAR.TIMESET.Madras},
+			// {"value": "1065", "name": $.su.CHAR.TIMESET.Katmandu},
+			// {"value": "1080", "name": $.su.CHAR.TIMESET.Alma},
+			// {"value": "1110", "name": $.su.CHAR.TIMESET.Rangoon},
+			// {"value": "1140", "name": $.su.CHAR.TIMESET.Bangkok},
+			// {"value": "1200", "name": $.su.CHAR.TIMESET.Beijing},
+			// {"value": "1260", "name": $.su.CHAR.TIMESET.Tokyo},
+			// {"value": "1290", "name": $.su.CHAR.TIMESET.Adelaide},
+			// {"value": "1320", "name": $.su.CHAR.TIMESET.Brisbane},
+			// {"value": "1380", "name": $.su.CHAR.TIMESET.Magadan},
+
+			// {"value": "1440", "name": $.su.CHAR.TIMESET.Fiji},
+			// {"value": "1500", "name": $.su.CHAR.TIMESET.Nuku}
+		]
+	}).on("ev_change", function(e, oldValue, newValue){
+		// //console.dir(arguments);
+		if(oldValue.length != 0)
+		{
+			var old_hour = $("input#time_set_time").time("getHour");
+			var old_min = $("input#time_set_time").time("getMin");
+			var old_total_min = parseInt(old_hour*60,10)+parseInt(old_min,10);
+			// //console.log(old_total_min,newValue,oldValue);
+			var new_total_min = old_total_min + parseInt(newValue,10) - parseInt(oldValue,10);
+
+			var min_new = new_total_min%60;
+			// //console.log(min_new);
+
+			var hour_temp = parseInt(new_total_min/60, 10);
+			var hour_new = hour_temp > 24 ? hour_temp - 24 : hour_temp;
+			if((hour_new == 24) && (min_new > 0))
+			{
+				hour_new = 0;
+			}
+
+			if(hour_new < 0)
+			{
+				if(hour_new == 0) 
+				{
+					hour_new = 23;
+				}
+				else
+				{
+					hour_new += 24;
+				}
+			}
+
+			if(min_new < 0)
+			{
+				min_new += 60;
+			}
+
+			
+			// //console.log(min_new);
+			if(min_new < 10)
+			{
+				min_new = "0" + min_new;
+			}
+
+			if(hour_new < 10)
+			{
+				hour_new = "0" + hour_new;
+			}
+			
+			//var new_time_str  = hour_new.toString() +":"+ min_new.toString() +":"+ $("input#time_set_time").time("getSec");
+			//$("input#time_set_time").time("setValue", new_time_str);
+			// //console.log(new_time_str);
+		}
+	});
+
+
+	
+
+	var regionItem = [];
+	regionItem = $.su.loadComboData("./data/timezone.json", {}, [
+		{
+			srcKey:"name", 
+			dstKey:"name", 
+			func:function(src, para){
+				return para[src];
+			}, 
+			para:$.su.CHAR.TIME_ZONE
+		},
+		{srcKey:"value", dstKey:"value"}
+	]);
+	$("#time_set_zone").combobox("loadData",regionItem);
+
+	//$("input#time_set_date").textbox({
+	//	fieldLabel: $.su.CHAR.TIMESET.DATE,
+	//	vtype:"date",
+	//	allowBlank:false,
+	//	inputCls:"xl",
+	//	tips: $.su.CHAR.TIMESET.DATEFORMAT
+	//});
+
+	//$("input#time_set_time").time({
+	//	fieldLabel: $.su.CHAR.TIMESET.TIME,
+	//	inputCls:"xl",
+	//	tips: $.su.CHAR.TIMESET.TIMEFORMAT
+	//});
+
+	//$("input#time_set_ntp1").textbox({
+	//	fieldLabel: $.su.CHAR.TIMESET.NTP1,
+	//	vtype:"ip_domain",
+	//	allowBlank:false,
+	//	inputCls:"xl"
+	//});
+
+	//$("input#time_set_ntp2").textbox({
+	//	fieldLabel: $.su.CHAR.TIMESET.NTP2,
+	//	vtype:"ip_domain",
+	//	inputCls:"xl",
+	//	allowBlank:true,
+	//	tips: $.su.CHAR.TIMESET.OPTIONAL
+	//});
+
+
+	//function refershState()
+	//{
+	//	clearInterval(t_getgmt);
+	//	t_getgmt = 0;
+	//	if(t_getgmt == 0)
+	//	{
+	//		t_getgmt = setInterval(function(){
+	//				dyndnsStatus.status("refresh", {
+	//				}, function(data, status, xhr){
+	//					var data = data || {};
+	//					// //console.log(data.status);
+	//					if (typeof data.status != "undefined"){
+	//						if(data.status == 747301)
+	//						{
+	//							dyndnsStatus.status("setSuccess", $.su.CHAR.TIMESET.GETGMT_SUCCESS);
+	//							//load Data
+	//							$("form#time_setting").form("loadData", data);
+	//							// //console.log(22);
+	//							clearInterval(t_getgmt);
+	//							t_getgmt = 0;
+	//						}
+	//						if(data.status == 747302)
+	//						{
+	//							dyndnsStatus.status("setFailed", $.su.CHAR.TIMESET.GETGMT_TIMEOUT);
+	//							clearInterval(t_getgmt);
+	//							t_getgmt = 0;
+	//						}
+	//						if(data.status == 747303)
+	//						{
+	//							dyndnsStatus.status("setLoading", $.su.CHAR.TIMESET.GETGMT_WAIT);
+	//						}
+	//						$("button#getGmt").button("enable");
+	//					}
+	//				}, function(){
+	//					// dyndnsStatus.status("setFailed", $.su.CHAR.DDNS[err_str_arr[data.status]]);
+	//					// $("button#getGmt").button("enable");
+	//				});
+	//			}, 2*1000);
+	//	}
+	//}
+
+
+	//$("button#getGmt").button({
+	//	text:$.su.CHAR.TIMESET.AUTOMATIC_BTN,
+	//	cls: "inline-block",
+	//	handler:function(){
+	//		$("button#getGmt").button("disable");
+	//		$("form#time_setting").form("submit", {operation:"gmt"},function(data){
+	//			// $("button#getGmt").button("setNormal");
+	//			refershState();
+	//			// $("button#getGmt").button("enable");
+	//			// if()
+	//		},function(errorcode){
+	//			// $("button#getGmt").button("enable");
+	//			// $("button#getGmt").button("setError", $.su.CHAR.ERROR["00000008"]);
+	//		},null, false);
+	//		// $("form#time_setting").form("submit", {}, function{
+	//		// 	// $("button#getGmt").button("enable");
+	//		// });
+	//
+	//	},
+	//	fieldLabel:null
+	//});
+
+
+	// $("input#time_set_daylight").switchbutton({
+	// 	fieldLabel: $.su.CHAR.TIMESET.DAYLIGHT
+	// });
+
+	$("input#time_set_daylight").checkbox({
+		fieldLabel: null,
+		cls:"margin-right-10",
+		items: [
+			{boxlabel: $.su.CHAR.TIMESET.ENABLE_DAYLIGHT, uncheckedValue:"off", inputValue: "on", }
+		]
+	}).on("ev_change", function(e, oldValue, newValue){
+		// console.log(newValue[0]);
+		var val = (newValue[0]=="dst_enable"||newValue[0]=="on") ? "on" : "off";
+		// console.log(val);
+		switch(val)
+		{
+			case "on":
+			    // console.log("on");
+				$("#start_year").textbox("enable");
+				$("input#start_month").combobox("enable");
+				$("input#start_week").combobox("enable");
+				$("input#start_day").combobox("enable");
+				$("input#start_hour").combobox("enable");
+
+				$("#end_year").textbox("enable");
+				$("input#end_month").combobox("enable");
+				$("input#end_week").combobox("enable");
+				$("input#end_day").combobox("enable");
+				$("input#end_hour").combobox("enable");
+				break;
+			case "off":
+				// console.log("off");
+				$("#start_year").textbox("disable");
+				$("input#start_month").combobox("disable");
+				$("input#start_week").combobox("disable");
+				$("input#start_day").combobox("disable");
+				$("input#start_hour").combobox("disable");
+
+				$("#end_year").textbox("disable");
+				$("input#end_month").combobox("disable");
+				$("input#end_week").combobox("disable");
+				$("input#end_day").combobox("disable");
+				$("input#end_hour").combobox("disable");
+				break;
+		}	
+	});
+
+	$("#start_year").textbox({
+		fieldLabel: $.su.CHAR.TIMESET.START,
+		inputCls:'little',
+		labelCls:'s',
+		readOnly:true,
+		cls:"inline"
+	});
+
+	// $("#start_m").html($.su.CHAR.TIMESET.M);
+	// $("#start_w").html($.su.CHAR.TIMESET.W);
+	// $("#start_d").html($.su.CHAR.TIMESET.D);
+	// $("#start_h").html($.su.CHAR.TIMESET.H);
+	$("input#start_month").combobox({
+		// fieldLabel: $.su.CHAR.TIMESET.START,
+		fieldLabel:null,
+		//tips: "The tips of combo multi.",
+		inputCls:'xs',
+		cls:"inline long-time-set-month",
+		items: [
+			{"value": "Jan", "name": $.su.CHAR.DATE.JAN, "selected": "selected"},
+			{"value": "Feb", "name": $.su.CHAR.DATE.FEB},
+			{"value": "Mar", "name": $.su.CHAR.DATE.MAR},
+			{"value": "Apr", "name": $.su.CHAR.DATE.APR},
+			{"value": "May", "name": $.su.CHAR.DATE.MAY},
+			{"value": "Jun", "name": $.su.CHAR.DATE.JUN},
+			{"value": "Jul", "name": $.su.CHAR.DATE.JUL},
+			{"value": "Aug", "name": $.su.CHAR.DATE.AUG},
+			{"value": "Sep", "name": $.su.CHAR.DATE.SEP},
+			{"value": "Oct", "name": $.su.CHAR.DATE.OCT},
+			{"value": "Nov", "name": $.su.CHAR.DATE.NOV},
+			{"value": "Dec", "name": $.su.CHAR.DATE.DEC}
+		]
+	}).on("ev_change",function(){
+		get_time_format();
+	});
+	
+	$("input#start_week").combobox({
+		fieldLabel:null,
+		//tips: "The tips of combo multi.",
+		inputCls:'xs',
+		cls:"inline",
+		items: [
+			{"value": "1st", "name": $.su.CHAR.ORDER["1ST"], "selected": "selected"},
+			{"value": "2nd", "name": $.su.CHAR.ORDER["2ND"]},
+			{"value": "3rd", "name": $.su.CHAR.ORDER["3RD"]},
+			{"value": "4th", "name": $.su.CHAR.ORDER["4TH"]},
+			{"value": "5th", "name": $.su.CHAR.ORDER["5TH"]}
+		]
+	}).on("ev_change",function(){
+		get_time_format();
+	});
+
+
+	$("input#start_day").combobox({
+		fieldLabel:null,
+		inputCls:'xs',
+		cls:"inline",
+		items: [
+			{"value": "Mon", "name": $.su.CHAR.DATE.MON, "selected": "selected"},
+			{"value": "Tues", "name": $.su.CHAR.DATE.TUES},
+			{"value": "Wed", "name": $.su.CHAR.DATE.WED},
+			{"value": "Thur", "name": $.su.CHAR.DATE.THUR},
+			{"value": "Fri", "name": $.su.CHAR.DATE.FRI},
+			{"value": "Sat", "name": $.su.CHAR.DATE.SAT},
+			{"value": "Sun", "name": $.su.CHAR.DATE.SUN}
+		]
+	}).on("ev_change",function(){
+		get_time_format();
+	});
+
+
+	$("input#start_hour").combobox({
+		fieldLabel:null,
+		inputCls:'time_hour',
+		inputCls:'s',
+		cls:"inline long-time-set",
+		items: [
+			{"value": "12am", "name": $.su.CHAR.HOUR["AM_12"], "selected": "selected"},
+			{"value": "1am", "name": $.su.CHAR.HOUR["AM_1"]},
+			{"value": "2am", "name": $.su.CHAR.HOUR["AM_2"]}, 
+			{"value": "3am", "name": $.su.CHAR.HOUR["AM_3"]}, 
+			{"value": "4am", "name": $.su.CHAR.HOUR["AM_4"]}, 
+			{"value": "5am", "name": $.su.CHAR.HOUR["AM_5"]}, 
+			{"value": "6am", "name": $.su.CHAR.HOUR["AM_6"]}, 
+			{"value": "7am", "name": $.su.CHAR.HOUR["AM_7"]}, 
+			{"value": "8am", "name": $.su.CHAR.HOUR["AM_8"]}, 
+			{"value": "9am", "name": $.su.CHAR.HOUR["AM_9"]}, 
+			{"value": "10am", "name": $.su.CHAR.HOUR["AM_10"]}, 
+			{"value": "11am", "name": $.su.CHAR.HOUR["AM_11"]},
+			{"value": "12pm", "name": $.su.CHAR.HOUR["PM_12"]},
+			{"value": "1pm", "name": $.su.CHAR.HOUR["PM_1"]},
+			{"value": "2pm", "name": $.su.CHAR.HOUR["PM_2"]}, 
+			{"value": "3pm", "name": $.su.CHAR.HOUR["PM_3"]}, 
+			{"value": "4pm", "name": $.su.CHAR.HOUR["PM_4"]}, 
+			{"value": "5pm", "name": $.su.CHAR.HOUR["PM_5"]}, 
+			{"value": "6pm", "name": $.su.CHAR.HOUR["PM_6"]}, 
+			{"value": "7pm", "name": $.su.CHAR.HOUR["PM_7"]}, 
+			{"value": "8pm", "name": $.su.CHAR.HOUR["PM_8"]}, 
+			{"value": "9pm", "name": $.su.CHAR.HOUR["PM_9"]}, 
+			{"value": "10pm", "name": $.su.CHAR.HOUR["PM_10"]}, 
+			{"value": "11pm", "name": $.su.CHAR.HOUR["PM_11"]}
+		]
+	}).on("ev_change",function(){
+		get_time_format();
+	});
+
+
+	$("#end_year").textbox({
+		fieldLabel: $.su.CHAR.TIMESET.END,
+		inputCls:'little',
+		labelCls:'s',
+		readOnly:true,
+		cls:"inline"
+	});
+
+	// $("#end_m").html($.su.CHAR.TIMESET.M);
+	// $("#end_w").html($.su.CHAR.TIMESET.W);
+	// $("#end_d").html($.su.CHAR.TIMESET.D);
+	// $("#end_h").html($.su.CHAR.TIMESET.H);
+	$("input#end_month").combobox({
+		// fieldLabel: $.su.CHAR.TIMESET.END,
+		fieldLabel: null,
+		//tips: "The tips of combo multi.",
+		inputCls:'xs',
+		cls:"inline long-time-set-month",
+		items: [
+			{"value": "Jan", "name": $.su.CHAR.DATE.JAN, "selected": "selected"},
+			{"value": "Feb", "name": $.su.CHAR.DATE.FEB},
+			{"value": "Mar", "name": $.su.CHAR.DATE.MAR},
+			{"value": "Apr", "name": $.su.CHAR.DATE.APR},
+			{"value": "May", "name": $.su.CHAR.DATE.MAY},
+			{"value": "Jun", "name": $.su.CHAR.DATE.JUN},
+			{"value": "Jul", "name": $.su.CHAR.DATE.JUL},
+			{"value": "Aug", "name": $.su.CHAR.DATE.AUG},
+			{"value": "Sep", "name": $.su.CHAR.DATE.SEP},
+			{"value": "Oct", "name": $.su.CHAR.DATE.OCT},
+			{"value": "Nov", "name": $.su.CHAR.DATE.NOV},
+			{"value": "Dec", "name": $.su.CHAR.DATE.DEC}
+		]
+	}).on("ev_change",function(){
+		get_time_format();
+	});
+
+	$("input#end_week").combobox({
+		fieldLabel:null,
+		//tips: "The tips of combo multi.",
+		inputCls:'xs',
+		cls:"inline",
+		items: [
+			{"value": "1st", "name": $.su.CHAR.ORDER["1ST"], "selected": "selected"},
+			{"value": "2nd", "name": $.su.CHAR.ORDER["2ND"]},
+			{"value": "3rd", "name": $.su.CHAR.ORDER["3RD"]},
+			{"value": "4th", "name": $.su.CHAR.ORDER["4TH"]},
+			{"value": "5th", "name": $.su.CHAR.ORDER["5TH"]}
+		]
+	}).on("ev_change",function(){
+		get_time_format();
+	});
+
+
+	$("input#end_day").combobox({
+		fieldLabel:null,
+		inputCls:'xs',
+		cls:"inline",
+		items: [
+			{"value": "Mon", "name": $.su.CHAR.DATE.MON, "selected": "selected"},
+			{"value": "Tues", "name": $.su.CHAR.DATE.TUES},
+			{"value": "Wed", "name": $.su.CHAR.DATE.WED},
+			{"value": "Thur", "name": $.su.CHAR.DATE.THUR},
+			{"value": "Fri", "name": $.su.CHAR.DATE.FRI},
+			{"value": "Sat", "name": $.su.CHAR.DATE.SAT},
+			{"value": "Sun", "name": $.su.CHAR.DATE.SUN}
+		]
+	}).on("ev_change",function(){
+		get_time_format();
+	});
+
+
+	$("input#end_hour").combobox({
+		fieldLabel:null,
+		inputCls:'time_hour',
+		inputCls:'s',
+		cls:"inline long-time-set",
+		items: [
+			{"value": "12am", "name": $.su.CHAR.HOUR["AM_12"], "selected": "selected"},
+			{"value": "1am", "name": $.su.CHAR.HOUR["AM_1"]},
+			{"value": "2am", "name": $.su.CHAR.HOUR["AM_2"]}, 
+			{"value": "3am", "name": $.su.CHAR.HOUR["AM_3"]}, 
+			{"value": "4am", "name": $.su.CHAR.HOUR["AM_4"]}, 
+			{"value": "5am", "name": $.su.CHAR.HOUR["AM_5"]}, 
+			{"value": "6am", "name": $.su.CHAR.HOUR["AM_6"]}, 
+			{"value": "7am", "name": $.su.CHAR.HOUR["AM_7"]}, 
+			{"value": "8am", "name": $.su.CHAR.HOUR["AM_8"]}, 
+			{"value": "9am", "name": $.su.CHAR.HOUR["AM_9"]}, 
+			{"value": "10am", "name": $.su.CHAR.HOUR["AM_10"]}, 
+			{"value": "11am", "name": $.su.CHAR.HOUR["AM_11"]}, 
+			{"value": "12pm", "name": $.su.CHAR.HOUR["PM_12"]},
+			{"value": "1pm", "name": $.su.CHAR.HOUR["PM_1"]},
+			{"value": "2pm", "name": $.su.CHAR.HOUR["PM_2"]}, 
+			{"value": "3pm", "name": $.su.CHAR.HOUR["PM_3"]}, 
+			{"value": "4pm", "name": $.su.CHAR.HOUR["PM_4"]}, 
+			{"value": "5pm", "name": $.su.CHAR.HOUR["PM_5"]}, 
+			{"value": "6pm", "name": $.su.CHAR.HOUR["PM_6"]}, 
+			{"value": "7pm", "name": $.su.CHAR.HOUR["PM_7"]}, 
+			{"value": "8pm", "name": $.su.CHAR.HOUR["PM_8"]}, 
+			{"value": "9pm", "name": $.su.CHAR.HOUR["PM_9"]}, 
+			{"value": "10pm", "name": $.su.CHAR.HOUR["PM_10"]}, 
+			{"value": "11pm", "name": $.su.CHAR.HOUR["PM_11"]}
+		]
+	}).on("ev_change",function(){
+		get_time_format();
+	});
+
+
+	$("input#time_set_statu").textbox({
+		fieldLabel: $.su.CHAR.TIMESET.RUNNING_STATUS,
+		inputCls:'xxl',
+		labelCls:'s',
+		readOnly:true
+	});
+
+	// $("span.note-title").text($.su.CHAR.OPERATION.NOTE);
+	// $("span#time-set-note").text($.su.CHAR.TIMESET.NOTE);
+
+	var dyndnsStatus = $("input#dyndns-status").status({
+		cls: "inline-block",
+		proxy: {
+			url: TIME_SET_URL
+		}
+	});
+
+
+	//这里多个表格调用一个proxy，proxy需要单独定义！
+	var time_form = $("form#time_setting").form({
+		proxy: {url: TIME_SET_URL},
+		fields: [
+			{name: "flag", mapping: "flag"},
+			{name: "type", mapping: "type"},
+			{name: "time_zone", mapping: "time_zone"},
+			{name: "date", mapping: "date"},
+			{name: "time", mapping: "time"},
+			{name: "ntp_svr1", mapping: "ntp_svr1"},
+			{name: "ntp_svr2", mapping: "ntp_svr2"},
+			{name: "gmt_status", mapping: "gmt_status"}
+		],
+		submitBtn: "default"
+	}).on("ev_loadData", function(e, data){
+		
+		var date_arr = data.date.split("/");
+		sysTimeHash = parseFormat(date_arr[0], 2) + parseFormat(date_arr[1], 2) +  parseFormat(data.time.split(":")[0], 2);
+		
+		sysTimeYear = parseInt(date_arr[2], 10);
+		// //console.log(sysTimeYear);    //更新sysTimeYear
+		get_time_format();
+
+		var str = data.date + " " + data.time;
+		$("#time_current_time").textbox("setValue", str);
+	});
+
+	var currentTimeInterval=setInterval(function(){
+		$.post(TIME_SET_URL,{"operation":"read"},function(data){
+			var data=data.data;
+			var date_arr = data.date.split("/");
+			sysTimeHash = parseFormat(date_arr[0], 2) + parseFormat(date_arr[1], 2) +  parseFormat(data.time.split(":")[0], 2);
+			
+			sysTimeYear = parseInt(date_arr[2], 10);
+			get_time_format();
+
+			var str = data.date + " " + data.time;
+			$("#time_current_time").textbox("setValue", str);
+		},"json")
+	},1000);
+	
+	$("form#time_dst").form({
+		proxy: {url: TIME_DST_URL},
+		fields: [
+			{name: "dst_enable", mapping: "dst_enable"},
+			{name: "start_month", mapping: "start_month"},
+			{name: "start_week", mapping: "start_week"},
+			{name: "start_day", mapping: "start_day"},
+			{name: "start_hour", mapping: "start_hour"},
+			{name: "end_month", mapping: "end_month"},
+			{name: "end_week", mapping: "end_week"},
+			{name: "end_day", mapping: "end_day"},
+			{name: "end_hour", mapping: "end_hour"},
+			// {name: "dst_status", mapping: "dst_status"}
+		],
+		validator:function(){
+		 	if(startTimeHash == endTimeHash)
+		 	{
+		 		$("input#end_hour").combobox("setError",$.su.CHAR.ERROR["00000114"]);
+				return false;
+		 	}
+			return true;
+		},
+		submitBtn: "default"
+	}).on("ev_loadData", function(e, data){
+		  if(data.dst_status === "")
+		  {
+		  	$("#time_set_statu").textbox("setValue", "");
+		  }
+		  if(data.dst_status === "down")
+		  {
+		  	$("#time_set_statu").textbox("setValue", $.su.CHAR.TIMESET.DOWN);
+		  }
+		  if(data.dst_status === "up")
+		  {
+		  	$("#time_set_statu").textbox("setValue", $.su.CHAR.TIMESET.UP);
+		  }
+		  dst_status=data.dst_status;
+		  get_time_format();
+	});
+	var currentStatusInterval=setInterval(function(){
+		$.post(TIME_DST_URL,{"operation":"read"},function(data){
+			var data=data.data;
+			if(data.dst_status === ""){
+				$("#time_set_statu").textbox("setValue", "");
+			}else if(data.dst_status === "down"){
+				$("#time_set_statu").textbox("setValue", $.su.CHAR.TIMESET.DOWN);
+			}else if(data.dst_status === "up"){
+				$("#time_set_statu").textbox("setValue", $.su.CHAR.TIMESET.UP);
+			}
+			dst_status=data.dst_status;
+		},"json")
+	},3709);
+	var helptimesetting = new $.su.Help({
+			container: "div#help_time_setting",
+			content: ["TIME_SETTINGS", "TIME_SETTING_DAYLIGHT"]
+	});
+	$.su.app.runningModule.addUnloadHandler(function(){
+        clearInterval(currentTimeInterval);
+        clearInterval(currentStatusInterval);
+    });
+		
+
+});
+</script>
+</body>
+</html>

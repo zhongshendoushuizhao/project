@@ -1,0 +1,19 @@
+{	
+	"success":	true,
+	"timeout":	false,
+	"data":	{
+		"region_status":	true,
+		"enable_2g":	"on",
+		"hide_2g":	"",
+		"ssid_2g":	"TP-Link_00C4",
+		"password_2g":	"tplinkpassword",
+		"router_ssid_2g":	"TP-Link_00C4",
+		"enable_5g":	"on",
+		"hide_5g":	"",
+		"ssid_5g":	"TP-Link_00C4_5G",
+		"password_5g":	"tplinkpassword",
+		"router_ssid_5g":	"TP-Link_00C4_5G",
+		"show2gFlag":	"true",
+		"show5gFlag":	"true"
+	}
+}

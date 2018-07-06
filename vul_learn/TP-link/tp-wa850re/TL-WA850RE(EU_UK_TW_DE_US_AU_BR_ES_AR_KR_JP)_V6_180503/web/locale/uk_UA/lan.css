@@ -1,0 +1,205 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*quick setup下拉框/timesetting timezone下拉框*/
+div#quicksetup-language-setting div.combobox-wrap input.combobox-text.xxxl {
+	width: 380px;
+    width: 390px\9;
+}
+div#auto_cnt div.combobox-container div.combobox-wrap input.combobox-text.xxxxl {
+	width: 380px;
+    width: 390px\9;
+}
+
+/*basic status router*/
+input#router_wireless_24g_channel{
+	width: 213px;
+}
+div#router_panel div.widget-container div.widget-fieldlabel-wrap.xxs {
+	width: 60px;
+}
+div#router_panel div.map-panel-cnt p.status-textarea-read label.xxs {
+	width: 60px;
+}
+/*printer*/
+input#printer_name{
+	width: 300px;	
+}
+/*usb_panel*/
+div#usb_panel div.widget-fieldlabel-wrap.xxs {
+	width: 115px;
+}
+
+/*switch*/
+div.switch-button-container span.switch-button-btn-wrap{
+	width: 89px;
+}
+/*div.switch-button-container a.on.switch-button-btn span.switch-button-btn-wrap{
+	width: 93px\9;
+	background: url(../../themes/blue/img/ie-07.png) repeat left top\9;
+}
+div.switch-button-container a.off.switch-button-btn span.switch-button-btn-wrap{
+	width: 93px\9;
+	background: url(../../themes/blue/img/ie-07.png) repeat left -30px\9;
+}*/
+span#share-all-tips {
+	width: 345px;
+}
+input#enable_dos + div + div div.tips-content{
+	width: 230px;
+}
+span#txt-mode-tips{
+	width: 340px;
+}
+
+/*step*/
+div.steps p{
+	padding-left: 77px;
+}
+
+/*radio 过长*/
+div.widget-container div.widget-fieldlabel-wrap.l + div.widget-wrap-outer{
+    max-width: 452px;
+}
+div.widget-container div.widget-fieldlabel-wrap.m + div.widget-wrap-outer{
+    max-width: 490px;
+}
+div.widget-container div.widget-fieldlabel-wrap.s + div.widget-wrap-outer{
+    max-width: 520px;
+}
+div.widget-container div.widget-fieldlabel-wrap + div.widget-wrap-outer{
+    max-width: 520px;
+}
+div.widget-container div.widget-fieldlabel-wrap.m + div.widget-wrap-outer.progressbar-wrap-outer {
+    max-width: 600px;
+}
+
+/*advanced status wireless clients*/
+/*div.access-wired-panel h4.status span#status_access_wired_title{
+    display: inline-block;
+    height: 31px;
+    line-height: 31px;
+    height: 29px\9;
+    line-height: 29px\9;
+}
+div.access-wireless-panel h4.status span#status_access_wireless_title{
+    display: inline-block;
+    width: 80px;
+}*/
+
+/*advanced status wired/wireless*/
+label.label_status_s {
+	display: inline-block;
+	width: 97px;
+	margin-left: 2px;
+}
+
+/*parent control/qos下按钮太长导致IE下的换行*/
+/*div#own_editor div.widget-container div.widget-fieldlabel-wrap.m {
+    width: 130px;
+}
+input#method_rd + div.widget-fieldlabel-wrap.s {
+    width: 99px;
+}
+div#app_list_all_container div#device_cnt div.widget-container div.widget-fieldlabel-wrap.s {
+    width: 110px;
+}
+div#app_list_all_container div#device_cnt input.text-text.l{
+    width: 130px;
+}
+virtual server
+port triggering
+administration
+*/
+
+/*timesetting 下拉框*/
+input#start_month + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.xs{
+	width: 60px;
+}
+input#end_month + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.xs{
+	width: 60px;
+}
+input#start_week + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.xs{
+	width: 65px;
+}
+input#end_week + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.xs{
+	width: 65px;
+}
+input#start_hour + div.combobox-wrap-outer div.combobox-wrap div.combobox-container div.combobox-wrap input.combobox-text.time_hour{
+	width: 52px;
+}
+input#end_hour + div.combobox-wrap-outer div.combobox-wrap div.combobox-container div.combobox-wrap input.combobox-text.time_hour{
+	width: 52px;
+}
+
+/*systemlog下拉框*/
+/*label#lbl_type + div.combobox-container div.combobox-wrap input.combobox-text.xl {
+	width: 230px;
+	width: 240px\9;
+}*/
+input#level + div.combobox-wrap-outer input.combobox-text.m {
+    width: 135px;
+}
+
+/*systemlog logat logevery对齐*/
+div#mail_cnt div.radio-group-wrap ul li > div.widget-wrap{
+	width: 155px;
+}
+div#mail_cnt div.radio-group-wrap ul li div.tips-content {
+	width: 140px;
+}
+div#mail_cnt div.radio-group-wrap ul li div.radio-content-wrap {
+	padding-left: 0px;
+	margin-left: 0px;
+}
+
+/*system para 2.4G/5g WLAN*/
+/*form#w24g-setting div.widget-container div.widget-fieldlabel-wrap.l{
+	width: 275px;
+}
+form#w24g-setting div.widget-container.radio-group-container div.widget-fieldlabel-wrap.l {
+width: 266px;
+}
+form#w5g-setting div.widget-container div.widget-fieldlabel-wrap.l{
+	width: 275px;
+}
+form#w5g-setting div.widget-container.radio-group-container div.widget-fieldlabel-wrap.l {
+	width: 266px;
+}*/
+
+/*syspara dos*/
+/*table#tbl_dos tr td.value div.widget-fieldlabel-wrap.xxs {
+    width: 150px;
+}
+table#tbl_dos tr td.value div.tips-content {
+    width: 160px;
+}*/
+
+/*duplex*/
+input#internet_duplex + div.widget-fieldlabel-wrap + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.l {
+	width: 180px;
+}
+form#access_mode_choose div.widget-container.radio-group-container div.widget-fieldlabel-wrap.m{
+	width: 210px;
+}
+div.combobox-container div.combobox-wrap ul.combobox-list li label.combobox-label {
+    width:420px;
+}
+
+input#repeater_wired_type{
+	width:225px;
+	margin-left:-55px;
+	position:relative;
+	left:55px;
+}
+input#router_wired_type{
+	width:225px;
+}
+#white_list_own_editor div.margin-top-20 .widget-fieldlabel-wrap.s,
+#black_list_own_editor div.margin-top-20 .widget-fieldlabel-wrap.s{
+	margin-right: 40px;
+	margin-left: -40px;
+}
+#wireless-2g .xxl{
+	width:420px;
+}

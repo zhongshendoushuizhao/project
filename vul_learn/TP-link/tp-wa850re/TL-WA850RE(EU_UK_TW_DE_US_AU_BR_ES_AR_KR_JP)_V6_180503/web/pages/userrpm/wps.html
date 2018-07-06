@@ -1,0 +1,1072 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Basic</title>
+<style>
+#unavailable-note{
+	margin-bottom:60px;
+}
+</style>
+</head>
+
+<body>
+<div>
+	<p id="unavailable-note" class="note hidden"></p>
+    <div id="all">
+        <div id="wps-global-container">
+            <form id="wps-global-form">
+                <input id="wps_enable" name="wps_enable" type="text"/>
+            </form>
+        </div>
+
+        <div id="wps-label-frontend">
+            <div id="wps-label-container" class="hidden">
+                <!-- <p id="wps-label-note" class="note"></p> -->
+                <form id="wps-label-form">
+                    <input id="wps_label_enable" name="wps_label_enable" type="text"/>
+                    <input id="wps_label_pin" name="wps_label_pin" type="text"/>
+                    <div class="inline-block">
+						<span class="pin_lock_icon hidden"></span>
+						<p id="pin_error" class="note hidden">
+							<span class="title note-title"></span>
+							<span class="text"></span>
+						</p>
+                        <button id="generate-btn"></button>
+                        <button id="default-btn"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="wps-setup-container" class="hidden">
+            <input id="wps-setup-method-radio" type="text"/>
+
+            <div id="wps-setup-pbc-container">
+                <!-- <p id="wps-setup-pbc-note" class="note"></p> -->
+                <div class="inline-block mp5">
+                    <button id="pbc-conn-btn"/>
+                    <input id="pbc-pro-bar" type="text"/>
+                    <button id="pbc-cancel-btn"/>
+                </div>
+                <div class="">
+                    <input id="pbc_conn_result_wl0"/>
+                    <input id="pbc_conn_result_wl1"/>
+                </div>
+            </div>
+
+            <div id="wps-setup-pin-container" class="hidden">
+                <input id="wps_setup_pin" name="wps_setup_pin"/>
+                <div class="inline-block mp5">
+                    <button id="pin-conn-btn"/>
+                    <input id="pin-pro-bar" type="text"/>
+                    <button id="pin-cancel-btn"/>
+                </div>
+                <div class="">
+                    <input id="pin_conn_result_wl0"/>
+                    <input id="pin_conn_result_wl1"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="help"></div>
+<script type="text/javascript">
+
+$(document).ready(function(e) {
+
+	var WIRELESS_2G_URL = "./data/wireless.settings.24g.json";
+	var WIRELESS_5G_URL = "./data/wireless.settings.5g.json";
+	var WPS_GLOBAL_URL = './data/wps.global.json';
+	var WPS_LABEL_URL = './data/wps.label.json';
+	var WPS_SETUP_URL = './data/wps.setup.json';
+
+    var WPS_SETUP_RADIO = {
+        PBC_VALUE : '0',
+        PIN_VALUE : '1'
+    };
+	var wpsCheck2g;
+	var wpsCheck5g;
+/**************************************************************************************************/
+	var wireless2gProxy = new $.su.Proxy({
+		url:WIRELESS_2G_URL
+	});	
+	var wireless5gProxy = new $.su.Proxy({
+		url:WIRELESS_5G_URL
+	});
+	
+    var wps_global_proxy = new $.su.Proxy({
+            reader: {
+                url: WPS_GLOBAL_URL,
+                root: 'data',
+                type: 'POST',
+                timeout: '5000'
+            },
+            writer: {
+                url: WPS_GLOBAL_URL,
+                root: 'data',
+                type: 'POST',
+                timeout: '5000'
+            }
+	});
+
+    var wps_label_proxy = new $.su.Proxy({
+            reader: {
+                url: WPS_LABEL_URL,
+                root: 'data',
+                type: 'POST',
+                timeout: '5000'
+            },
+            writer: {
+                url: WPS_LABEL_URL,
+                root: 'data',
+                type: 'POST',
+                timeout: '5000'
+            }
+	});
+
+    var wps_setup_proxy = new $.su.Proxy({
+            reader: {
+                url: WPS_SETUP_URL,
+                root: 'data',
+                type: 'POST',
+                timeout: '5000'
+            },
+            writer: {
+                url: WPS_SETUP_URL,
+                root: 'data',
+                type: 'POST',
+                timeout: '5000'
+            }
+	});
+	
+	var timeout = 10000;
+	var is_frontend = false;
+	
+    var pbcInterval = false;
+    var pinInterval = false;
+	var count1 = 0;
+	var count2 = 0;
+	var pbcWl0Status = $('#pbc_conn_result_wl0').status();
+    var pbcWl1Status = $('#pbc_conn_result_wl1').status();
+	var pinWl0Status = $('#pin_conn_result_wl0').status();
+    var pinWl1Status = $('#pin_conn_result_wl1').status();
+
+/**************************************************************************************************/
+	
+    function wps_enable_handler(val) {
+        if (val) {
+            $('#wps-label-container, #wps-setup-container').fadeIn();
+        } else {
+            $('#wps-label-container, #wps-setup-container').fadeOut();
+        }
+		reInit();
+    }
+	
+	
+	function reInit(){
+		if (pbcInterval) {
+	    	clearInterval(pbcInterval);
+			pbcInterval = false;
+			$('#pbc-pro-bar').progressbar('hide');
+			$('button#pbc-cancel-btn').button('hide');
+			$('button#pbc-conn-btn').button('enable');
+			pbcWl0Status.status("setNormal");
+			pbcWl1Status.status("setNormal");
+	    }
+		if (pinInterval) {
+	    	clearInterval(pinInterval);
+			pinInterval = false;
+			$('input#wps_setup_pin').textbox("setValue","");
+			$('#pin-pro-bar').progressbar('hide');
+			$('button#pin-cancel-btn').button('hide');
+			$('button#pin-conn-btn').button('enable');
+			pinWl0Status.status("setNormal");
+			pinWl1Status.status("setNormal");
+	    }
+		$('input#wps-setup-method-radio').radio("setValue","0");
+	}
+/**************************************************************************************************/
+
+    var help = new $.su.Help({
+        container: 'div#help',
+        content: ["ENABLE_WPS","WPS","WPS_WIZARD"]
+    });
+
+	$('div#wps-global-container').panel({
+		title: $.su.CHAR.WPS.GLOBAL_TITLE
+    });
+
+    $('div#wps-label-container').panel({
+        title: $.su.CHAR.WPS.LABEL_TITLE
+    });
+
+    $('div#wps-setup-container').panel({
+        title: $.su.CHAR.WPS.SETUP_TITLE
+    });
+
+	$('input#wps_enable').switchbutton({
+		fieldLabel: $.su.CHAR.WPS.ENABLE_WPS,
+		proxy: wps_global_proxy,
+		autoLoad: false,
+		onValue: 1,
+		offValue: 0,
+		field: {
+			name: 'wps_enable'
+		},
+        handler: wps_enable_handler
+	});
+
+    // $('p#wps-label-note').html($.su.CHAR.WPS.DEVICE_PIN_INFO);
+
+	$('input#wps_label_enable').switchbutton({
+		fieldLabel: $.su.CHAR.WPS.ENABLE_DEVICE_PIN,
+		proxy: wps_label_proxy,
+		autoLoad: false,
+		onValue: 1,
+		offValue: 0,
+		field: {
+			name: 'wps_label_enable'
+		}
+	});
+
+	$('input#wps_label_pin').textbox({
+		fieldLabel: $.su.CHAR.WPS.DEVICE_PIN,
+		cls: 'emphasize inline-block',
+		readOnly: true
+	});
+	
+	$("#wps_label_pin").before($(".pin_lock_icon"));
+	$("#wps_label_pin").closest(".text-wrap-outer").append($("#pin_error"));
+	$("#pin_error").css({margin:"0px 35px -30px 0px;"});
+	$("#pin_error span.note-title").html($.su.CHAR.OPERATION.NOTE);
+	$("#pin_error span.text").html($.su.CHAR.WPS.PIN_EXPIRED);
+	$("#pin_error").css({margin:"0 30px -42px 0"});
+	
+	$('button#generate-btn').button({
+		text: $.su.CHAR.WPS.GENERATE,
+		cls: 'no-label-align inline gap'
+	});
+
+	$('button#default-btn').button({
+		text: $.su.CHAR.WPS.DFT,
+		cls: 'no-label-align inline'
+	});
+
+	$('input#wps-setup-method-radio').radio({
+		fieldLabel: $.su.CHAR.WPS.SELECT_SETUP,
+		columns: 2,
+        labelCls: 'xl',
+		items: [
+			{boxlabel: $.su.CHAR.WPS.PUSH_BTN, inputValue: WPS_SETUP_RADIO.PBC_VALUE, checked: true},
+			{boxlabel: $.su.CHAR.WPS.PIN_BTN,  inputValue: WPS_SETUP_RADIO.PIN_VALUE}
+		]
+	});
+
+	// $('p#wps-setup-pbc-note').html($.su.CHAR.WPS.PUSH_DES).addClass('no-label-align');
+
+	$('button#pbc-conn-btn').button({
+		text: $.su.CHAR.WPS.CONNECT,
+		cls: 'no-label-align inline-block'
+	});
+
+	$('input#pbc-pro-bar').progressbar({
+		fieldLabel: null,
+		cls: 'inline-block',
+		width: 300,
+		height: 6,
+		value: 0
+	}).progressbar('hide');
+
+	$('button#pbc-cancel-btn').button({
+		text: $.su.CHAR.WPS.CANCEL,
+		cls: 'inline-block'
+	}).button('hide');
+
+	$('input#wps_setup_pin').textbox({
+		fieldLabel: $.su.CHAR.WPS.ENTER_CLIENT_PIN,
+		vtype: {
+			vtype: 'number',
+			format: 'pinCode',
+			max: 99999999
+		},
+		maxLength: 8,
+		minLength: 8,
+		allowBlank: false,
+		validator: function(val) {
+            if (val.toString().length != 8) {
+				return $.su.CHAR.ERROR['00000075'];
+			}
+			return true;
+		},
+		cls: 'no-label-align'
+	});
+
+	$('button#pin-conn-btn').button({
+		text: $.su.CHAR.WPS.CONNECT,
+		cls:'inline-block'
+	});
+
+	$('input#pin-pro-bar').progressbar({
+		fieldLabel: null,
+		cls: 'inline',
+		width: 300,
+		height: 6,
+		value: 0
+	}).progressbar('hide');
+
+	$('button#pin-cancel-btn').button({
+		text: $.su.CHAR.WPS.CANCEL,
+		cls: 'inline-block'
+	}).button('hide');
+
+    $('p#unavailable-note').html($.su.CHAR.WPS.UNAVAILABLE_NOTE);
+
+/**************************************************************************************************/
+
+	$('form#wps-global-form').form({
+		proxy: wps_global_proxy,
+		fields: [
+			{name: 'wps_enable', mapping: 'wps_enable'}
+		],
+		autoLoad: true,
+		submitBtn: null
+	}).on('ev_loadData', function(e, data) {
+		timeout = data.wps_timeout;
+		is_frontend = data.wps_is_frontend;
+        if (data.wps_available_status == 0) {
+            //$('#all').hide();
+			$('form#wps-global-form').form("disable");
+			$('form#wps-label-form').form("disable");
+			$('input#wps-setup-method-radio').radio("disable");
+			$('input#wps-setup-method-radio').radio("disable");
+			$('button#generate-btn').button('disable');
+			$('button#default-btn').button('disable');
+			$('button#pbc-conn-btn').button('disable');
+            $('#unavailable-note').show();
+        }
+        if (data.wps_is_frontend === 1) {
+            $('#wps-label-frontend').hide();
+            $('input#wps-setup-method-radio').radio('disableItem', [WPS_SETUP_RADIO.PIN_VALUE]);
+        }
+	});
+
+	$('form#wps-label-form').form({
+		proxy: wps_label_proxy,
+		fields: [
+			{name: 'wps_label_enable', mapping: 'wps_label_enable'},
+			{name: 'wps_label_pin', mapping: 'wps_label_pin'}
+		],
+		autoLoad: true
+	}).on("ev_loadData",function(e,data){
+		if(data&&data.wps_label_pin_lock&&data.wps_label_pin_lock==1){
+			$("#wps-label-container").css({"margin-bottom":"100px"});
+			$("#pin_error").removeClass("hidden");
+			$(".pin_lock_icon").removeClass("hidden");
+		}else{
+			$("#wps-label-container").css({"margin-bottom":"40px"});
+			$("#pin_error").addClass("hidden");
+			$(".pin_lock_icon").addClass("hidden");			
+		}
+	});
+
+    $('button#generate-btn').on('click', function() {
+        $('form#wps-label-form').form('submit', {option: 'generate'});
+    });
+
+    $('button#default-btn').on('click', function() {
+        $('form#wps-label-form').form('submit', {option: 'default'});
+    });
+
+	$('input#wps-setup-method-radio').on('ev_click', function(oldValue, newValue) {
+        if (oldValue === newValue) return;
+        switch (newValue)
+        {
+            case WPS_SETUP_RADIO.PBC_VALUE:
+                $('button#pbc-cancel-btn').button('disable').button('hide');;
+                // wps_setup_proxy.write({option: 'cancel'});
+                clearInterval(pbcInterval);
+                pbcInterval = false;
+                $('#pbc-pro-bar').progressbar('hide');
+                $('button#pbc-conn-btn').button('show').button('enable');
+
+                $('div#wps-setup-pin-container').hide();
+                $('div#wps-setup-pbc-container').fadeIn(200);
+                pbcWl0Status.status('setNormal');
+                pbcWl1Status.status('setNormal');
+                break;
+            case WPS_SETUP_RADIO.PIN_VALUE:
+                $('button#pin-cancel-btn').button('disable').button('hide');;
+                // wps_setup_proxy.write({option: 'cancel'});
+                clearInterval(pinInterval);
+                pinInterval = false;
+                $('#pin-pro-bar').progressbar('hide');
+                $('button#pin-conn-btn').button('show').button('enable');
+
+                $('div#wps-setup-pbc-container').hide();
+                $('div#wps-setup-pin-container').fadeIn(200);
+                pinWl0Status.status('setNormal');
+                pinWl1Status.status('setNormal');
+                break;
+            default:
+                break;
+        }
+	}).on("ev_change",function(e,oldValue,newValue){
+        switch (newValue)
+        {
+            case WPS_SETUP_RADIO.PBC_VALUE:
+                $('button#pbc-cancel-btn').button('disable').button('hide');;
+                // wps_setup_proxy.write({option: 'cancel'});
+                clearInterval(pbcInterval);
+                pbcInterval = false;
+                $('#pbc-pro-bar').progressbar('hide');
+                $('button#pbc-conn-btn').button('show').button('enable');
+
+                $('div#wps-setup-pin-container').hide();
+                $('div#wps-setup-pbc-container').fadeIn(200);
+                pbcWl0Status.status('setNormal');
+                pbcWl1Status.status('setNormal');
+                break;
+            case WPS_SETUP_RADIO.PIN_VALUE:
+                $('button#pin-cancel-btn').button('disable').button('hide');;
+                // wps_setup_proxy.write({option: 'cancel'});
+                clearInterval(pinInterval);
+                pinInterval = false;
+                $('#pin-pro-bar').progressbar('hide');
+                $('button#pin-conn-btn').button('show').button('enable');
+
+                $('div#wps-setup-pbc-container').hide();
+                $('div#wps-setup-pin-container').fadeIn(200);
+                pinWl0Status.status('setNormal');
+                pinWl1Status.status('setNormal');
+                break;
+            default:
+                break;
+        }
+	});
+
+	function pbcPolling()
+	{
+        wps_setup_proxy.write({option: 'pbc'}, function(data, textStatus, jqXHR){
+            count1++;
+            if(typeof data == 'undefined')
+            {
+                return;
+            }
+
+            if(data.wl0_wps_setup_status == 'success' && data.wl1_wps_setup_status == 'success')
+            {
+                var str0 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl0_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;
+
+                var str1 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl1_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;
+				
+                pbcWl0Status.status('show');
+                pbcWl1Status.status('show'); 
+				if( (data.wl0_wps_client_mac == undefined || data.wl0_wps_client_mac == "") &&
+					(data.wl1_wps_client_mac == undefined || data.wl1_wps_client_mac == "") )
+					pbcWl1Status.status('hide'); 
+                clearInterval(pbcInterval);
+                pbcInterval = false;
+                $('#pbc-pro-bar').progressbar('stop');
+                $('#pbc-pro-bar').progressbar('animate', $('#pbc-pro-bar').progressbar('getValue'),1,1000,function(){
+					pbcWl0Status.status('setSuccess', str0);
+					pbcWl1Status.status('setSuccess', str1);
+					$('button#pbc-conn-btn').button('enable');
+					$('button#pbc-conn-btn').button('show');
+					$('button#pbc-cancel-btn').button('hide');
+					$('#pbc-pro-bar').progressbar('hide');
+				});
+            }
+            else if(data.wl0_wps_setup_status == 'ok' || data.wl1_wps_setup_status == 'ok') 
+            {
+                pbcWl0Status.status('setLoading', '');
+                //pbcWl1Status.status('hide');
+				if(data.wl0_wps_setup_status == 'success')
+                {
+                    var str0 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl0_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;                                
+                    pbcWl0Status.status('setSuccess', str0);
+                    pbcWl1Status.status('setLoading', '');
+                }else if(data.wl1_wps_setup_status == 'success')
+                {
+					pbcWl1Status.status('show');
+					var str1 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl1_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;                                
+                    pbcWl1Status.status('setSuccess', str1);
+                }
+            }
+            else if(data.wl0_wps_setup_status != 'ok' && data.wl1_wps_setup_status != 'ok')
+            {
+                pbcWl0Status.status('hide');
+                pbcWl1Status.status('hide'); 
+				
+                if(data.wl0_wps_setup_status == 'success')
+                {
+                    var str0 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl0_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;                                
+                    pbcWl0Status.status('setSuccess', str0);
+                }
+                else if(data.wl0_wps_setup_status == 'error')
+                {
+                    pbcWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_ERROR_WL0);
+                }
+                else if(data.wl0_wps_setup_status == 'failed')
+                {
+                    pbcWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_ERROR_WL0);
+                }
+                else if(data.wl0_wps_setup_status == 'overlap')
+                {
+                    pbcWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_OVERLAP_WL0);
+                }
+                else if(data.wl0_wps_setup_status == 'timeout')
+                {
+                    pbcWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_TIMEOUT_WL0);
+                }
+                else if(data.wl0_wps_setup_status == 'silent')
+                {
+                    pbcWl0Status.status('hide');
+                }
+
+                     
+                if(data.wl1_wps_setup_status == 'success')
+                {
+
+                    var str1 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl1_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;                                
+                    pbcWl1Status.status('setSuccess', str1);
+                }
+                else if(data.wl1_wps_setup_status == 'error')
+                {
+                    pbcWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_ERROR_WL1);
+                }
+                else if(data.wl1_wps_setup_status == 'failed')
+                {
+                    pbcWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_ERROR_WL1);
+                }
+                else if(data.wl1_wps_setup_status == 'overlap')
+                {
+                    pbcWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_OVERLAP_WL1);
+                }
+                else if(data.wl1_wps_setup_status == 'timeout')
+                {
+                    pbcWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_TIMEOUT_WL1);
+                }
+                else if(data.wl1_wps_setup_status == 'silent')
+                {
+                    pbcWl1Status.status('hide');
+                }
+
+                clearInterval(pbcInterval);
+                pbcInterval = false;
+                $('#pbc-pro-bar').progressbar('stop');
+                $('#pbc-pro-bar').progressbar('animate', $('#pbc-pro-bar').progressbar('getValue'),1,1000,function(){
+					$('button#pbc-conn-btn').button('enable');
+					$('button#pbc-conn-btn').button('show');
+					$('button#pbc-cancel-btn').button('hide');
+					$('#pbc-pro-bar').progressbar('hide');
+					pbcWl0Status.status('show');
+					pbcWl1Status.status('show');
+					if(data.wl0_wps_setup_status == data.wl1_wps_setup_status){
+						pbcWl1Status.status('hide');
+					}
+					if(data.wl0_wps_setup_status == 'success'){
+						pbcWl1Status.status('hide');
+					}
+					if(data.wl1_wps_setup_status == 'success'){
+						pbcWl0Status.status('hide');
+					}
+				});
+            }
+            if(count1 >= timeout/1000)
+            {
+                if(pbcInterval)
+                {
+                    clearInterval(pbcInterval);
+                    pbcInterval = false;
+                    $('button#pbc-conn-btn').button('enable');
+                    $('button#pbc-conn-btn').button('show');
+                    $('button#pbc-cancel-btn').button('hide');
+                    $('#pbc-pro-bar').progressbar('hide');
+					
+					
+					pbcWl0Status.status('show');
+					pbcWl1Status.status('show');
+					if(data.wl0_wps_setup_status == 'success')
+					{
+						var str0 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl0_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;                                
+						pbcWl0Status.status('setSuccess', str0);
+						pbcWl1Status.status('hide');
+					}
+					else if(data.wl0_wps_setup_status == 'error')
+					{
+						pbcWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_ERROR_WL0);
+					}
+					else if(data.wl0_wps_setup_status == 'failed')
+					{
+						pbcWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_ERROR_WL0);
+					}
+					else if(data.wl0_wps_setup_status == 'overlap')
+					{
+						pbcWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_OVERLAP_WL0);
+					}
+					else if(data.wl0_wps_setup_status == 'timeout')
+					{
+						pbcWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_TIMEOUT_WL0);
+					}
+					else if(data.wl0_wps_setup_status == 'silent')
+					{
+						pbcWl0Status.status('hide');
+					}
+
+						 
+					if(data.wl1_wps_setup_status == 'success')
+					{
+
+						var str1 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl1_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;                                
+						pbcWl1Status.status('setSuccess', str1);
+						pbcWl0Status.status('hide');
+					}
+					else if(data.wl1_wps_setup_status == 'error')
+					{
+						pbcWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_ERROR_WL1);
+					}
+					else if(data.wl1_wps_setup_status == 'failed')
+					{
+						pbcWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_ERROR_WL1);
+					}
+					else if(data.wl1_wps_setup_status == 'overlap')
+					{
+						pbcWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_OVERLAP_WL1);
+					}
+					else if(data.wl1_wps_setup_status == 'timeout')
+					{
+						pbcWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_TIMEOUT_WL1);
+					}
+					else if(data.wl1_wps_setup_status == 'silent')
+					{
+						pbcWl1Status.status('hide');
+					}
+					if(data.wl0_wps_setup_status == 'ok'){
+						pbcWl0Status.status('setFailed', $.su.CHAR.WPS.NOT_FOUND_WL0);
+					}
+					if(data.wl1_wps_setup_status == 'ok'){
+						pbcWl1Status.status('setFailed', $.su.CHAR.WPS.NOT_FOUND_WL1);
+					}
+					if(data.wl0_wps_setup_status == data.wl1_wps_setup_status){
+						pbcWl1Status.status('hide');
+					}
+                }
+            }
+        });
+	}
+
+	function pinPolling()
+	{
+        wps_setup_proxy.write({option: 'pin'}, function(data, textStatus, jqXHR){
+            count2++;
+            if(typeof data == 'undefined')
+            {
+                return;
+            }
+            if(data.wl0_wps_setup_status == 'success' && data.wl1_wps_setup_status == 'success')
+            {
+                var str0 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl0_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;
+                var str1 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl1_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;
+                
+                pinWl0Status.status('show');
+                pinWl1Status.status('show');
+				if( (data.wl0_wps_client_mac == undefined || data.wl0_wps_client_mac == "") &&
+					(data.wl1_wps_client_mac == undefined || data.wl1_wps_client_mac == "") )
+					pinWl1Status.status('hide'); 
+				clearInterval(pinInterval);
+                pinInterval = false;
+                $('#pin-pro-bar').progressbar('stop');
+                $('#pin-pro-bar').progressbar('animate', $('#pin-pro-bar').progressbar('getValue'),1,1000,function(){
+					pinWl0Status.status('setSuccess', str0);
+					pinWl1Status.status('setSuccess', str1);
+					$('button#pin-conn-btn').button('enable');
+					$('button#pin-conn-btn').button('show');
+					$('button#pin-cancel-btn').button('hide');
+					$('#pin-pro-bar').progressbar('hide');
+				});
+            }
+            else if(data.wl0_wps_setup_status == 'ok' || data.wl1_wps_setup_status == 'ok')
+            {
+                pinWl0Status.status('setLoading', '');
+                //pinWl1Status.status('hide');
+				if(data.wl0_wps_setup_status == 'success')
+                {
+                    var str0 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl0_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;                                
+                    pinWl0Status.status('setSuccess', str0);
+                    pinWl1Status.status('setLoading', '');
+                }else if(data.wl1_wps_setup_status == 'success')
+                {
+					pinWl1Status.status('show');
+					var str1 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl1_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;                                
+                    pinWl1Status.status('setSuccess', str1);
+                }
+            }
+            else if(data.wl0_wps_setup_status != 'ok' && data.wl1_wps_setup_status != 'ok')
+            {
+                pinWl0Status.status('hide');
+                pinWl1Status.status('hide');
+				
+                if(data.wl0_wps_setup_status == 'success')
+                {
+                    var str0 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl0_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;
+                    pinWl0Status.status('setSuccess', str0);
+                }
+                else if(data.wl0_wps_setup_status == 'error')
+                {
+                    pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_PIN_ERROR_WL0);
+                }
+                if(data.wl0_wps_setup_status == 'failed')
+                {
+                    pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_ERROR_WL0);
+                }
+                if(data.wl0_wps_setup_status == 'overlap')
+                {
+                    pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_OVERLAP_WL0);
+                }
+                if(data.wl0_wps_setup_status == 'timeout')
+                {
+                    pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_TIMEOUT_WL0);
+                }
+                if(data.wl0_wps_setup_status == 'na')
+                {
+                    pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_INACT_WL0);
+                }
+                if(data.wl0_wps_setup_status == 'silent')
+                {
+                    pinWl0Status.status('hide');
+                }
+                
+                if(data.wl1_wps_setup_status == 'success')
+                {
+                    var str1 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl1_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;
+                    pinWl1Status.status('setSuccess', str1);
+                }
+                else if(data.wl1_wps_setup_status == 'error')
+                {
+                    pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_PIN_ERROR_WL1);
+                }
+                if(data.wl1_wps_setup_status == 'failed')
+                {
+                    pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_ERROR_WL1);
+                }
+                if(data.wl1_wps_setup_status == 'overlap')
+                {
+                    pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_OVERLAP_WL1);
+                }
+                if(data.wl1_wps_setup_status == 'timeout')
+                {
+                    pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_TIMEOUT_WL1);
+                }
+                if(data.wl1_wps_setup_status == 'na')
+                {
+                    pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_INACT_WL1);
+                }
+				if(data.wl1_wps_setup_status == 'silent')
+                {
+                    pinWl1Status.status('hide');
+                }
+                clearInterval(pinInterval);
+                pinInterval = false;
+                $('#pin-pro-bar').progressbar('stop');
+                $('#pin-pro-bar').progressbar('animate', $('#pin-pro-bar').progressbar('getValue'),1,1000,function(){
+					$('button#pin-conn-btn').button('enable');
+					$('button#pin-conn-btn').button('show');
+					$('button#pin-cancel-btn').button('hide');
+					$('#pin-pro-bar').progressbar('hide');
+					pinWl0Status.status('show');
+					pinWl1Status.status('show');
+					if(data.wl0_wps_setup_status == data.wl1_wps_setup_status)
+					{
+						pinWl1Status.status('hide');
+					}
+					if(data.wl0_wps_setup_status == 'success'){
+						pinWl1Status.status('hide');
+					}
+					if(data.wl1_wps_setup_status == 'success'){
+						pinWl0Status.status('hide');
+					}
+				});
+            }
+
+            if(count2 >= timeout/1000)
+            {
+                if(pinInterval)
+                {
+                    clearInterval(pinInterval);
+                    pinInterval = false;
+
+                    $('button#pin-conn-btn').button('enable');
+                    $('button#pin-conn-btn').button('show');
+                    $('button#pin-cancel-btn').button('hide');
+                    $('#pin-pro-bar').progressbar('hide');
+					
+					pinWl0Status.status('show');
+					pinWl1Status.status('show');
+					if(data.wl0_wps_setup_status == 'success')
+					{
+						var str0 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl0_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;
+						pinWl0Status.status('setSuccess', str0);
+						pinWl1Status.status('hide');
+					}
+					else if(data.wl0_wps_setup_status == 'error')
+					{
+						pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_PIN_ERROR_WL0);
+					}
+					if(data.wl0_wps_setup_status == 'failed')
+					{
+						pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_ERROR_WL0);
+					}
+					if(data.wl0_wps_setup_status == 'overlap')
+					{
+						pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_OVERLAP_WL0);
+					}
+					if(data.wl0_wps_setup_status == 'timeout')
+					{
+						pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_TIMEOUT_WL0);
+					}
+					if(data.wl0_wps_setup_status == 'na')
+					{
+						pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_INACT_WL0);
+					}
+					if(data.wl0_wps_setup_status == 'silent')
+					{
+						pinWl0Status.status('hide');
+					}
+					if(data.wl0_wps_setup_status == 'ok')
+					{
+						pinWl0Status.status('setFailed', $.su.CHAR.WPS.NOT_FOUND_WL1);
+					}
+					
+					if(data.wl1_wps_setup_status == 'success')
+					{
+						var str1 = $.su.CHAR.WPS.RESULT_HEAD + ' <b>' + (data.wl1_wps_client_mac||"") + '</b> ' + $.su.CHAR.WPS.RESULT_END;
+						pinWl1Status.status('setSuccess', str1);
+						pinWl0Status.status('hide');
+					}
+					else if(data.wl1_wps_setup_status == 'error')
+					{
+						pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_PIN_ERROR_WL1);
+					}
+					if(data.wl1_wps_setup_status == 'failed')
+					{
+						pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_ERROR_WL1);
+					}
+					if(data.wl1_wps_setup_status == 'overlap')
+					{
+						pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_OVERLAP_WL1);
+					}
+					if(data.wl1_wps_setup_status == 'timeout')
+					{
+						pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_TIMEOUT_WL1);
+					}
+					if(data.wl1_wps_setup_status == 'na')
+					{
+						pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_CONN_INACT_WL1);
+					}
+					if(data.wl1_wps_setup_status == 'silent')
+					{
+						pinWl1Status.status('hide');
+					}
+					if(data.wl1_wps_setup_status == 'ok')
+					{
+						pinWl1Status.status('setFailed', $.su.CHAR.WPS.NOT_FOUND_WL1);
+					}
+					if(data.wl0_wps_setup_status == data.wl1_wps_setup_status)
+					{
+						pinWl1Status.status('hide');
+					}
+                }
+            }
+        });
+	}
+
+	$('button#pbc-conn-btn').on('click', function() {
+
+        pbcWl0Status.status('setNormal');
+        pbcWl1Status.status('setNormal');
+
+        $('button#pbc-conn-btn').button('disable');
+        wps_setup_proxy.write({option: 'connect'}, function(data){
+            if(data.wl0_wps_setup_status == 'error' && data.wl1_wps_setup_status == 'error')
+            {
+                pbcWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_PIN_ERROR_WL0);
+                pbcWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_PIN_ERROR_WL1);
+				pbcWl1Status.status('hide');
+                $('button#pbc-conn-btn').button('enable');
+                return;
+            }
+            else
+            {
+				count1 = 0;
+                $('#pbc-pro-bar').progressbar('show');
+                $('#pbc-pro-bar').progressbar('reset');
+                $('#pbc-pro-bar').progressbar('animate', 0, 1, timeout);
+
+                $('button#pbc-cancel-btn').button('getContainer').css('display', 'inline-block');
+                
+                if(!pbcInterval)
+                {
+                    pbcInterval = setInterval(pbcPolling, 1000);
+                }
+                else
+                {
+                    clearInterval(pbcInterval);
+                    pbcInterval = false;
+                    pbcInterval = setInterval(pbcPolling, 1000);
+                }
+                $('button#pbc-cancel-btn').button('enable');
+            }
+            
+        },function(){
+			$('button#pbc-conn-btn').button('enable');
+		},function(){
+			$('button#pbc-conn-btn').button('enable');
+		});
+	});
+
+	$('button#pbc-cancel-btn').on('click', function() {
+        $('button#pbc-cancel-btn').button('disable');
+        wps_setup_proxy.write({option: 'cancel'}, function(data) {
+            if(data.wl0_wps_setup_status == 'cancel' && data.wl1_wps_setup_status == 'cancel')
+            {
+                pbcWl0Status.status('setSuccess', $.su.CHAR.WPS.STATUS_CANCEL_WL0);
+                pbcWl1Status.status('setSuccess', $.su.CHAR.WPS.STATUS_CANCEL_WL1);
+            }
+            else
+            {
+                pbcWl0Status.status('setNormal');
+                pbcWl1Status.status('setNormal');
+            }
+        });
+        clearInterval(pbcInterval);
+        pbcInterval = false;
+        $('#pbc-pro-bar').progressbar('reset');
+        $('#pbc-pro-bar').progressbar('hide');
+        $('button#pbc-conn-btn').button('enable');
+        $('button#pbc-conn-btn').button('show');
+        $('button#pbc-cancel-btn').button('hide');
+	});
+
+	$('button#pin-conn-btn').on('click', function() {
+        var pin = $('input#wps_setup_pin').textbox('getValue');
+        if(!$('input#wps_setup_pin').textbox('validate'))
+        {
+            return false;
+        }
+
+        pinWl0Status.status('setNormal');
+        pinWl1Status.status('setNormal');
+
+        $('button#pin-conn-btn').button('disable');
+
+        wps_setup_proxy.write({option: 'connect', wps_setup_pin: pin}, function(data){
+            if(data.wl0_wps_setup_status == 'error' && data.wl1_wps_setup_status == 'error')
+            {
+                pinWl0Status.status('setFailed', $.su.CHAR.WPS.STATUS_PIN_ERROR_WL0);
+                pinWl1Status.status('setFailed', $.su.CHAR.WPS.STATUS_PIN_ERROR_WL1);
+				pinWl1Status.status('hide');
+                $('button#pin-conn-btn').button('enable');
+                return;
+            }
+            else
+            {
+				count2 = 0;
+                $('#pin-pro-bar').progressbar('show');
+                $('#pin-pro-bar').progressbar('reset');
+                $('#pin-pro-bar').progressbar('animate', 0, 1, timeout);
+                $('#pin-cancel-btn').button('getContainer').css('display', 'inline-block');
+
+                if(!pinInterval)
+                {
+                    pinInterval = setInterval(pinPolling, 1000);
+                }
+                else
+                {
+                    clearInterval(pinInterval);
+                    pinInterval = false;
+                    pinInterval = setInterval(pinPolling, 1000);
+                }
+                
+                $('button#pin-cancel-btn').button('enable');
+            }
+        });
+	});
+
+	$('button#pin-cancel-btn').on('click', function() {
+        $('button#pin-cancel-btn').button('disable');
+        wps_setup_proxy.write({option: 'cancel'}, function(data){
+            if(data.wl0_wps_setup_status == 'cancel' && data.wl1_wps_setup_status == 'cancel')
+            {
+                pinWl0Status.status('setSuccess', $.su.CHAR.WPS.STATUS_CANCEL_WL0);
+                pinWl1Status.status('setSuccess', $.su.CHAR.WPS.STATUS_CANCEL_WL1);
+            }
+            else
+            {
+                pinWl0Status.status('setNormal');
+                pinWl1Status.status('setNormal');
+            }
+        });
+        clearInterval(pinInterval);
+        pinInterval = false;
+        $('#pin-pro-bar').progressbar('reset');
+        $('#pin-pro-bar').progressbar('hide');
+        $('button#pin-conn-btn').button('show');
+        $('button#pin-cancel-btn').button('hide');
+        $('button#pin-conn-btn').button('enable');
+	});
+
+	wireless2gProxy.read({},function(data2g){
+		wpsCheck2g = data2g.enable;
+	},function(){
+		wpsCheck2g = "off";
+		isEnableWPS();
+	},function(){
+		wpsCheck2g = "off";
+		isEnableWPS();
+	});
+	
+	wireless5gProxy.read({},function(data5g){
+		wpsCheck5g = data5g.enable;
+		isEnableWPS();
+	},function(){
+		wpsCheck5g = "off";
+		isEnableWPS();
+	},function(){
+		wpsCheck5g = "off";
+		isEnableWPS();
+	});
+	
+	function isEnableWPS(){
+		if(wpsCheck2g && wpsCheck5g){
+			if(wpsCheck2g=="off" && wpsCheck5g=="off"){
+                $('form#wps-global-form').form("disable");
+                $('form#wps-label-form').form("disable");
+                $('input#wps-setup-method-radio').radio("disable");
+                $('input#wps-setup-method-radio').radio("disable");
+                $('button#generate-btn').button('disable');
+                $('button#default-btn').button('disable');
+                $('button#pbc-conn-btn').button('disable');
+            }
+		}else return;
+	}
+	
+	$.su.app.runningModule.addUnloadHandler(function(){
+		if (pbcInterval) {
+	    	clearInterval(pbcInterval);
+			pbcInterval = false;
+	    }
+
+	    if (pinInterval) {
+	    	clearInterval(pinInterval);
+			pinInterval = false;
+	    }
+	});
+
+    
+
+   
+});
+</script>
+</body>
+</html>

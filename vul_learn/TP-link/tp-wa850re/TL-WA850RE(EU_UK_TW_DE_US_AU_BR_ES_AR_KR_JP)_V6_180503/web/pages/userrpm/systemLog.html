@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>log_filter_form Control</title>
+
+</head>
+
+<body>
+<div class="func-container">
+	<div id="log_filter_form">
+		<form id="account_setting">
+			<div class="widget-container">
+				<div class="widget-fieldlabel-wrap xxs">
+					<label id="filter" class="widget-fieldlabel"></label>
+				</div>
+
+				<label id="lbl_type"></label>
+				<input type="text"  id="type" name="type" value="" />
+				<label id="lbl_level"></label>
+				<input type="text"  id="level" name="level" value="" />
+			</div>
+			<div id="log_prompt" class="form-prompt successed hidden pos">
+				<div class="bg"></div>
+				<div class="content">
+					<span class="icon"></span>
+					<span class="text text-successed"></span>
+					<span class="text text-failed"></span>
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+	<div id="log_list"></div>
+
+
+	<!-- <p id="note" name="note" class="note"></p> -->
+	<form id="save-setting" enctype="multipart/form-data">
+		<input type="hidden" />	
+	</form>
+
+
+	<div class="part-seperate button-context ">
+		<button id="save_log" type="button"></button>
+	</div>
+
+
+	<div id="help_system_log"></div>
+	
+</div>
+
+<script type="text/javascript">
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+	var LOG_LIST_URL = "./data/log.grid.json";
+	var LOG_FILTER_URL = "./data/syslog.filter.json";
+	var LOG_TYPE_URL= "./data/syslog.types.json";
+
+	$("div.func-container").page({
+		title: $.su.CHAR.SYSLOG.TITLE,
+		help: ""	//可能是个调用的id 也可能是个url
+	});
+
+	$("div#log_filter_form").panel({
+		title: $.su.CHAR.SYSLOG.TITLE,
+		collapsible: false
+	});
+	// //console.log($.su.CHAR.SYSLOG.FILTER);
+	$("#filter").html($.su.CHAR.SYSLOG.LOG_FILTER);
+
+	$("#lbl_type").html($.su.CHAR.SYSLOG.TYPE_EQ);
+
+
+
+	$("input#type").combobox({
+		fieldLabel: null,
+		inputCls:'l',
+		cls:"s inline-block",
+		items: [
+		]
+	}).on("ev_change", function(e, oldValue, newValue){
+		if(oldValue.length!=0){
+			$("form#account_setting").form("submit", {}, function(){
+				storeTest.load();
+			});
+			
+		}
+	});
+
+	var regionItem = $.su.loadComboData(LOG_TYPE_URL, {}, [
+		{srcKey:"value", dstKey:"value"},
+		{srcKey:"name", dstKey:"name",
+			para:$.su.CHAR.SYSLOG,
+			func: function(src, para){
+		        var res = para[src];
+		        if (!res){
+		        	res = src;
+		        }
+		
+		        return res;
+		    }
+		}
+	]);
+
+	$("#type").combobox("loadData", regionItem);
+	
+
+	$("form#account_setting").form({
+		proxy: {url:LOG_FILTER_URL},
+		showPrompt:false,
+		cls:"no-padding",
+		fields: [
+			{name: "type", mapping: "type"},
+			{name: "level", mapping: "level"}
+		],
+		autoLoad:false
+	});
+
+	$("#lbl_level").text($.su.CHAR.SYSLOG.LEVEL);
+
+	$("input#level").combobox({
+		fieldLabel: null,
+		inputCls:'m',
+		cls:"s inline-block",
+		items: [
+			{"value": 'ALL', "name": $.su.CHAR.SYSLOG.ALL},
+			{"value": 'ERROR', "name": $.su.CHAR.SYSLOG.ERROR},
+			{"value": 'INFO', "name": $.su.CHAR.SYSLOG.INFO}
+			
+		]
+	}).on("ev_change", function(e, oldValue, newValue){
+		if(oldValue.length!=0){
+			$("form#account_setting").form("submit",{}, function(){
+				storeTest.load();
+			});
+		}
+	});
+
+	$("form#account_setting").form("load");	
+
+	var storeTest = new $.su.Store({
+		proxy: {
+			url: LOG_LIST_URL
+		},
+		fields: [
+			// {name: "index"},
+			{name: "time"},
+			{name: "type"},
+			{name: "level"},
+			{name: "content"}
+		],
+		updateMode:"complete",
+		autoLoad: false
+	});
+
+
+	$("div#log_list").grid({
+		store:storeTest,
+		minLines:0,
+		paging:{
+			numPerPage: 50
+		},
+		reverseIndex: true,
+		columns: [
+			{
+				text: $.su.CHAR.SYSLOG.ID, 
+				//xtype: "rownumberer",
+				width: 45,
+				renderer: function(d, index, data){
+					var cls = (data.level == "ERROR") ? "error" : "";
+					return "<span class=\""+cls+"\">" + (index+1) + "</span>";
+				}
+			},
+			{
+				text: $.su.CHAR.SYSLOG.TIME, 
+				width: 130,
+				dataIndex: "time",
+				renderer: function(d, index, data){
+					var cls = (data.level == "ERROR") ? "error" : "";
+					return "<span class=\""+cls+"\">" + d + "</span>";
+				}
+			},
+			{
+				text: $.su.CHAR.SYSLOG.TYPE, 
+				width: 85,
+				renderer: function(val, index, data){
+					var res = $.su.CHAR.SYSLOG[val];
+					if(!res)
+					{
+						res = val;
+					}
+					
+					var cls = (data.level == "ERROR") ? "error" : "";
+					return "<span class=\""+cls+"\">" + res + "</span>";
+					//return res;
+				},
+				dataIndex: "type"
+			},
+			{
+				text: $.su.CHAR.SYSLOG.LEVEL_COL, 
+				width: 75,
+				dataIndex: "level",
+				renderer: function(d, index, data){
+					var cls = (data.level == "ERROR") ? "error" : "";
+					return "<span class=\""+cls+"\">" + $.su.CHAR.SYSLOG[d] + "</span>";
+				}
+			},
+			{
+				text: $.su.CHAR.SYSLOG.CONTENT, 
+				dataIndex: "content",
+				renderer: function(d, index, data){
+					var cls = (data.level == "ERROR") ? "error" : "";
+					return "<span class=\""+cls+"\">" +  d + "</span>";
+				}
+			}
+		],
+		operation: ["refresh","deleteAll"]
+	});
+
+	var getGridData = setTimeout(function(){
+		storeTest.load();
+	}, 500);
+
+
+	$("div#adv_btn").on('click',function(){
+		var btn = $(this);
+		if (btn.hasClass("basic-block")){
+			btn.removeClass("basic-block").addClass("advanced-block");
+			btn.find("span.basic-icon").removeClass("basic-icon").addClass("advanced-icon");
+			btn.find("span.basic-text").removeClass("basic-icon").addClass("advanced-text");
+		}else{
+			btn.removeClass("advanced-block").addClass("basic-block");
+			btn.find("span.advanced-icon").removeClass("advanced-icon").addClass("basic-icon");
+			btn.find("span.advanced-text").removeClass("advanced-text").addClass("basic-text");
+		};
+	});
+
+	
+
+
+	$("#log_prompt .text-successed").html($.su.CHAR.OPERATION.FORM_SAVED);
+	$("#log_prompt .text-failed").html($.su.CHAR.OPERATION.FORM_FAILED);
+
+	$("#save-setting").form({
+		proxy:{
+			type: 'GET',
+			url: './data/systemlog.txt'
+		},
+		formEnctype: "multipart/form-data",
+		traditional: true,
+		hiddenFrame: true,
+		autoLoad: false
+	});
+
+	$("#save_log").button({
+		fieldLabel: null,
+		text: $.su.CHAR.SYSLOG.SAVE_LOG,
+		cls: "inline-block",
+		handler: function(e){
+			$("#save-setting").form('submit', {operation:'save'});
+		}
+	});
+
+	
+	//这里多个表格调用一个proxy，proxy需要单独定义！
+
+
+
+	var helpSystemLog = new $.su.Help({
+		container: "div#help_system_log",
+		content: "SYSTEM_LOG"
+	});
+	
+});
+</script>
+</body>
+
+</html>

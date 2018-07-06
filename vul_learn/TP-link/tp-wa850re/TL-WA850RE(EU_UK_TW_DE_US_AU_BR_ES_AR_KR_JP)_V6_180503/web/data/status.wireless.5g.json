@@ -1,0 +1,12 @@
+{
+    "success" : true,
+    "timeout" : false,
+    "data" :
+    {
+    	"ssid":  "TP-Link_0BEC_5G",
+    	"channel": "ac",
+    	"mode": "mode",
+    	"channelwidth": "channelwidth",
+    	"mac": "00-14-78-B1-09-45"
+    }
+}

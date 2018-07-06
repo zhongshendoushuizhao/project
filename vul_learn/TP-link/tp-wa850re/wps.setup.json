@@ -1,0 +1,11 @@
+{
+	"timeout": false,
+	"success": true,
+	"data":{
+		"wps_setup_pin": "205300", 
+		"wl0_wps_setup_status": "success",
+		"wl1_wps_setup_status": "failed",
+		"wl0_wps_client_mac": "9A-34-7F-4C-B3-70",
+		"wl1_wps_client_mac": "C2-43-E5-42-D5-68"    
+	}
+}

@@ -1,0 +1,15 @@
+{
+	"comments": "----实际使用中，请删除所有comments字段----",	
+	"comments": "说明：upgrade页面中获取数据",
+	
+	"timeout": false,
+	"errorcode":"err_check",
+	"success": true,
+	"data": [
+		{"ssid": "TP-Link_0BEC_5G", "signal": "high", "mac": "00-19-E0-B1-09-45", "channel": "11", "security": "wep"},
+		{"ssid": "TP-Link_349D_5G", "signal": "high", "mac": "00-19-E0-42-D5-68", "channel": "11", "security": "wpa"},
+		{"ssid": "TP-Link_A983_5G", "signal": "high", "mac": "00-14-78-32-EF-90", "channel": "11", "security": "wpa"},
+		{"ssid": "TP-Link_CDE4_5G", "signal": "high", "mac": "00-19-E0-4C-B3-70", "channel": "11", "security": "wep"},
+		{"ssid": "TP-Link_F2E6_5G", "signal": "high", "mac": "00-14-78-B1-09-45", "channel": "11", "security": "wep"}
+	]
+}

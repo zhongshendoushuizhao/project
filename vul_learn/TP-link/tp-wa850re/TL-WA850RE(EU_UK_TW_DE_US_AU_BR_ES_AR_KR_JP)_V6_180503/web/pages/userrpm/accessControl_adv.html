@@ -1,0 +1,2056 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>access Control</title>
+<style type="text/css">
+	a.act{
+		color: #78AF19;
+		margin-right: 10px;
+		text-decoration: underline;
+	}
+
+	div.fixed-width{
+		width:116px;
+	}
+
+	div.clear{
+		float: clear;
+	}
+
+	div.margin-top-20{
+		margin-top:20px
+	}
+
+	div.right{
+		float: right;
+	}
+
+	div.top{
+		vertical-align: top;
+		min-width: 0px;
+	}
+
+	div.combobox-container div.combobox-wrap input.combobox-text.slt-fixed-width
+	{
+		width:70px;
+	}
+</style>
+</head>
+
+<body>
+<div class="func-container">
+	 <div id="access">
+	 	<!--<form id="access-setting">-->
+	    	<input type="text"  id="enable_access" name="enable" value="" />
+	    	<!--<input type="text"  id="access_dft" name="access_dft" value="" />
+	    	<p id="note" name="note"></p>
+	    	
+	    </form>-->
+	 </div>
+	
+	 <div id="access_mode_set">
+	 	<form id="access_mode_choose">
+	 		<input type="text"  id="access_mode" name="access_mode" value="" />
+	 	</form>
+	 </div>
+
+	<div id="black_mode">
+		<div id="black_devices_online">
+			<div id="online_black_grid">					
+			</div>		
+		</div>	
+
+		<div id="black_list">
+			<div id="black_grid">					
+			</div>
+		</div>
+	</div>
+
+	<div id="black_list_own_editor">
+		<input id="black_list_device_name" name="name" />
+		<input id="black_list_mac_addr" name="mac" />
+
+		<input id="black_list_schedule" name="schedule">
+
+		<div id="black_list_custom_time" class="">
+			<input id="black_list_schedule_start_hour" name="start_hour"/>
+			<span>:</span>
+			<input id="black_list_schedule_start_min" name="start_min"/>
+
+			<span class="time-seperate">-</span>
+
+			<input id="black_list_schedule_end_hour" name="end_hour"/>
+			<span>:</span>
+			<input id="black_list_schedule_end_min" name="end_min"/>
+
+			<div class="margin-top-20  top">
+				<input id="black_list_day" name="day"  class=""/>
+
+				<div id="black_list_weekday_cnt" class="inline-block">
+					<input id="black_list_mon" name="mon" type="checkbox"/>
+					<input id="black_list_tue" name="tue" type="checkbox"/>
+					<input id="black_list_wed" name="wed" type="checkbox"/>
+					<input id="black_list_thu" name="thu" type="checkbox"/>
+					<input id="black_list_fri" name="fri" type="checkbox"/>
+					<input id="black_list_sat" name="sat" type="checkbox"/>
+					<input id="black_list_sun" name="sun" type="checkbox"/>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div id="white_mode" style="display:none">
+		<div id="white_devices_online">
+			<div id="online_white_grid">					
+			</div>		
+		</div>	
+
+		<div id="white_list">
+			<div id="white_grid">					
+			</div>
+		</div>
+	</div>
+
+	<div id="white_list_own_editor">
+		<input id="white_list_device_name" name="name" />
+		<input id="white_list_mac_addr" name="mac" />
+
+		<input id="white_list_schedule" name="schedule">
+
+		<div id="white_list_custom_time" class="">
+			<input id="white_list_schedule_start_hour" name="start_hour"/>
+			<span>:</span>
+			<input id="white_list_schedule_start_min" name="start_min"/>
+
+			<span class="time-seperate">-</span>
+
+			<input id="white_list_schedule_end_hour" name="end_hour"/>
+			<span>:</span>
+			<input id="white_list_schedule_end_min" name="end_min"/>
+
+			<div class="margin-top-20  top">
+				<input id="white_list_day" name="day"  class=""/>
+
+				<div id="white_list_weekday_cnt" class="inline-block">
+					<input id="white_list_mon" name="mon" type="checkbox"/>
+					<input id="white_list_tue" name="tue" type="checkbox"/>
+					<input id="white_list_wed" name="wed" type="checkbox"/>
+					<input id="white_list_thu" name="thu" type="checkbox"/>
+					<input id="white_list_fri" name="fri" type="checkbox"/>
+					<input id="white_list_sat" name="sat" type="checkbox"/>
+					<input id="white_list_sun" name="sun" type="checkbox"/>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+    <div id="none_alert" class="warning hidden">
+         <h4 class="title">
+            <span class="icon" ></span>
+            <span id="none_alert_text" class="text text1 hidden"></span>
+            <span id="error_repeater_text" class="text text1 hidden"></span>
+            <span id="error_overflow_text" class="text text1 hidden"></span>
+        </h4>
+
+    </div>
+
+	<div id="help_access_control"></div>
+</div>
+
+<script type="text/javascript">
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+	var URL_ACCESS = './data/access.enable.json'; // $.su.url("/admin/access_control?form=enable");   //
+	var URL_ACCESS_MODE = './data/access.set.json'; // $.su.url("/admin/access_control?form=mode");
+	var URL_ONLINE_BLACK = './data/access.blackOnline.json'; // $.su.url("/admin/access_control?form=black_devices");
+	var URL_BLACK_LIST = './data/access.black.json'; // $.su.url("/admin/access_control?form=black_list");
+	var URL_ONLINE_WHITE = './data/access.whiteOnline.json'; // $.su.url("/admin/access_control?form=white_devices");//
+	var URL_WHITE_LIST ='./data/access.white.json'; // $.su.url("/admin/access_control?form=white_list");  
+
+	var host_mac = "";
+
+	var blackMaxRules = 64;
+
+	var dayFlag = true;
+	
+	var selectTmp = [];
+	var intervalFlag = false;
+	
+	$("div.func-container").page({
+		title: $.su.CHAR.ACCESS_CTR.ACCESSCTR,
+		help: ""	//可能是个调用的id 也可能是个url
+	});
+
+	$("div#access").panel({
+		title: $.su.CHAR.ACCESS_CTR.ACCESSCTR,
+		collapsible: false
+	});
+
+
+	var noneChooseMsg = $("div#none_alert").msg({
+	    closeBtn: false,
+	    type: "alert",
+	    cls: "warning",
+	   /* okHandler: function () {
+	        quickSetupWizard.wizard('goTo', 'access_quicksetup_summary');
+
+	        $('div#access_summary_2g_part').height()>$('div#access_summary_5g_part').height()?$('div#access_summary_5g_part').height($('div#access_summary_2g_part').height()):$('div#access_summary_2g_part').height($('div#access_summary_5g_part').height());
+	    }*/
+	});
+
+	$('span#none_alert_text').html($.su.CHAR.ACCESS_CTR.NONE_CHOOSE_TEXT);
+
+	$('span#error_repeater_text').html($.su.CHAR.ERROR["00000111"]);
+	$('span#error_overflow_text').html($.su.CHAR.OPERATION.GRID_MAX_RULES);
+
+	var accessProxy = new $.su.Proxy({
+		url: URL_ACCESS
+	});
+
+	$("input#enable_access").switchbutton({
+		fieldLabel: $.su.CHAR.ACCESS_CTR.ENABLE_ACCESS,
+		proxy: accessProxy,
+		cls:"form-inner",
+		field: {
+			"name": "enable"
+		}
+	}).on("ev_loadData", function(e, data){
+		host_mac = data.host_mac; 
+	});
+
+	$("div#access_mode_set").panel({
+		title: $.su.CHAR.ACCESS_CTR.ACCESS_MODE,
+		collapsible: false
+	});
+
+	$("input#access_mode").radio({
+		fieldLabel:$.su.CHAR.ACCESS_CTR.DEFAULT_ACCESS_MODE,
+		columns:2,
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.BLACK_LIST, inputValue: 'black'},
+			{boxlabel: $.su.CHAR.ACCESS_CTR.WHITE_LIST, inputValue: 'white'}
+		]
+
+	});
+
+
+	// //这里多个表格调用一个proxy，proxy需要单独定义！
+	var accessSetProxy = new $.su.Proxy({
+		url: URL_ACCESS_MODE
+	});
+
+	$("form#access_mode_choose").form({
+		proxy: accessSetProxy,
+		fields: [
+			{name: "access_mode", mapping: "access_mode"}
+		],
+		submitBtn: "default"
+	}).on("ev_loadData", function(e, data){
+		if(data.access_mode == "black"){
+			$("div#black_mode").show();
+			$("div#white_mode").hide();
+			var blackStore = blackGrid.grid("getStore");
+		   	blackStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+		}
+		else {
+			$("div#white_mode").show();
+			$("div#black_mode").hide();
+			var whiteStore = whiteGrid.grid("getStore");
+		   	whiteStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+		}
+	});
+
+	$("div#black_devices_online").panel({
+		title: $.su.CHAR.ACCESS_CTR.DEVICE_ONLINE,
+		collapsible: false
+	});
+
+	var blackOnlineProxy = new $.su.Proxy({
+		url: URL_ONLINE_BLACK
+	});
+
+
+	var onlineBlackGrid = $("div#online_black_grid").grid({
+		store:{
+			proxy: blackOnlineProxy,
+			fields: [
+				{name: "name"},
+		 		{name: "ipaddr"},
+		 		{name: "mac"},
+		 		{name: "host"},
+		 		{name: "conn_type"}
+			],
+			autoLoad: true
+		},
+		columns: [
+			{
+				xtype: "checkcolumn",
+				width: 32
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.NAME, 
+				width:150,
+				dataIndex: "name"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.IP_ADDRESS, 
+				width:120,
+				dataIndex: "ipaddr"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.MAC_ADDRESS, 
+				width:150,
+				dataIndex: "mac"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.CONN_TYPE, 
+				width:100,
+				dataIndex: "conn_type",
+				renderer:function(val)
+				{
+					if(val == "wireless")
+					{
+						return $.su.CHAR.ACCESS_CTR.WIRELESS;
+					}
+					else
+					{
+						return $.su.CHAR.ACCESS_CTR.WIRED;
+					}
+				}
+			},
+			{
+				text: $.su.CHAR.GRID.MODIFY, 
+				dataIndex: "key",
+				renderer: function(data, i){
+					//console.log(arguments)
+					var inHTML = 	"<div class=\"button-container\">";
+						inHTML += 		"<a href=\"javascript:void(0);\" class=\"grid-content-btn btn-access-block btn-block\" data-index=\""+i+"\">";
+						inHTML +=			"<span class=\"icon\"></span>";
+						inHTML += 			"<span class=\"text\">"+$.su.CHAR.ACCESS_CTR.BLOCK+"</span>";
+						inHTML += 		"</a>";
+						inHTML += 	"</div>";
+					return inHTML;
+				}
+			}
+		],
+		operation: [
+					{
+						xtype:"button",
+						text:$.su.CHAR.OPERATION.REFRESH,
+						iconCls:"btn-refresh",
+						handler:function(e){
+							var _this=this;
+							e.stopPropagation();
+							e.preventDefault();
+							$(this).button("disable");
+							onlineBlackGrid.grid("runProgress");
+							onlineBlackGrid.grid("getStore").load({}, function(){
+								onlineBlackGrid.grid("prompt", true);
+								setTimeout(function(){
+									$(_this).button("enable");
+								},500);
+							}, function(){
+								onlineBlackGrid.grid("prompt", false);
+								onlineBlackGrid.grid("removeAllData");
+								setTimeout(function(){
+									$(_this).button("enable");
+								},500);
+							}, function(){
+								onlineBlackGrid.grid("prompt", false);
+								setTimeout(function(){
+									$(_this).button("enable");
+								},500);
+							});
+						},
+					},
+					{
+						xtype: "button", 
+						text: $.su.CHAR.ACCESS_CTR.BLOCK,
+						iconCls: "btn-block",
+						handler: function(e){
+							//加验证
+							//
+							
+							var selected = onlineBlackGrid.grid("getSelected");
+							
+							if(selected.length == 0)
+							{
+								noneChooseMsg.msg('show');
+								$('span#none_alert_text').removeClass('hidden');
+								$('span#error_repeater_text').addClass('hidden');
+								$('span#error_overflow_text').addClass('hidden');
+								return true;
+							}
+							var store = onlineBlackGrid.grid("getStore");
+							var d = [];
+							var temp = {};
+							temp.data = $.su.clone(store.data);	
+							keyProperty = store.keyProperty;
+							for (var i = 0; i < selected.length; i++){
+								var key = selected[i];
+								var dd = store.getData(key);
+								d.push(dd);
+							};
+							//console.log("d is", d)
+							d = $.su.json.toJSONString(d);
+							store.remove(selected, {
+								"operation": "block",
+								"data": d
+							}, function(key, data){
+		   						var blackStore = blackGrid.grid("getStore");
+		   						
+		   						/*blackStore.load({}, function(data, others){
+					   				if(data.length==others.max_rules){
+					   					$("div#black_grid").get(0).maxRulesMsg.msg('show');
+					   					return;
+					   				}
+					   			});*/
+
+					   			if( blackStore.data.length == blackMaxRules ){
+					   				$("div#black_grid").get(0).maxRulesMsg.msg('show');
+					   			}else{
+					   				blackStore.load({},function(){
+										this.data=this.data.reverse();
+									});
+					   			}
+
+		   						var whiteStore = whiteGrid.grid("getStore");
+		   						whiteStore.load({},function(){
+									this.data=this.data.reverse();
+								});
+
+
+		   						onlineBlackGrid.grid("getStore").load();
+							/*function(keyArray, indexArray){
+					   			//删除回调
+					   			var blackStore = blackGrid.grid("getStore");
+					   			//console.log(keyArray, indexArray)
+					   			if (keyArray){
+					   				var ddTemp = {};
+					   				for (var index = 0, len = temp.data.length; index < len; index++){
+					   					var dt = temp.data[index],
+					   						k = dt[keyProperty];
+
+					   					ddTemp[k] = dt;
+					   				};
+					   				//console.log(ddTemp)
+					   				for (var index = 0, len = keyArray.length; index < len; index++){
+					   					blackStore.insertData(0, ddTemp[keyArray[index]]);
+					   				};  				
+
+					   			}else{
+					   				//console.log("index");
+					   				for (var index = 0, len = indexArray.length; index < len; index++){
+					   					//console.log(indexArray[index], temp.data[indexArray[index]]);
+					   					blackStore.insertData(0, temp.data[indexArray[index]]);
+					   				};
+					   			}*/
+	   							}, function(errorcode){
+
+									noneChooseMsg.msg('show');
+									$('span#none_alert_text').addClass('hidden');
+
+	   								if(errorcode==20002){
+										$('span#error_repeater_text').removeClass('hidden');
+										$('span#error_overflow_text').addClass('hidden');
+	   								}else if(errorcode==20003){
+										$('span#error_repeater_text').addClass('hidden');
+										$('span#error_overflow_text').removeClass('hidden');
+	   								}
+	   							})
+							}
+					}
+		]
+	}).on("ev_load", function(e, arr){
+		var me = $(this);
+		$(arr).each(function(index,data){
+			if(data.host == "HOST")
+			{
+				me.grid("disableRow", index);
+			}
+		});
+		if(intervalFlag){
+			for(var i=0;i<selectTmp.length;i++){
+				$("#online_black_grid [value^='key-']:eq("+selectTmp[i]+")").closest("label").click();
+			}
+			intervalFlag=false;
+		}
+	});
+
+	onlineBlackGrid.delegate("a.btn-access-block", "click", function(){
+	   //$.post("./data/access.inline.json", {action: "block"});
+	   //blackGrid
+	   //加验证
+	   //console.log(22);
+		var index = $(this).attr("data-index"),			//获得数据对应的index
+	   		store = onlineBlackGrid.grid("getStore"),	//获取store
+	   		keyProperty = store.keyProperty;			//key的属性名
+
+	   	var temp = {};									//数据备份，因为返回数据删除确认后，本地store的这部分数据已经被删除，所以先备份，用在下面表格
+	   	temp.data = $.su.clone(store.data);		//这里是所有data
+	   	var tempArr = [];
+	   	var d = temp.data[index];				//当前操作的数据
+	   		key = d[keyProperty];	//当前操作的key值
+	   		tempArr.push(d);			
+	   		d = $.su.json.toJSONString(tempArr);		//数据格式化
+	   	
+	   	if($(onlineBlackGrid).find(".grid-content-tr-" + key).hasClass("disabled"))
+	   	{
+	   		return;
+	   	}
+	   	//console.log(key);
+	   	if (!key){
+	   		return;
+	   	}else{
+	   		store.remove(key, {
+	   			"operation": "block",
+	   			"data": d 					//添加post过去时的data值，su中tostring方法
+	   		}, function(key, data){
+		   			var blackStore = blackGrid.grid("getStore");
+
+
+		   			if( blackStore.data.length == blackMaxRules ){
+		   				$("div#black_grid").get(0).maxRulesMsg.msg('show');
+		   			}else{
+		   				blackStore.load({},function(){
+							this.data=this.data.reverse();
+						});
+		   			}
+
+		   			/*blackStore.load({}, function(data, others){
+		   				if(data.length==others.max_rules){
+		   					
+		   				}
+		   			});*/
+
+		   			onlineBlackGrid.grid("getStore").load();
+	   		
+	   		}, function(errorcode){
+
+				noneChooseMsg.msg('show');
+				$('span#none_alert_text').addClass('hidden');
+
+					if(errorcode=='20002'){
+						//console.log(errorcode)
+					$('span#error_repeater_text').removeClass('hidden');
+					$('span#error_overflow_text').addClass('hidden');
+					}else if(errorcode=='20003'){
+					$('span#error_repeater_text').addClass('hidden');
+					$('span#error_overflow_text').removeClass('hidden');
+					}
+			})
+	   	};
+	   	delete temp;
+	});
+	
+	
+	$("div#black_list").panel({
+		title: $.su.CHAR.ACCESS_CTR.DEVICE_IN_BLACK,
+		collapsible: false
+	});
+
+	var blackListProxy = new $.su.Proxy({
+		url: URL_BLACK_LIST
+	});
+
+	var storeBlack = new $.su.Store({
+		proxy: blackListProxy,
+		fields: [
+			{name: "name"},
+			{name: "mac"},
+			{name: "schedule"},
+			{name: "day"},
+			{name: "start_hour"},
+			{name: "start_min"},
+			{name: "end_hour"},
+			{name: "end_min"},
+			{name: "mon"},
+			{name: "tue"},
+			{name: "wed"},
+			{name: "thu"},
+			{name: "fri"},
+			{name: "sat"},
+			{name: "sun"}
+		],
+		autoLoad: true
+	});
+
+	$(blackListProxy).on('ev_read', function(event, data, others){
+		blackMaxRules = others.max_rules;
+	});
+
+
+	//var blackTimeCnt = $("#black_list_custom_time");
+
+	$('input#black_list_device_name').textbox({
+		fieldLabel:$.su.CHAR.ACCESS_CTR.NAME,
+		labelCls: 's',
+		vtype:"string_visible_allow_blank",
+		maxLength:32,
+		allowBlank:false,
+		id: "black_list_device_name"
+	});
+
+	$('input#black_list_mac_addr').textbox({
+		fieldLabel:$.su.CHAR.ACCESS_CTR.MAC_ADDRESS,
+		labelCls: 's',
+		vtype:"mac",
+		allowBlank:false
+	});
+
+	$("input#black_list_schedule").radio({
+		fieldLabel:$.su.CHAR.ACCESS_CTR.ACCESS_SCHEDULE,
+		columns:1,
+		labelCls: 's',
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.DENY_ANY_TIME, inputValue: 'any'},
+			{boxlabel: $.su.CHAR.ACCESS_CTR.DENY_SOME_TIME, inputValue: 'some'}
+		]
+	}).on("ev_change", function(event, oldValue, newValue){
+		if(newValue=='any'){
+			//$(blackTimeCnt).addClass("hidden");
+			setTimeout(function(){
+				$("input#black_list_schedule_start_hour").combobox("disable");
+				$("input#black_list_schedule_start_min").combobox("disable");
+				$("input#black_list_schedule_end_hour").combobox("disable");
+				$("input#black_list_schedule_end_min").combobox("disable");
+				$("input#black_list_day").combobox("disable");
+				$("input#black_list_mon").checkbox("disable");
+				$("input#black_list_tue").checkbox("disable");
+				$("input#black_list_wed").checkbox("disable");
+				$("input#black_list_thu").checkbox("disable");
+				$("input#black_list_fri").checkbox("disable");
+				$("input#black_list_sat").checkbox("disable");
+				$("input#black_list_sun").checkbox("disable");
+			},30);
+		}else{
+			//$(blackTimeCnt).removeClass("hidden");
+			setTimeout(function(){
+				$("input#black_list_schedule_start_hour").combobox("enable");
+				$("input#black_list_schedule_start_min").combobox("enable");
+				$("input#black_list_schedule_end_hour").combobox("enable");
+				$("input#black_list_schedule_end_min").combobox("enable");
+				$("input#black_list_day").combobox("enable");
+				$("input#black_list_mon").checkbox("enable");
+				$("input#black_list_tue").checkbox("enable");
+				$("input#black_list_wed").checkbox("enable");
+				$("input#black_list_thu").checkbox("enable");
+				$("input#black_list_fri").checkbox("enable");
+				$("input#black_list_sat").checkbox("enable");
+				$("input#black_list_sun").checkbox("enable");
+			},30);
+		}
+		$("input#black_list_schedule").closest(".radio-group-container").removeClass("error");
+	});
+
+	
+	function checkSame(){
+		var editor=$($("#"+arguments[0]+"_grid").grid("getEditor"));
+		var startHour=parseInt(editor.find("input[name=start_hour]").combobox("getValue")[0]),
+			startMin=parseInt(editor.find("input[name=start_min]").combobox("getValue")[0]),
+			endHour=parseInt(editor.find("input[name=end_hour]").combobox("getValue")[0]),
+			endMin=parseInt(editor.find("input[name=end_min]").combobox("getValue")[0]);
+			editor.find(".btn-submit").css("background","#4acbd6");
+			editor.find(".btn-submit").button("enable");
+		if((startHour==endHour)&&(startMin==endMin)){
+			editor.find(".btn-submit").css("background","#b2b2b2");
+			editor.find(".btn-submit").button("disable");
+			$("form#white_list_own_editor").find(".btn-submit").button("disable")
+			editor.find("input[name=start_hour]").combobox('setError',$.su.CHAR.ERROR["00000114"]);
+			editor.find("input[name=start_min]").combobox('setError');
+			editor.find("input[name=end_hour]").combobox('setError');
+			editor.find("input[name=end_min]").combobox('setError');
+		}
+	}
+	
+	$('input#black_list_schedule_start_hour').combobox({
+		fieldLabel: $.su.CHAR.ACCESS_CTR.TIME_LBL,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		labelCls: 's',
+		errorTipsCls:"centerError",
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.HOUR0, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR1, value: '1'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR2, value: '2'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR3, value: '3'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR4, value: '4'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR5, value: '5'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR6, value: '6'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR7, value: '7'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR8, value: '8'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR9, value: '9'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR10, value: '10'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR11, value: '11'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR12, value: '12'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR13, value: '13'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR14, value: '14'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR15, value: '15'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR16, value: '16'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR17, value: '17'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR18, value: '18'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR19, value: '19'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR20, value: '20'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR21, value: '21'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR22, value: '22'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR23, value: '23'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame("black");
+	});
+
+	$('input#black_list_schedule_start_min').combobox({
+		fieldLabel: null,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.MIN0, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN1, value: '1'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN2, value: '2'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN3, value: '3'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN4, value: '4'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN5, value: '5'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN6, value: '6'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN7, value: '7'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN8, value: '8'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN9, value: '9'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN10, value: '10'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN11, value: '11'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN12, value: '12'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN13, value: '13'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN14, value: '14'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN15, value: '15'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN16, value: '16'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN17, value: '17'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN18, value: '18'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN19, value: '19'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN20, value: '20'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN21, value: '21'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN22, value: '22'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN23, value: '23'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN24, value: '24'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN25, value: '25'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN26, value: '26'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN27, value: '27'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN28, value: '28'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN29, value: '29'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN30, value: '30'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN31, value: '31'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN32, value: '32'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN33, value: '33'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN34, value: '34'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN35, value: '35'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN36, value: '36'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN37, value: '37'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN38, value: '38'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN39, value: '39'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN40, value: '40'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN41, value: '41'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN42, value: '42'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN43, value: '43'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN44, value: '44'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN45, value: '45'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN46, value: '46'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN47, value: '47'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN48, value: '48'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN49, value: '49'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN50, value: '50'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN51, value: '51'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN52, value: '52'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN53, value: '53'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN54, value: '54'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN55, value: '55'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN56, value: '56'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN57, value: '57'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN58, value: '58'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN59, value: '59'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame("black");
+	});
+
+	$('input#black_list_schedule_end_hour').combobox({
+		fieldLabel: null,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.HOUR0, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR1, value: '1'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR2, value: '2'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR3, value: '3'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR4, value: '4'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR5, value: '5'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR6, value: '6'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR7, value: '7'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR8, value: '8'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR9, value: '9'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR10, value: '10'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR11, value: '11'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR12, value: '12'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR13, value: '13'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR14, value: '14'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR15, value: '15'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR16, value: '16'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR17, value: '17'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR18, value: '18'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR19, value: '19'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR20, value: '20'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR21, value: '21'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR22, value: '22'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR23, value: '23'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame("black");
+	});
+
+	$('input#black_list_schedule_end_min').combobox({
+		fieldLabel: null,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.MIN0, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN1, value: '1'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN2, value: '2'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN3, value: '3'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN4, value: '4'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN5, value: '5'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN6, value: '6'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN7, value: '7'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN8, value: '8'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN9, value: '9'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN10, value: '10'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN11, value: '11'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN12, value: '12'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN13, value: '13'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN14, value: '14'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN15, value: '15'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN16, value: '16'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN17, value: '17'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN18, value: '18'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN19, value: '19'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN20, value: '20'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN21, value: '21'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN22, value: '22'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN23, value: '23'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN24, value: '24'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN25, value: '25'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN26, value: '26'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN27, value: '27'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN28, value: '28'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN29, value: '29'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN30, value: '30'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN31, value: '31'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN32, value: '32'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN33, value: '33'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN34, value: '34'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN35, value: '35'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN36, value: '36'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN37, value: '37'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN38, value: '38'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN39, value: '39'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN40, value: '40'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN41, value: '41'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN42, value: '42'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN43, value: '43'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN44, value: '44'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN45, value: '45'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN46, value: '46'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN47, value: '47'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN48, value: '48'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN49, value: '49'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN50, value: '50'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN51, value: '51'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN52, value: '52'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN53, value: '53'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN54, value: '54'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN55, value: '55'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN56, value: '56'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN57, value: '57'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN58, value: '58'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN59, value: '59'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame("black");
+	});
+
+
+	$("input#black_list_day").combobox({
+		fieldLabel: $.su.CHAR.ACCESS_CTR.DAY_LBL,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		labelCls: 's',
+		// inputCls: 's',
+		inputCls:"slt-fixed-width",
+		cls: 'inline-block top',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.EVERYDAY, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.WEEKDAY, value:'1'},
+			{name: $.su.CHAR.ACCESS_CTR.WEEKEND, value:'2'},
+			{name: $.su.CHAR.ACCESS_CTR.CUSTOM, value:'3'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		if(newValue == 0 && dayFlag)
+		{
+			$("input#black_list_mon").checkbox("setValue", "on");
+			$("input#black_list_tue").checkbox("setValue", "on");
+			$("input#black_list_wed").checkbox("setValue", "on");
+			$("input#black_list_thu").checkbox("setValue", "on");
+			$("input#black_list_fri").checkbox("setValue", "on");
+			$("input#black_list_sat").checkbox("setValue", "on");
+			$("input#black_list_sun").checkbox("setValue", "on");
+		}
+		if(newValue == 1 && dayFlag)
+		{
+			$("input#black_list_mon").checkbox("setValue", "on");
+			$("input#black_list_tue").checkbox("setValue", "on");
+			$("input#black_list_wed").checkbox("setValue", "on");
+			$("input#black_list_thu").checkbox("setValue", "on");
+			$("input#black_list_fri").checkbox("setValue", "on");
+			$("input#black_list_sat").checkbox("setValue", "off");
+			$("input#black_list_sun").checkbox("setValue", "off");
+		}
+		if(newValue == 2 && dayFlag)
+		{
+			$("input#black_list_mon").checkbox("setValue", "off");
+			$("input#black_list_tue").checkbox("setValue", "off");
+			$("input#black_list_wed").checkbox("setValue", "off");
+			$("input#black_list_thu").checkbox("setValue", "off");
+			$("input#black_list_fri").checkbox("setValue", "off");
+			$("input#black_list_sat").checkbox("setValue", "on");
+			$("input#black_list_sun").checkbox("setValue", "on");
+		}
+		if(newValue == 3 && dayFlag)
+		{
+			$("input#black_list_mon").checkbox("setValue", "off");
+			$("input#black_list_tue").checkbox("setValue", "off");
+			$("input#black_list_wed").checkbox("setValue", "off");
+			$("input#black_list_thu").checkbox("setValue", "off");
+			$("input#black_list_fri").checkbox("setValue", "off");
+			$("input#black_list_sat").checkbox("setValue", "off");
+			$("input#black_list_sun").checkbox("setValue", "off");
+		}
+	});
+
+	$("input#black_list_mon").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.MONDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#black_list_own_editor"))},10)
+	});
+
+	$("input#black_list_tue").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.TUESDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#black_list_own_editor"))},10)
+	});
+
+	$("input#black_list_wed").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.WEDNESDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#black_list_own_editor"))},10)
+	});
+
+	$("input#black_list_thu").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.THURSDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#black_list_own_editor"))},10)
+	});
+
+	$("input#black_list_fri").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.FRIDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#black_list_own_editor"))},10)
+	});
+
+	$("input#black_list_sat").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.SATURDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#black_list_own_editor"))},10)
+	});
+
+	$("input#black_list_sun").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.SUNDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#black_list_own_editor"))},10)
+	});
+
+
+	var blackGrid = $("div#black_grid").grid({
+		store:storeBlack,
+		paging: {
+		},
+		editor: {
+			content:'#black_list_own_editor',
+			fields: [
+				{name: "name"},
+				{name: "mac"},
+				{name: "schedule"},
+				{name: "day"},
+				{name: "start_hour"},
+				{name: "start_min"},
+				{name: "end_hour"},
+				{name: "end_min"},
+				{name: "mon"},
+				{name: "tue"},
+				{name: "wed"},
+				{name: "thu"},
+				{name: "fri"},
+				{name: "sat"},
+				{name: "sun"}
+			],
+			validator:function(){
+				var store = blackGrid.grid("getStore");
+					keyProperty = store.keyProperty;
+					grid_array = store.data;
+				var editor = $(blackGrid.grid("getEditor"));
+				var edit_mac = editor.find("input[name=mac]").val();
+
+				for(var i=0; i<host_mac.length; i++){
+					if(host_mac[i].toUpperCase() == edit_mac.toUpperCase())
+					{
+						editor.find("input[name=mac]").textbox("setError");
+						$(blackGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000064"]);
+						return false;
+					}					
+				}
+
+				var len = grid_array.length;
+
+				if ($.isArray(grid_array) && len > 0) {
+					for(var k = 0; k < len; k++){
+						
+						if(editor[0].editing)
+						{
+							//console.log(grid_array[k].key, editor.editingId);
+							if(grid_array[k].key == editor[0].editingId)
+						    {
+								continue;
+							}
+						}
+						var data = grid_array[k];
+						if (data["mac"].toUpperCase() == edit_mac.toUpperCase()) {
+							editor.find("input[name=mac]").textbox("setError");
+							$(blackGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000051"]);
+							
+							return false;
+						}
+					}
+				}
+				if(editor.find("input[name=schedule]").radio("getValue")==""){
+					editor.addClass("error");
+					editor.prev().addClass("error");
+					editor.find("input[name=schedule]").radio("setError");
+					$(blackGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000110"]);
+					setTimeout(function(){
+						editor.removeClass("error");
+						editor.prev().removeClass("error"); 
+					},2000)
+					return false;
+				}else if(editor.find("input[name=schedule]").radio("getValue")=="some"){
+				
+					var startHour=editor.find("input[name=start_hour]").combobox("getValue"),
+						startMin=editor.find("input[name=start_min]").combobox("getValue"),
+						endHour=editor.find("input[name=end_hour]").combobox("getValue"),
+						endMin=editor.find("input[name=end_min]").combobox("getValue");
+					var mon=editor.find("input[name=mon]").checkbox("getValue"),
+						tue=editor.find("input[name=tue]").checkbox("getValue"),
+						wed=editor.find("input[name=wed]").checkbox("getValue"),
+						thu=editor.find("input[name=thu]").checkbox("getValue"),
+						fri=editor.find("input[name=fri]").checkbox("getValue"),
+						sat=editor.find("input[name=sat]").checkbox("getValue"),
+						sun=editor.find("input[name=sun]").checkbox("getValue");
+					if(startHour==""||startMin==""||endHour==""||endMin==""){
+						if(startHour=="") editor.find("input[name=start_hour]").combobox("setError");
+						else if(startMin=="") editor.find("input[name=start_min]").combobox("setError");
+						else if(endHour=="") editor.find("input[name=end_hour]").combobox("setError");
+						else if(endMin=="") editor.find("input[name=end_min]").combobox("setError");
+						
+						editor.addClass("error");
+						editor.prev().addClass("error");
+						$(blackGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000113"]);
+						setTimeout(function(){
+							editor.removeClass("error");
+							editor.prev().removeClass("error"); 
+						},2000);
+						return false;
+					/*}else if(startHour[0]*1>endHour[0]*1){
+						editor.find("input[name=start_hour]").combobox("setError",$.su.CHAR.ERROR["00000112"]);
+						return false;
+					}else if(startHour[0]*1==endHour[0]*1 && startMin[0]*1>=endMin[0]*1){
+						editor.find("input[name=start_min]").combobox("setError",$.su.CHAR.ERROR["00000112"]);
+						return false;*/
+					}else if(startHour[0]==endHour[0]&&startMin[0]==endMin[0]){
+						editor.find("input[name=start_hour]").combobox("setError",$.su.CHAR.ERROR['00000114']);
+						editor.find("input[name=start_min]").combobox("setError");
+						editor.find("input[name=end_hour]").combobox("setError");
+						editor.find("input[name=end_min]").combobox("setError");
+						return false;
+					}
+					
+					if(mon.length==0&&tue.length==0&&wed.length==0&&thu.length==0&&fri.length==0&&sat.length==0&&sun.length==0){
+						editor.find("input[name=day]").combobox("setError");
+						
+						editor.addClass("error");
+						editor.prev().addClass("error");
+						$(blackGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000113"]);
+						setTimeout(function(){
+							editor.removeClass("error");
+							editor.prev().removeClass("error"); 
+						},2000);
+						
+						return false;
+					}
+				}
+				return true;
+			}
+		},
+		columns: [
+			{
+				xtype: "checkcolumn",
+				width: 32
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.NAME, 
+				width:250,
+				dataIndex: "name"//,
+				// editor: {
+				// 	xtype: "textbox",
+				// 	allowBlank: true,
+				// 	vtype:"string_visible_allow_blank",
+				// 	maxLength:32
+				// }
+			},
+	
+			{
+				text: $.su.CHAR.ACCESS_CTR.MAC_ADDRESS, 
+				width:250,
+				dataIndex: "mac"//,
+				// editor: {
+				// 	xtype: "textbox",
+				// 	allowBlank: false,
+				// 	vtype:"mac"
+				// }
+			},
+			{
+				xtype: "settings"
+			}
+		],
+
+		operation: "prompt|add|delete"
+	}).on({
+		"ev_update":function(){
+			var blackStore = onlineBlackGrid.grid("getStore");
+		   	blackStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+
+		},
+		"ev_remove":function(){
+			var blackStore = onlineBlackGrid.grid("getStore");
+		   	blackStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+			blackGrid.find('.checked').removeClass("checked");
+			blackGrid.find('.selected').removeClass("selected");
+		}
+	});
+	blackGrid.find("a.btn-add").bind("click", function(e){
+		if($("#black_grid").get(0).maxRules <= $("#black_grid").grid("getStore").data.length) return;
+		setTimeout(function(){
+			$(blackGrid.grid("getEditor")).find("input[name=schedule]").radio("setValue","any");
+			blackGrid.find("input[name=mon]").checkbox("setValue","off");
+			blackGrid.find("input[name=tue]").checkbox("setValue","off");
+			blackGrid.find("input[name=wed]").checkbox("setValue","off");
+			blackGrid.find("input[name=thu]").checkbox("setValue","off");
+			blackGrid.find("input[name=fri]").checkbox("setValue","off");
+			blackGrid.find("input[name=sat]").checkbox("setValue","off");
+			blackGrid.find("input[name=sun]").checkbox("setValue","off");
+			setTimeout(function(){
+				blackGrid.find("input[name=day]").combobox("setValue","");
+			},12);
+		},20);
+	});
+
+
+	$("div#white_devices_online").panel({
+		title: $.su.CHAR.ACCESS_CTR.DEVICE_ONLINE,
+		collapsible: false
+	});
+
+	var whiteOnlineProxy = new $.su.Proxy({
+		url: URL_ONLINE_WHITE
+	});
+
+
+	var onlineWhiteGrid = $("div#online_white_grid").grid({
+		store:{
+			proxy: whiteOnlineProxy,
+			fields: [
+			{name: "name"},
+	 		{name: "ipaddr"},
+	 		{name: "mac"},
+	 		{name: "host"},
+	 		{name: "conn_type"}
+			],
+			autoLoad: true
+		},
+		columns: [
+			// {
+			// 	xtype: "checkcolumn",
+			// 	width: 32
+			// },
+			{
+				text: $.su.CHAR.ACCESS_CTR.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.NAME, 
+				width:120,
+				dataIndex: "name"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.IP_ADDRESS, 
+				width:120,
+				dataIndex: "ipaddr"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.MAC_ADDRESS, 
+				width:150,
+				dataIndex: "mac"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.CONN_TYPE, 
+				dataIndex: "conn_type",
+				renderer:function(val)
+				{
+					if(val == "wireless")
+					{
+						return $.su.CHAR.ACCESS_CTR.WIRELESS;
+					}
+					else
+					{
+						return $.su.CHAR.ACCESS_CTR.WIRED;
+					}
+				}
+			}
+			
+		],
+		operation: [
+					{
+						xtype:"button",
+						text:$.su.CHAR.OPERATION.REFRESH,
+						iconCls:"btn-refresh",
+						handler:function(e){
+							var _this=this;
+							e.stopPropagation();
+							e.preventDefault();
+							$(this).button("disable");
+							onlineWhiteGrid.grid("runProgress");
+							onlineWhiteGrid.grid("getStore").load({}, function(){
+								onlineWhiteGrid.grid("prompt", true);
+								setTimeout(function(){
+									$(_this).button("enable");
+								},500);
+							}, function(){
+								onlineWhiteGrid.grid("prompt", false);
+								onlineWhiteGrid.grid("removeAllData");
+								setTimeout(function(){
+									$(_this).button("enable");
+								},500);
+							}, function(){
+								onlineWhiteGrid.grid("prompt", false);
+								setTimeout(function(){
+									$(_this).button("enable");
+								},500);
+							});
+						},
+					}]
+		
+	});
+	
+	
+	$("div#white_list").panel({
+		title: $.su.CHAR.ACCESS_CTR.DEVICE_IN_WHITE,
+		collapsible: false
+	});
+
+	var whiteListProxy = new $.su.Proxy({
+		url: URL_WHITE_LIST
+	});
+
+
+	//var whiteTimeCnt = $("#white_list_custom_time");
+	//var blackTimeCnt = $("#black_list_custom_time");
+
+	var storeWhite = new $.su.Store({
+		proxy: whiteListProxy,
+		fields: [
+			{name: "name"},
+			{name: "host"},
+			{name: "mac"},
+			{name: "schedule"},
+			{name: "day"},
+			{name: "start_hour"},
+			{name: "start_min"},
+			{name: "end_hour"},
+			{name: "end_min"},
+			{name: "mon"},
+			{name: "tue"},
+			{name: "wed"},
+			{name: "thu"},
+			{name: "fri"},
+			{name: "sat"},
+			{name: "sun"}
+		],
+		autoLoad: true
+	});
+
+
+	$('input#white_list_device_name').textbox({
+		fieldLabel:$.su.CHAR.ACCESS_CTR.NAME,
+		labelCls: 's',
+		vtype:"string_visible_allow_blank",
+		maxLength:32,
+		allowBlank:false,
+		id: "white_list_device_name"
+	});
+
+	$('input#white_list_mac_addr').textbox({
+		fieldLabel:$.su.CHAR.ACCESS_CTR.MAC_ADDRESS,
+		labelCls: 's',
+		vtype:"mac",
+		allowBlank:false
+	});
+
+	$("input#white_list_schedule").radio({
+		fieldLabel:$.su.CHAR.ACCESS_CTR.ACCESS_SCHEDULE,
+		columns:1,
+		labelCls: 's',
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.ACCESS_ANY_TIME, inputValue: 'any'},
+			{boxlabel: $.su.CHAR.ACCESS_CTR.ACCESS_SOME_TIME, inputValue: 'some'}
+		]
+	}).on("ev_change", function(event, oldValue, newValue){
+		if(newValue=='any'){
+			// console.log("hide");
+			//$(whiteTimeCnt).addClass("hidden");
+			setTimeout(function(){
+				$("input#white_list_schedule_start_hour").combobox("disable");
+				$("input#white_list_schedule_start_min").combobox("disable");
+				$("input#white_list_schedule_end_hour").combobox("disable");
+				$("input#white_list_schedule_end_min").combobox("disable");
+				$("input#white_list_day").combobox("disable");
+				$("input#white_list_mon").checkbox("disable");
+				$("input#white_list_tue").checkbox("disable");
+				$("input#white_list_wed").checkbox("disable");
+				$("input#white_list_thu").checkbox("disable");
+				$("input#white_list_fri").checkbox("disable");
+				$("input#white_list_sat").checkbox("disable");
+				$("input#white_list_sun").checkbox("disable");
+			},30);
+		}else{
+			//$(whiteTimeCnt).removeClass("hidden");
+			setTimeout(function(){
+				$("input#white_list_schedule_start_hour").combobox("enable");
+				$("input#white_list_schedule_start_min").combobox("enable");
+				$("input#white_list_schedule_end_hour").combobox("enable");
+				$("input#white_list_schedule_end_min").combobox("enable");
+				$("input#white_list_day").combobox("enable");
+				$("input#white_list_mon").checkbox("enable");
+				$("input#white_list_tue").checkbox("enable");
+				$("input#white_list_wed").checkbox("enable");
+				$("input#white_list_thu").checkbox("enable");
+				$("input#white_list_fri").checkbox("enable");
+				$("input#white_list_sat").checkbox("enable");
+				$("input#white_list_sun").checkbox("enable");
+			},30);
+		}
+		$("input#white_list_schedule").closest(".radio-group-container").removeClass("error");
+	});
+
+	$('input#white_list_schedule_start_hour').combobox({
+		fieldLabel: $.su.CHAR.ACCESS_CTR.TIME_LBL,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		labelCls: 's',
+		inputCls: 's',
+		errorTipsCls:"centerError",
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.HOUR0, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR1, value: '1'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR2, value: '2'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR3, value: '3'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR4, value: '4'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR5, value: '5'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR6, value: '6'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR7, value: '7'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR8, value: '8'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR9, value: '9'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR10, value: '10'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR11, value: '11'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR12, value: '12'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR13, value: '13'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR14, value: '14'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR15, value: '15'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR16, value: '16'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR17, value: '17'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR18, value: '18'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR19, value: '19'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR20, value: '20'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR21, value: '21'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR22, value: '22'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR23, value: '23'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame("white");
+	});
+
+	$('input#white_list_schedule_start_min').combobox({
+		fieldLabel: null,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.MIN0, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN1, value: '1'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN2, value: '2'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN3, value: '3'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN4, value: '4'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN5, value: '5'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN6, value: '6'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN7, value: '7'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN8, value: '8'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN9, value: '9'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN10, value: '10'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN11, value: '11'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN12, value: '12'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN13, value: '13'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN14, value: '14'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN15, value: '15'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN16, value: '16'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN17, value: '17'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN18, value: '18'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN19, value: '19'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN20, value: '20'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN21, value: '21'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN22, value: '22'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN23, value: '23'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN24, value: '24'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN25, value: '25'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN26, value: '26'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN27, value: '27'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN28, value: '28'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN29, value: '29'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN30, value: '30'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN31, value: '31'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN32, value: '32'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN33, value: '33'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN34, value: '34'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN35, value: '35'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN36, value: '36'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN37, value: '37'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN38, value: '38'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN39, value: '39'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN40, value: '40'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN41, value: '41'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN42, value: '42'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN43, value: '43'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN44, value: '44'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN45, value: '45'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN46, value: '46'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN47, value: '47'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN48, value: '48'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN49, value: '49'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN50, value: '50'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN51, value: '51'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN52, value: '52'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN53, value: '53'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN54, value: '54'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN55, value: '55'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN56, value: '56'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN57, value: '57'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN58, value: '58'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN59, value: '59'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame("white");
+	});
+
+	$('input#white_list_schedule_end_hour').combobox({
+		fieldLabel: null,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.HOUR0, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR1, value: '1'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR2, value: '2'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR3, value: '3'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR4, value: '4'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR5, value: '5'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR6, value: '6'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR7, value: '7'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR8, value: '8'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR9, value: '9'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR10, value: '10'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR11, value: '11'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR12, value: '12'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR13, value: '13'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR14, value: '14'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR15, value: '15'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR16, value: '16'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR17, value: '17'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR18, value: '18'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR19, value: '19'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR20, value: '20'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR21, value: '21'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR22, value: '22'},
+			{name: $.su.CHAR.ACCESS_CTR.HOUR23, value: '23'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame("white");
+	});
+
+	$('input#white_list_schedule_end_min').combobox({
+		fieldLabel: null,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.MIN0, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN1, value: '1'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN2, value: '2'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN3, value: '3'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN4, value: '4'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN5, value: '5'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN6, value: '6'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN7, value: '7'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN8, value: '8'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN9, value: '9'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN10, value: '10'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN11, value: '11'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN12, value: '12'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN13, value: '13'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN14, value: '14'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN15, value: '15'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN16, value: '16'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN17, value: '17'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN18, value: '18'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN19, value: '19'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN20, value: '20'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN21, value: '21'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN22, value: '22'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN23, value: '23'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN24, value: '24'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN25, value: '25'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN26, value: '26'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN27, value: '27'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN28, value: '28'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN29, value: '29'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN30, value: '30'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN31, value: '31'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN32, value: '32'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN33, value: '33'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN34, value: '34'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN35, value: '35'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN36, value: '36'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN37, value: '37'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN38, value: '38'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN39, value: '39'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN40, value: '40'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN41, value: '41'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN42, value: '42'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN43, value: '43'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN44, value: '44'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN45, value: '45'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN46, value: '46'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN47, value: '47'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN48, value: '48'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN49, value: '49'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN50, value: '50'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN51, value: '51'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN52, value: '52'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN53, value: '53'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN54, value: '54'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN55, value: '55'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN56, value: '56'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN57, value: '57'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN58, value: '58'},
+			{name: $.su.CHAR.ACCESS_CTR.MIN59, value: '59'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame("white");
+	});
+
+
+	$("input#white_list_day").combobox({
+		fieldLabel: $.su.CHAR.ACCESS_CTR.DAY_LBL,
+		noneSelectedRemind:true,
+		noneSelectedText:$.su.CHAR.ACCESS_CTR.NOSELECTEDTEXT||$.su.CHAR.OPERATION.NOSELECTEDTEXT,
+		labelCls: 's',
+		// inputCls: 's',
+		inputCls:"slt-fixed-width",
+		cls: 'inline-block top',
+		items:[
+			{name: $.su.CHAR.ACCESS_CTR.EVERYDAY, value:'0'},
+			{name: $.su.CHAR.ACCESS_CTR.WEEKDAY, value:'1'},
+			{name: $.su.CHAR.ACCESS_CTR.WEEKEND, value:'2'},
+			{name: $.su.CHAR.ACCESS_CTR.CUSTOM, value:'3'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		if(newValue == 0 && dayFlag)
+		{
+			$("input#white_list_mon").checkbox("setValue", "on");
+			$("input#white_list_tue").checkbox("setValue", "on");
+			$("input#white_list_wed").checkbox("setValue", "on");
+			$("input#white_list_thu").checkbox("setValue", "on");
+			$("input#white_list_fri").checkbox("setValue", "on");
+			$("input#white_list_sat").checkbox("setValue", "on");
+			$("input#white_list_sun").checkbox("setValue", "on");
+		}
+		if(newValue == 1 && dayFlag)
+		{
+			$("input#white_list_mon").checkbox("setValue", "on");
+			$("input#white_list_tue").checkbox("setValue", "on");
+			$("input#white_list_wed").checkbox("setValue", "on");
+			$("input#white_list_thu").checkbox("setValue", "on");
+			$("input#white_list_fri").checkbox("setValue", "on");
+			$("input#white_list_sat").checkbox("setValue", "off");
+			$("input#white_list_sun").checkbox("setValue", "off");
+		}
+		if(newValue == 2 && dayFlag)
+		{
+			$("input#white_list_mon").checkbox("setValue", "off");
+			$("input#white_list_tue").checkbox("setValue", "off");
+			$("input#white_list_wed").checkbox("setValue", "off");
+			$("input#white_list_thu").checkbox("setValue", "off");
+			$("input#white_list_fri").checkbox("setValue", "off");
+			$("input#white_list_sat").checkbox("setValue", "on");
+			$("input#white_list_sun").checkbox("setValue", "on");
+		}
+		if(newValue == 3 && dayFlag)
+		{
+			$("input#white_list_mon").checkbox("setValue", "off");
+			$("input#white_list_tue").checkbox("setValue", "off");
+			$("input#white_list_wed").checkbox("setValue", "off");
+			$("input#white_list_thu").checkbox("setValue", "off");
+			$("input#white_list_fri").checkbox("setValue", "off");
+			$("input#white_list_sat").checkbox("setValue", "off");
+			$("input#white_list_sun").checkbox("setValue", "off");
+		}
+	});
+
+	$("input#white_list_mon").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.MONDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#white_list_own_editor"))},10)
+	});
+
+	$("input#white_list_tue").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.TUESDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#white_list_own_editor"))},10)
+	});
+
+	$("input#white_list_wed").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.WEDNESDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#white_list_own_editor"))},10)
+	});
+
+	$("input#white_list_thu").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.THURSDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#white_list_own_editor"))},10)
+	});
+
+	$("input#white_list_fri").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.FRIDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#white_list_own_editor"))},10)
+	});
+
+	$("input#white_list_sat").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.SATURDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#white_list_own_editor"))},10)
+	});
+
+	$("input#white_list_sun").checkbox({
+		fieldLabel: null,
+		labelCls: 'm',
+		cls: "inline-block fixed-width",
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.SUNDAY, inputValue: "on", uncheckedValue: "off", checked:false}
+		]
+	}).on("ev_change",  function(event, oldValue, newValue){
+		setTimeout(function(){checkDays($("#white_list_own_editor"))},10)
+	});
+
+
+	var whiteGrid = $("div#white_grid").grid({
+		store:storeWhite,
+		editor: {
+			content:"#white_list_own_editor",
+			fields: [
+				{name: "name"},
+				{name: "mac"},
+				{name: "host"},
+				{name: "schedule"},
+				{name: "day"},
+				{name: "start_hour"},
+				{name: "start_min"},
+				{name: "end_hour"},
+				{name: "end_min"},
+				{name: "mon"},
+				{name: "tue"},
+				{name: "wed"},
+				{name: "thu"},
+				{name: "fri"},
+				{name: "sat"},
+				{name: "sun"}
+			],
+			validator:function(){
+				var store = whiteGrid.grid("getStore");
+					keyProperty = store.keyProperty;
+					grid_array = store.data;
+				var editor = $(whiteGrid.grid("getEditor"));
+				var edit_mac = editor.find("input[name=mac]").val();
+				var len = grid_array.length;
+
+				if ($.isArray(grid_array) && len > 0) {
+					for(var k = 0; k < len; k++){
+
+						for(var m=0; m<host_mac.length; m++){
+							if(host_mac[m].toUpperCase() == edit_mac.toUpperCase())
+							{
+								editor.find("input[name=mac]").textbox("setError");
+								$(whiteGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000064"]);
+								return false;
+							}
+						}
+
+						if(editor[0].editing)
+						{
+							if(grid_array[k].key == editor[0].editingId)
+						    {
+								continue;
+							}
+						}
+						var data = grid_array[k];
+						if (data["mac"] == edit_mac) {
+							editor.find("input[name=mac]").textbox("setError");
+							$(whiteGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000051"]);
+							//editor.find("input[name=mac]").textbox("setError",$.su.CHAR.ERROR["00000007"]);
+							return false;
+						}
+					}
+				}
+				if(editor.find("input[name=schedule]").radio("getValue")==""){
+					editor.addClass("error");
+					editor.prev().addClass("error");
+					editor.find("input[name=schedule]").radio("setError");
+					$(whiteGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000110"]);
+					setTimeout(function(){
+						editor.removeClass("error");
+						editor.prev().removeClass("error"); 
+					},2000);
+					return false;
+				}else if(editor.find("input[name=schedule]").radio("getValue")=="some"){
+				
+					var startHour=editor.find("input[name=start_hour]").combobox("getValue"),
+						startMin=editor.find("input[name=start_min]").combobox("getValue"),
+						endHour=editor.find("input[name=end_hour]").combobox("getValue"),
+						endMin=editor.find("input[name=end_min]").combobox("getValue");
+					var mon=editor.find("input[name=mon]").checkbox("getValue"),
+						tue=editor.find("input[name=tue]").checkbox("getValue"),
+						wed=editor.find("input[name=wed]").checkbox("getValue"),
+						thu=editor.find("input[name=thu]").checkbox("getValue"),
+						fri=editor.find("input[name=fri]").checkbox("getValue"),
+						sat=editor.find("input[name=sat]").checkbox("getValue"),
+						sun=editor.find("input[name=sun]").checkbox("getValue");
+					if(startHour==""||startMin==""||endHour==""||endMin==""){
+						if(startHour=="") editor.find("input[name=start_hour]").combobox("setError");
+						else if(startMin=="") editor.find("input[name=start_min]").combobox("setError");
+						else if(endHour=="") editor.find("input[name=end_hour]").combobox("setError");
+						else if(endMin=="") editor.find("input[name=end_min]").combobox("setError");
+						
+						editor.addClass("error");
+						editor.prev().addClass("error");
+						$(whiteGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000113"]);
+						setTimeout(function(){
+							editor.removeClass("error");
+							editor.prev().removeClass("error"); 
+						},2000);
+						return false;
+					/*}else if(startHour[0]*1>endHour[0]*1){
+						editor.find("input[name=start_hour]").combobox("setError",$.su.CHAR.ERROR["00000112"]);
+						return false;
+					}else if(startHour[0]*1==endHour[0]*1 && startMin[0]*1>=endMin[0]*1){
+						editor.find("input[name=start_min]").combobox("setError",$.su.CHAR.ERROR["00000112"]);
+						return false;*/
+					}else if(startHour[0]==endHour[0]&&startMin[0]==endMin[0]){
+						editor.find("input[name=start_hour]").combobox("setError",$.su.CHAR.ERROR['00000114']);
+						editor.find("input[name=start_min]").combobox("setError");
+						editor.find("input[name=end_hour]").combobox("setError");
+						editor.find("input[name=end_min]").combobox("setError");
+						return false;
+					}
+					if(mon.length==0&&tue.length==0&&wed.length==0&&thu.length==0&&fri.length==0&&sat.length==0&&sun.length==0){
+						editor.find("input[name=day]").combobox("setError");
+						
+						editor.addClass("error");
+						editor.prev().addClass("error");
+						$(whiteGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000013"]);
+						setTimeout(function(){
+							editor.removeClass("error");
+							editor.prev().removeClass("error"); 
+						},2000);
+						
+						return false;
+					}
+				}
+				return true;
+			}
+		},
+		paging: {
+		},
+		columns: [
+			{
+				xtype: "checkcolumn",
+				width: 32
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.NAME, 
+				width:250,
+				dataIndex: "name"
+				// editor: {
+				// 	xtype: "textbox",
+				// 	allowBlank: true,
+				// 	vtype:"string_visible_allow_blank",
+				// 	maxLength:32
+				// }
+			},
+	
+			{
+				text: $.su.CHAR.ACCESS_CTR.MAC_ADDRESS, 
+				width:250,
+				dataIndex: "mac",
+				vtype:"mac",
+				maxLength:17
+				// editor: {
+				// 	xtype: "textbox",
+				// 	allowBlank: false,
+				// 	vtype:"mac"
+				// }
+			},
+			{
+				xtype: "settings"
+			}
+		],
+	
+		operation: "prompt|add|delete"
+	}).on("ev_load", function(e, arr){
+		var me = $(this);
+		$(arr).each(function(index,data){
+			if(data.host == "HOST")
+			{
+				me.grid("disableRow", index);
+			}
+		})
+		
+	}).on({
+		"ev_update":function(){
+			
+		   	var whiteStore = onlineWhiteGrid.grid("getStore");
+		   	whiteStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+		},
+		"ev_remove":function(){
+
+		   	var whiteStore = onlineWhiteGrid.grid("getStore");
+		   	whiteStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+			whiteGrid.find('.checked').removeClass("checked");
+			whiteGrid.find('.selected').removeClass("selected");
+		}
+	});
+	
+	whiteGrid.find("a.btn-add").bind("click", function(e){
+		if($("#white_grid").get(0).maxRules <= $("#white_grid").grid("getStore").data.length) return;
+		setTimeout(function(){
+			whiteGrid.find("input[name=schedule]").radio("setValue","any");
+			whiteGrid.find("input[name=mon]").checkbox("setValue","off");
+			whiteGrid.find("input[name=tue]").checkbox("setValue","off");
+			whiteGrid.find("input[name=wed]").checkbox("setValue","off");
+			whiteGrid.find("input[name=thu]").checkbox("setValue","off");
+			whiteGrid.find("input[name=fri]").checkbox("setValue","off");
+			whiteGrid.find("input[name=sat]").checkbox("setValue","off");
+			whiteGrid.find("input[name=sun]").checkbox("setValue","off");
+			setTimeout(function(){
+				whiteGrid.find("input[name=day]").combobox("setValue","");
+			},12);
+		},20);
+	});
+	function checkDays(container){
+		dayFlag=false;
+		var mon=container.find("input[name=mon]").checkbox("getValue"),
+			tue=container.find("input[name=tue]").checkbox("getValue"),
+			wed=container.find("input[name=wed]").checkbox("getValue"),
+			thu=container.find("input[name=thu]").checkbox("getValue"),
+			fri=container.find("input[name=fri]").checkbox("getValue"),
+			sat=container.find("input[name=sat]").checkbox("getValue"),
+			sun=container.find("input[name=sun]").checkbox("getValue");
+		if(mon.length==1&&tue.length==1&&wed.length==1&&thu.length==1&&fri.length==1&&sat.length==1&&sun.length==1){
+			container.find("input[name=day]").combobox("setValue",0)
+		}else if(mon.length==1&&tue.length==1&&wed.length==1&&thu.length==1&&fri.length==1&&sat.length==0&&sun.length==0){
+			container.find("input[name=day]").combobox("setValue",1)
+		}else if(mon.length==0&&tue.length==0&&wed.length==0&&thu.length==0&&fri.length==0&&sat.length==1&&sun.length==1){
+			container.find("input[name=day]").combobox("setValue",2)
+		}else{
+			container.find("input[name=day]").combobox("setValue",3)
+		}
+		setTimeout(function(){
+			dayFlag=true;
+		},500)
+	};
+	
+	var onlineInterval = setInterval(function(){
+		if($("#black_mode").css("display")!="none" && !intervalFlag){
+			var select = onlineBlackGrid.grid("getSelected"),
+				store = onlineBlackGrid.grid("getStore");
+			selectTmp=[];
+			$.each(store.data,function(i,o){
+				for(var j=0;j<select.length;j++){
+					if(o.key == select[j]){
+						selectTmp.push(i)
+					}
+				}
+			})
+			//console.log(selectTmp)
+			intervalFlag = true;
+			onlineBlackGrid.grid("getStore").load();
+		}else{
+			onlineWhiteGrid.grid("getStore").load();
+		}
+	},2000);
+	
+	var helpAccessControl = new $.su.Help({
+			container: "div#help_access_control",
+			content: ["ACCESS_CONTROL", "ACCESS_MODE", "ACCESS_DEVICE", "ACCESS_LIST"]
+	});
+	$.su.app.runningModule.addUnloadHandler(function(){
+		clearInterval(onlineInterval);
+	});
+
+});
+</script>
+</body>
+
+</html>

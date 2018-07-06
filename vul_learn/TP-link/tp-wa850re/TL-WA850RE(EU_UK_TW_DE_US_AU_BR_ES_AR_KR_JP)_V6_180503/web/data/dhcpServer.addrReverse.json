@@ -1,0 +1,18 @@
+{
+	"success": true,
+	"timeout": false,
+	"data":[{
+			"mac": "A0-03-E1-10-C7-03",
+			"ip": "192.168.0.3",
+			"name": "TP-Link_Test_Device_1",
+			"enable": "off",
+			"key": 0
+		}
+	],
+	"errorcode": 0,
+	"others": 
+	{
+		"showDhcpReverse": true,
+		"max_rules": 32
+	}
+}

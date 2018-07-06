@@ -1,0 +1,9 @@
+{
+	"timeout": false,
+	"success": true,
+	"data": {
+			"wps_label_enable": 1,
+			"wps_label_pin": "205300",
+			"wps_label_pin_lock": 1
+	}
+}

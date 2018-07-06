@@ -1,0 +1,23 @@
+{
+	"errorcode": false,
+	"success": true,
+	"data": {
+		"show2gFlag": "true",
+		"show5gFlag": "true",	
+
+		"ap_enable_24g": "enable",
+		"ap_enable_5g": "enable",
+
+		"ap_ssid_24g": "TP-Link_0BEC",
+		"ap_signal_24g": "2",
+		"ap_mac_24g": "00-14-78-B1-09-45",
+		"ap_channel_24g": "Auto",
+		"ap_security_status_24g": "-1",
+
+		"ap_ssid_5g": "TP-Link_0BEC_5G",
+		"ap_signal_5g": "2",
+		"ap_mac_5g": "00-14-78-B1-09-45",
+		"ap_channel_5g": "Auto",
+		"ap_security_status_5g": "2"
+	}
+}

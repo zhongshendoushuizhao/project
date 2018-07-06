@@ -1,0 +1,611 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Internet</title>
+</head>
+
+<body>
+<div class="func-container">
+
+    <div id="status_panel">
+
+        <div class="map_wrap ap-map-wrap">
+
+            <div id="map_internet" class="map-internet map-internet-connect">
+                <div id="map_icon_internet" class="map-icon-internet">
+                    <span id="map_icon_internet_status" class="map-icon-internet-status hidden"></span>
+                </div>
+                <p id="map_internet_p"></p>
+            </div>
+
+            <div id="map_router" class="map-router">
+                <div id="map_icon_router" class="map-icon-router map-icon-router-conn"></div>
+                <p id="map_router_p"></p>
+                <div id="map_router_tip" class="map-router-tip">
+                    <div id="map_router_24g" class="map-router-wrap hidden">
+                        <div id="map_router_24g_img" class="map-router-security-icon"></div>  <!-- style L1126 -->
+                        <p id="map_router_24g_text"></p>
+                    </div>
+                    <div id="map_router_bar" class="map-router-bar hidden"></div>
+                    <div id="map_router_5g" class="map-router-wrap map-router-wrap-right hidden">
+                        <div id="map_router_5g_img" class="map-router-security-icon"></div>
+                        <p id="map_router_5g_text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="map_wireless" class="map-wireless">
+                <div id="map_icon_wireless" class="map-icon-wireless">
+                    <span id="map_num_wireless" class="map-icon-num hidden"></span>
+                </div>
+                <p id="map_wireless_p"></p>
+            </div>
+
+            <div class="map-line-horizontal"></div>
+            <div class="map-line-vertical"></div>
+
+        </div>
+
+        <form id="basic_network_form">
+
+            <div id="internet_panel" class="map-panel hidden">
+                <h4 class="map-panel-title">
+                    <span class="map-panel-icon-internet"></span>
+                    <span class="map-panel-icon-text" id="map_title_internet"></span>
+                </h4>
+                <div id="" class="map-panel-cnt">
+                    <input id="internet_status" name="status"/>
+                </div>
+            </div>
+
+            <div id="router_panel" class="map-panel">
+                <h4 class="map-panel-title">
+                    <span class="map-panel-icon-router"></span>
+                    <span class="map-panel-icon-text" id="map_title_router"></span>
+                </h4>
+                <div id="" class="map-panel-cnt">
+                    <div id="router_form">
+                        <input id="router_wired_dhcp" name="wired_dhcp"/>
+                        <input id="router_wired_ip" name="wired_ip"/>
+                        <input id="router_wired_type" name="wired_type"/>
+                    </div>
+                </div>
+            </div>
+
+            <div id="wireless_panel" class="map-panel hidden">
+                <h4 class="map-panel-title">
+                    <span class="map-panel-icon-wireless"></span>
+                    <span class="map-panel-icon-text" id="map_title_wireless"></span>
+                </h4>
+                <div id="" class="map-panel-cnt">
+                    <div id="map_grid_wireless">
+                    </div>
+                    <div id="map_grid_wireless_showWire">
+                    </div>
+                </div>
+            </div>
+
+            <div id="router_24g_panel" class="map-panel hidden">
+                <h4 class="map-panel-title">
+                    <span class="map-panel-icon-wireless"></span>
+                    <span class="map-panel-icon-text" id="map_title_router_2g"></span>
+                </h4>
+                <div id="" class="map-panel-cnt">
+                    <div id="router_2g_form">
+                        <input id="router_2g_ssid" name="ssid"/>
+                        <input id="router_2g_channel" name="channel"/>
+                        <input id="router_2g_mode" name="mode"/>
+                        <input id="router_2g_channelwidth" name="channelwidth"/>
+                        <input id="router_2g_mac" name="mac"/>
+                    </div>
+                </div>
+            </div>
+
+            <div id="router_5g_panel" class="map-panel hidden">
+                <h4 class="map-panel-title">
+                    <span class="map-panel-icon-wireless"></span>
+                    <span class="map-panel-icon-text" id="map_title_router_5g"></span>
+                </h4>
+                <div id="" class="map-panel-cnt">
+                    <div id="router_5g_form">
+                        <input id="router_5g_ssid" name="ssid"/>
+                        <input id="router_5g_channel" name="channel"/>
+                        <input id="router_5g_mode" name="mode"/>
+                        <input id="router_5g_channelwidth" name="channelwidth"/>
+                        <input id="router_5g_mac" name="mac"/>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <div id="basic_network_help"></div>
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+    try {
+        $
+    } catch (e) {
+        location.href = "/";
+    };
+
+    function transDhcp( dhcpValue,item ){
+        switch(dhcpValue){
+            case '0':
+                item.textbox('setValue', $.su.CHAR.BASIC_NETWORK.OFF);
+                break;
+            case '1':
+                item.textbox('setValue', $.su.CHAR.BASIC_NETWORK.ON);
+                break;
+            case '2':
+                item.textbox('setValue', $.su.CHAR.BASIC_NETWORK.AUTO_ON);
+                break;
+            case '3':
+                item.textbox('setValue', $.su.CHAR.BASIC_NETWORK.AUTO_OFF);
+                break;
+        }
+    }
+
+    function transType( typeValue, item ){
+        switch(typeValue){
+            case '0':
+                item.textbox('setValue', $.su.CHAR.BASIC_NETWORK.STATIC_IP);
+                break;
+            case '1':
+                item.textbox('setValue', $.su.CHAR.BASIC_NETWORK.DYNAMIC_IP);
+                break;
+            case '2':
+                item.textbox('setValue', $.su.CHAR.BASIC_NETWORK.DYNAMIC_FAILED);
+                break;
+            }
+    }
+
+    function changeIcon(wifiEnable, encryption, jQueryObj, opMode) {
+        if(wifiEnable.toUpperCase() == "ON"){
+            if (encryption == false){
+                jQueryObj.addClass('not-secure');
+                jQueryObj.removeClass('not-open');
+            }else{
+                jQueryObj.removeClass('not-secure');
+                jQueryObj.removeClass('not-open');
+            }
+        }else if(wifiEnable.toUpperCase() == "OFF"){
+            jQueryObj.addClass('not-open');
+            jQueryObj.removeClass('not-secure');
+        }
+    }
+
+    function internetCallback(data)
+    {
+		$('span#map_icon_internet_status').removeClass('hidden');
+		$('span#map_icon_internet_status').removeClass('map-icon-internet-disconn');
+		$('span#map_icon_internet_status').removeClass('map-icon-internet-poor-conn');
+        if (data.phyconn.toUpperCase() == 'DISCONNECTED') {
+            $('span#map_icon_internet_status').addClass('map-icon-internet-disconn');
+            $("input#internet_status").textbox("setValue", $.su.CHAR.BASIC_NETWORK.DISCONNECTED);
+        }else{
+            if (data.internet_status.toUpperCase() == 'CONNECTED') {
+                $("input#internet_status").textbox("setValue", $.su.CHAR.BASIC_NETWORK.CONNECTED);
+            } else if (data.internet_status.toUpperCase() == 'DISCONNECTED') {
+                $('span#map_icon_internet_status').addClass('map-icon-internet-disconn');
+                $("input#internet_status").textbox("setValue", $.su.CHAR.BASIC_NETWORK.DISCONNECTED);
+            }else if ( data.internet_status.toUpperCase() == 'UNKNOWN' || data.internet_status.toUpperCase() == 'PROCESSING') {
+                $('span#map_icon_internet_status').addClass('map-icon-internet-poor-conn');
+                $("input#internet_status").textbox("setValue", $.su.CHAR.BASIC_NETWORK.UNKNOWN);
+            }
+        }
+    }
+
+
+$(document).ready(function (e) {
+
+   /* $("div#status_panel").panel({
+        title: $.su.CHAR.BASIC.STATUS,
+        collapsible: false
+    });*/
+
+    var statusProxy = new $.su.Proxy({
+        url: './data/status.json'
+    });
+
+    var internetProxy = new $.su.Proxy({
+        url: './data/status.internet.json'
+    });
+
+    var wirelessProxy = new $.su.Proxy({
+        url: './data/status.wireless.clients.json'
+    });
+
+    var routerProxy = new $.su.Proxy({
+        url: './data/status.device.json'
+    });
+
+    var router2GProxy = new $.su.Proxy({
+        url: './data/status.wireless.2g.json'
+    });
+
+    var router5GProxy = new $.su.Proxy({
+        url: './data/status.wireless.5g.json'
+    });
+
+
+    $('span#map_title_internet').html($.su.CHAR.BASIC_NETWORK.INTERNET);
+    $('p#map_router_24g_text').html($.su.CHAR.BASIC_NETWORK.GHZ24);
+    $('p#map_router_5g_text').html($.su.CHAR.BASIC_NETWORK.GHZ5);
+
+    $('p#map_internet_p').html($.su.CHAR.BASIC_NETWORK.INTERNET);
+    $('p#map_router_p').html($.su.CHAR.BASIC_NETWORK.ACCESSPOINT);
+    $('p#map_wireless_p').html($.su.CHAR.BASIC_NETWORK.WIRELESS_CLIENTS);
+
+    $('span#map_title_router').html($.su.CHAR.BASIC_NETWORK.ACCESSPOINT);
+	$('span#map_title_router_2g').html($.su.CHAR.BASIC_NETWORK.GHZ24);
+	$('span#map_title_router_5g').html($.su.CHAR.BASIC_NETWORK.GHZ5);
+    $('span#map_title_wireless').html($.su.CHAR.BASIC_NETWORK.WIRELESS_CLIENTS);
+
+    function clearStatus(){
+        $('div#map_icon_internet').removeClass('selected');
+        $('div#map_icon_router').removeClass('map-icon-router-conn');
+        $('div#map_icon_wireless').removeClass('selected');
+        $('div#map_router_24g_img').removeClass('selected');
+        $('div#map_router_5g_img').removeClass('selected');
+
+        $('div#internet_panel').hide(); 
+        $('div#router_panel').hide();
+        $('div#wireless_panel').hide();   
+        $('div#router_24g_panel').hide();  
+        $('div#router_5g_panel').hide();  
+    }
+
+///////////internet
+    $("input#internet_status").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.INTERNET_STATUS,
+    //  labelCls:"xxs",
+        readOnly: true
+    });
+
+////////// router
+
+    $("div#router_form").form({
+        proxy: routerProxy,
+        fields: [
+            {name: "wired_ip", mapping: "wired_ip"}
+        ],
+        submitBtn: false,
+        autoLoad: false
+    });
+
+    $("input#router_wired_dhcp").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.DHCP_SERVER,
+        readOnly: true
+    });
+
+    $("input#router_wired_ip").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.IP_ADDR,
+        readOnly: true
+    });
+
+    $("input#router_wired_type").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.TYPE,
+        readOnly: true
+    });
+
+////////// router 2.4g
+    $("div#router_2g_form").form({
+        proxy: router2GProxy,
+        fields: [
+            {name: "ssid", mapping: "ssid"},
+            {name: "channel", mapping: "channel"},
+            {name: "mode", mapping: "mode"},
+            {name: "channelwidth", mapping: "channelwidth"},
+            {name: "mac", mapping: "mac"},
+        ],
+        submitBtn: false,
+        autoLoad: false
+    });
+
+
+    $("input#router_2g_ssid").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.SSID,
+        readOnly: true
+    });
+
+    $("input#router_2g_channel").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.CHANNEL,
+        readOnly: true
+    });
+
+    $("input#router_2g_mode").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.MODE,
+        readOnly: true
+    });
+
+    $("input#router_2g_channelwidth").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.CH_WIDTH,
+        readOnly: true
+    });
+
+    $("input#router_2g_mac").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.MAC,
+        readOnly: true
+    });
+/////////  router 5g
+    $("div#router_5g_form").form({
+        proxy: router5GProxy,
+        fields: [
+            {name: "ssid", mapping: "ssid"},
+            {name: "channel", mapping: "channel"},
+            {name: "mode", mapping: "mode"},
+            {name: "channelwidth", mapping: "channelwidth"},
+            {name: "mac", mapping: "mac"},
+        ],
+        submitBtn: false,
+        autoLoad: false
+    });
+
+
+    $("input#router_5g_ssid").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.SSID,
+        readOnly: true
+    });
+
+    $("input#router_5g_channel").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.CHANNEL,
+        readOnly: true
+    });
+
+    $("input#router_5g_mode").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.MODE,
+        readOnly: true
+    });
+
+    $("input#router_5g_channelwidth").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.CH_WIDTH,
+        readOnly: true
+    });
+
+    $("input#router_5g_mac").textbox({
+        fieldLabel: $.su.CHAR.BASIC_NETWORK.MAC,
+        readOnly: true
+    });
+
+/////////////////
+
+
+    $('div#map_internet').click(function(){
+        clearStatus();
+        $('div#map_icon_internet').addClass('selected');
+        $('div.panel').hide();
+        $('div#internet_panel').fadeIn(150);
+    });
+
+    $('div#map_icon_router').click(function(){
+        clearStatus();
+        $('div#map_icon_router').addClass('map-icon-router-conn');
+        $('div.panel').hide();
+        $('div#router_panel').fadeIn(150);
+
+        routerProxy.read({}, function(data){
+
+            transDhcp( data.wired_dhcp, $('input#router_wired_dhcp') );
+            transType( data.wired_type, $('input#router_wired_type') );
+            $("div#router_form").form('loadData', data);
+        });
+    });
+	routerProxy.read({}, function(data){
+
+		transDhcp( data.wired_dhcp, $('input#router_wired_dhcp') );
+		transType( data.wired_type, $('input#router_wired_type') );
+		$("div#router_form").form('loadData', data);
+	});
+	
+	
+    $('div#map_wireless').click(function(){
+        clearStatus();
+        $('div#map_icon_wireless').addClass('selected');
+        $('div.panel').hide();
+        $('div#wireless_panel').fadeIn(150);
+/*
+        wirelessProxy.read({}, function(data){
+            $("div#map_grid_wireless").grid('getStore').loadData(data.wirelessGrid);
+            if(data.wirelessCount != '0'){
+                $('span#map_num_wireless').show();
+                $('span#map_num_wireless').html(data.wirelessCount);
+
+            }
+        });*/
+    });
+
+    $('div#map_router_24g').click(function(){
+        clearStatus();
+        $('div#map_router_24g_img').addClass('selected');
+        $('div.panel').hide();
+        $('div#router_24g_panel').fadeIn(150);
+
+        router2GProxy.read({}, function(data){
+            $('div#router_2g_form').form('loadData', data);
+        });
+    });
+
+    $('div#map_router_5g').click(function(){
+        clearStatus();
+        $('div#map_router_5g_img').addClass('selected');
+        $('div.panel').hide();
+        $('div#router_5g_panel').fadeIn(150);
+
+        router5GProxy.read({}, function(data){
+            $('div#router_5g_form').form('loadData', data);
+        });
+    });
+
+    $("div#map_grid_wireless").grid({
+        store:{
+        //  proxy: wireless24gGridProxy,
+            fields: [
+                {name: "name"},
+                {name: "ipaddr"},
+                {name: "mac"}
+            ],
+            autoLoad: false
+        },
+        minLines: 0,
+        maxLines: 5,
+        columns: [
+            {
+                text: $.su.CHAR.GRID_ID_COLUMN, 
+                xtype: "rownumberer",
+                width: 40
+            },
+            {
+                text: $.su.CHAR.BASIC_NETWORK.NAME, 
+                dataIndex: "name",
+                width: 160
+            },
+            {
+                text: $.su.CHAR.BASIC_NETWORK.IP_ADDR, 
+                width: 150,
+                dataIndex: "ipaddr"
+            },
+            {
+                text: $.su.CHAR.BASIC_NETWORK.MAC_ADDR,
+                dataIndex: "mac"
+            }
+        ]
+
+    });
+
+    $("div#map_grid_wireless_showWire").grid({
+        store:{
+        //  proxy: wireless24gGridProxy,
+            fields: [
+                {name: "name"},
+                {name: "ipaddr"},
+                {name: "mac"},
+                {name: "type"}
+            ],
+            autoLoad: false
+        },
+        minLines: 0,
+        maxLines: 5,
+        columns: [
+            {
+                text: $.su.CHAR.GRID_ID_COLUMN, 
+                xtype: "rownumberer",
+                width: 40
+            },
+			{
+				text: $.su.CHAR.BASIC.TYPE,
+				dataIndex: "type",
+				width: 100,
+				renderer:function(val){
+					return $.su.CHAR.BASIC[val.toUpperCase()]?$.su.CHAR.BASIC[val.toUpperCase()]:val;
+				}
+			},
+            {
+                text: $.su.CHAR.BASIC_NETWORK.NAME, 
+                dataIndex: "name",
+                width: 160
+            },
+            {
+                text: $.su.CHAR.BASIC_NETWORK.IP_ADDR, 
+                width: 150,
+                dataIndex: "ipaddr"
+            },
+            {
+                text: $.su.CHAR.BASIC_NETWORK.MAC_ADDR,
+                dataIndex: "mac"
+            }
+        ]
+
+    }).hide();
+
+
+    
+
+//// interval
+    var statusInterval;
+
+    statusProxy.read({}, function(data){
+
+            internetCallback(data);
+
+            changeIcon(data.wireless_2g_enable, data.wireless_2g_encryption, $('div#map_router_24g_img'));
+            changeIcon(data.wireless_5g_enable, data.wireless_5g_encryption, $('div#map_router_5g_img'));
+
+            if(data.wirelessCount !== undefined){
+                $('span#map_num_wireless').show();
+                $('span#map_num_wireless').html(data.wirelessCount);
+                $("div#map_grid_wireless").grid('getStore').loadData(data.wirelessGrid);
+                $("div#map_grid_wireless_showWire").grid('getStore').loadData(data.wirelessGrid);
+            }
+
+            if(data.show2gFlag==true){
+                $('div#map_router_24g').removeClass('hidden');
+            }
+            if(data.show5gFlag==true){
+                $('div#map_router_5g').removeClass('hidden');
+            }
+            if(data.show2gFlag==true && data.show5gFlag==true){
+                $('div#map_router_bar').removeClass('hidden');
+                $('div#map_router_5g').css('left', '48px');
+				$("div#map_grid_wireless").grid('hide');
+                $("div#map_grid_wireless_showWire").grid('show');
+            }
+            if(data.show2gFlag==false && data.show5gFlag==true){
+                $('div#map_router_5g').css('left', '0');
+            }
+
+            statusInterval = setInterval(function(){
+				if($.su.app.runningModule.name != "basic_ap"){
+					clearInterval(statusInterval);
+				}
+                statusProxy.read({}, function(data){
+
+                    internetCallback(data);
+
+                    changeIcon(data.wireless_2g_enable, data.wireless_2g_encryption, $('div#map_router_24g_img'));
+                    changeIcon(data.wireless_5g_enable, data.wireless_5g_encryption, $('div#map_router_5g_img'));
+
+                    if(data.wirelessCount != '0'){
+                        $('span#map_num_wireless').show();
+                        $('span#map_num_wireless').html(data.wirelessCount);
+                        $("div#map_grid_wireless").grid('getStore').loadData(data.wirelessGrid);
+                        $("div#map_grid_wireless_showWire").grid('getStore').loadData(data.wirelessGrid);
+                    }
+
+
+                });
+            }, 1000);
+
+    });
+
+
+    $.su.app.runningModule.addUnloadHandler(function(){
+        clearInterval(statusInterval);
+    });
+	
+	/** for 305 之类的AP/RE **/
+	if(window.repeater_type == 0){
+		
+	}else if(window.repeater_type == 1){ 
+		$('div#map_icon_router').addClass("ground");		
+	}if(window.repeater_type == 2){
+		$("div#map_icon_router").addClass("two");
+	}if(window.repeater_type == 3){
+		$("div#map_icon_router").addClass("usb");
+	}
+    var helpBasicNetwork = new $.su.Help({
+        container: "div#basic_network_help",
+        content: [ "AP_BASIC_STATUS"]
+    });
+
+});
+//]]>
+        </script>
+    </body>
+</html>

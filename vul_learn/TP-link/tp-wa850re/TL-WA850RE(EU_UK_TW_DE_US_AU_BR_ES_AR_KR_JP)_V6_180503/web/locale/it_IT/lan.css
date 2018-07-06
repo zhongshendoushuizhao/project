@@ -1,0 +1,31 @@
+@charset "utf-8";
+/* CSS Document */
+div.switch-button-container span.switch-button-btn-wrap{
+	width:75px;
+}
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap span.switch-button-text-wrap span.switch-button-text{
+	width: 53px;
+}
+div.combobox-container div.combobox-wrap input.combobox-text.xxxxl{
+	width:375px;
+}
+div#log_list th.grid-header-3, div#log_list td.grid-content-td-3 {
+    width: 115px !important;
+}
+div#weekday_cnt{
+	width:285px !important;
+}
+div.margin-top-20 input.combobox-text{
+	width:150px !important;
+}
+#white_list_own_editor div.margin-top-20 .widget-fieldlabel-wrap.s,
+#black_list_own_editor div.margin-top-20 .widget-fieldlabel-wrap.s{
+    margin-right: 25px;
+    margin-left: -25px;
+}
+#white_list_weekday_cnt, #black_list_weekday_cnt{
+	margin-right: -90px;
+}
+#time_dst .xs{
+	width:50px;
+}

@@ -1,0 +1,37 @@
+{
+   "data" : [
+      {
+         "name" : "ALL",
+         "value" : "ALL"
+      },
+      {
+         "name" : "DHCPC",
+         "value" : "DHCPC"
+      },
+      {
+         "name" : "DNS",
+         "value" : "DNS"
+      },
+      {
+         "name" : "NTP",
+         "value" : "NTP"
+      },
+      {
+         "name" : "WPS",
+         "value" : "WPS"
+      },
+      {
+         "name" : "WIRELESS",
+         "value" : "WIRELESS"
+      },
+      {
+         "name" : "DHCPS",
+         "value" : "DHCPS"
+      },
+      {
+         "name" : "OTHERS",
+         "value" : "OTHERS"
+      }
+   ],
+   "success" : true
+}

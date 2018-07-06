@@ -1,0 +1,37 @@
+{
+	"timeout": false,
+	"success": true,
+	"data": {
+
+        "internet_status": "connected",
+
+        "repeater_type": "0",
+
+        "ipconn_status": "disconnected",
+
+		"show2gFlag": "true",
+		"show5gFlag": "true",
+
+		"repeater_ssid_24g": "TP-Link_0BEC",
+		"repeater_channel_24g": "Automatic",
+		"repeater_mac_24g": "03-00-5E-87-3E-C0",
+
+
+		"repeater_ssid_5g": "TP-Link_0BEC_5G",
+		"repeater_channel_5g": "Automatic",
+		"repeater_mac_5g": "03-00-5E-87-3E-C0",
+
+		"repeater_security_24g": "0",
+		"repeater_security_5g": "-1",
+
+		"repeater_conn_24g": "connected",
+		"repeater_conn_5g": "disconnected",
+
+		"wired_dhcp": "1",
+		"wired_ip":  "192.168.0.254",
+		"wired_type": "2",
+
+		"repeater_enable_24g": "enable",
+		"repeater_enable_5g": "enable"
+	}
+}

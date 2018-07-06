@@ -1,0 +1,11 @@
+{
+	"success": true,
+	"errorcode": false,
+	"data":{
+		"ops":"upload",
+		"totaltime":"10",
+		"currenttime":"10",
+		"sysmode": "router"
+	}
+}
+

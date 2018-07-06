@@ -1,0 +1,20 @@
+{
+	"success": true,
+	"errorcode": false,
+	"data": {
+		"enable": "on",
+		"start_hour": "3",
+		"start_min": "12",
+		"end_hour": "7",
+		"end_min": "34",
+		
+		"day":  "1",
+		"mon":  "on",
+		"tue":  "on",
+		"wed":  "on",
+		"thu":  "on",
+		"fri":  "on",
+		"sat":  "on",
+		"sun":  "on"
+	}
+}

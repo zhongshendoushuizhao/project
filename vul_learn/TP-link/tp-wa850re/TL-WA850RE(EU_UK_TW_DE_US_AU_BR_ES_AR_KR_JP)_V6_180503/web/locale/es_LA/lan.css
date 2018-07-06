@@ -1,0 +1,55 @@
+@charset "utf-8";
+/* CSS Document */
+div.switch-button-container span.switch-button-btn-wrap{
+	width: 90px;
+}
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap span.switch-button-text-wrap span.switch-button-text {
+	width:68px;
+}
+div.top-header div.top-header-wrap div.top-nav ul li a.nav{
+	width:132px;
+	max-width:132px;
+}
+div#access_mode_set .widget-fieldlabel-wrap.m{
+	width: auto;
+	margin-bottom:10px;
+}
+div.combobox-container div.combobox-wrap ul.combobox-list li label.combobox-label {
+    width: 999px;
+}
+div.top-header div.top-control a.top-control-btn {
+	width:55px;
+}
+#time_dst .combobox-text.s,
+#time_dst .xs{
+	width:55px;
+}
+#time_set_statu{
+	width:300px;
+}
+div.margin-top-20 input.combobox-text{
+	width:100px !important;
+}
+#weekday_cnt,
+#white_list_weekday_cnt, 
+#black_list_weekday_cnt {
+   margin-right:-400px;
+}
+#reset-user-form .error-tips-content{
+	max-width:290px;
+}
+#quicksetup-form .grid-header-1 span{
+    display: block;
+    width: 95px;
+    line-height: 43px;
+    margin-left: -35px;
+}
+#login-main .password-text{
+	width:155px;
+}
+div.top-header div.top-header-wrap div.top-control{
+	bottom:7px;
+}
+body#login-body div.button-container.login-btn button.button-button{
+	width:190px;
+}

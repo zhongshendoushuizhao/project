@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Basic</title>
+</head>
+
+<body>
+<div class="content-container">
+	<div id="menu-basic" class="menu-container">
+    	<!--<ul class="menu-tree">
+        	<li class="fst" id="menu-basic-network-map-li">
+                <a class="fst" href="javascript:void(0);">
+                    <span class="icon"></span>
+                    <span class=text>Network&nbsp;Map</span>
+                </a>
+            </li>
+            <li class="fst" class="selected" id="menu-basic-internet-li">
+                <a class="fst" href="./pages/userrpm/basic_internet.html">
+                    <span class="icon"></span>
+                    <span class=text>Internet</span>
+                </a>
+            </li>
+            <li class="fst" id="menu-basic-wireless-li">
+                <a class="fst" href="./pages/userrpm/basic_wireless.html">
+                    <span class="icon"></span>
+                    <span class=text>Wireless</span>
+                </a>
+            </li>
+            <li class="fst" id="menu-basic-usb-li">
+                <a class="fst" href="javascript:void(0);">
+                    <span class="icon"></span>
+                    <span class=text>USB</span>
+                </a>
+				<ul class="sec" style="display: block;">
+					<li class="sec">
+						<a class="sec" href="./pages/userrpm/basic_folder_share.html">
+							<span class="icon"></span>
+							<span class=text>Folder Sharing</span>
+						</a>
+					</li>
+					<li class="sec">
+						<a class="sec" href="./pages/userrpm/basic_print.html">
+							<span class="icon"></span>
+							<span class=text>Print Server</span>
+						</a>
+					</li>
+				</ul>
+            </li>
+            <li class="fst" id="menu-basic-qos-li">
+                <a class="fst" href="javascript:void(0);">
+                    <span class="icon"></span>
+                    <span class=text>QoS</span>
+                </a>
+            </li>
+            <li class="fst" id="menu-basic-parental-control-li">
+                <a class="fst" href="./pages/userrpm/basic_parental_control.html">
+                    <span class="icon"></span>
+                    <span class=text>Parental&nbsp;Control</span>
+                </a>
+            </li>
+            <li class="fst" id="menu-basic-guest-network-li">
+                <a class="fst" href="./pages/userrpm/basic_guest.html">
+                    <span class="icon"></span>
+                    <span class=text>Guest&nbsp;Network</span>
+                </a>
+            </li>
+        </ul>-->
+    </div>
+    <div id="func-basic" class="function-container">
+    </div>
+</div><!-- content-container -->
+
+<script type="text/javascript">
+//<![CDATA[
+
+var basicMenuList = {
+    "basic":{
+        text: $.su.CHAR.MENU.STATUS,
+        url: "basic.html"
+    },
+    "basic_ap":{
+        text: $.su.CHAR.MENU.STATUS,
+        url: "basic_network.html"
+    },
+    "region":{
+        text: $.su.CHAR.MENU.REGION,
+        url: "region.html"
+    },
+    "wireless":{
+        text: $.su.CHAR.MENU.WIRELESS,
+        children: {
+            "wireless-setting":{
+                text: $.su.CHAR.MENU.WIRELESS_SETTINGS,
+                url: "wirelessSettings.html"
+            },
+            "operation-mode":{
+                text: $.su.CHAR.MENU.OPERATION_MODE,
+                url: "operationMode.html"
+            },
+            "connect":{
+                text: $.su.CHAR.MENU.CONNECT,
+                url: "connect.html"
+            },
+            "extend-settings":{
+                text: $.su.CHAR.MENU.EXTEND_SETTINGS,
+                url: "extend-settings.html"
+            },
+            "access-ctr":{
+                text: $.su.CHAR.MENU.ACCESS_CTR,
+                url: "accessControl.html"
+            },
+            "wps":{
+                text: $.su.CHAR.MENU.WPS,
+                url: "wps.html"
+            }
+        }
+    },
+    "network":{
+        text: $.su.CHAR.MENU.NETWORK,
+        url: "network.html"
+    },
+    "advance-setting":{
+        text: $.su.CHAR.MENU.ADVANCED_SETTINGS,
+        children: {
+            "power-schedule":{
+                text: $.su.CHAR.MENU.POWER_SCHEDULE,
+                url: "powerSchedule.html"
+            },
+            "wifi-coverage":{
+                text: $.su.CHAR.MENU.WIFI_COVERAGE,
+                url: "wifiCoverage.html"
+            },
+            "access-ctr-adv":{
+                text: $.su.CHAR.MENU.ACCESS_CTR_ADV,
+                url: "accessControl_adv.html"
+            },
+			"high-speed":{
+				text: $.su.CHAR.MENU.HIGH_SPEED,
+				url: "highSpeed.html"
+			}
+        }
+    },
+    "system-tools":{
+        text: $.su.CHAR.MENU.SYSTEM_TOOLS,
+        children: {
+            "time-settings_dst":{
+                text: $.su.CHAR.MENU.TIME_SETTINGS,
+                url: "timeSettings_dst.html"
+            },
+            "time-settings":{
+                text: $.su.CHAR.MENU.TIME_SETTINGS,
+                url: "timeSettings.html"
+            },
+            "led-control":{
+                text: $.su.CHAR.MENU.LED_CONTROL,
+                url: "led.html"
+            },
+            "firmware-upgrade":{
+                text: $.su.CHAR.MENU.FIRMWARE_UPGRADE,
+                url: "firmwareUpgrade.html"
+            },
+            "restore-backup":{
+                text: $.su.CHAR.MENU.RESTORE_BACKUP,
+                url: "backupRestore.html"
+            },
+            "account":{
+                text: $.su.CHAR.MENU.ACCOUNT,
+                url: "password.html"
+            },
+            "system-log":{
+                text: $.su.CHAR.MENU.SYSTEM_LOG,
+                url: "systemLog.html"
+            }
+        }
+    }
+
+};
+
+
+var menuBasic = new $.su.Menu({
+    data: "./data/menu.basic.json",
+    urlPath: "./pages/userrpm/",
+    container: "div#menu-basic",
+    list: basicMenuList,
+    idTag: "basic",
+    cls: "basic",
+    handlers: {
+        init: function(e, data){
+            if ($.su.app.jumpPage){
+                $.su.menu.basic.goTo($.su.app.jumpPage);
+            }else{
+                this.goTo(data[0].name);
+            };
+
+        },
+        goTo: function(e, name, url){
+            //console.log("inin", $("div#func-basic"), $("div#top-wrapper"))
+            $.su.app.menuGoTo(name, url, false);
+            $.su.app.jumpPage = null;
+        }
+    }
+});
+//
+
+$.su.menu = $.su.menu || {};
+$.su.menu.basic = menuBasic;
+
+/*$("div#menu-basic ul.menu-tree li a").click(function(e){
+	e.preventDefault();
+	e.stopPropagation();
+
+	$("div#menu-basic ul.menu-tree li, div#menu-basic ul.menu-tree li a").removeClass("selected");
+	$(this).addClass("selected").closest("li").addClass("selected");
+
+    $("div#func-basic").load($(this).attr("href"));
+});*/
+//]]>
+</script>
+</body>
+</html>

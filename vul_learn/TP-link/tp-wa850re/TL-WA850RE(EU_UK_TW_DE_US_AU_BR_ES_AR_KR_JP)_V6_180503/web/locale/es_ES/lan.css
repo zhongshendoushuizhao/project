@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* CSS Document */
+
+#time_dst .combobox-text.s,
+#time_dst .xs{
+	width:55px;
+}
+
+div.margin-top-20 input.combobox-text{
+	width:100px !important;
+}
+#weekday_cnt,
+#white_list_weekday_cnt, 
+#black_list_weekday_cnt {
+   margin-right:-400px;
+}
+#wireless-2g div.combobox-container div.combobox-wrap input.combobox-text.l {
+    width: 155px;
+}
+#login-main .password-text{
+	width:155px;
+}
+body#login-body div.button-container.login-btn button.button-button{
+	width:190px;
+}

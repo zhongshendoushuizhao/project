@@ -1,0 +1,14 @@
+{
+	"comments": "----实际使用中，请删除所有comments字段----",	
+	"comments": "说明：log页面中grid获取所有条目数据",
+	
+	"timeout": false,
+	"success": true,
+	"data":[
+		{"index":"10", "time": "1st day 02:34:34", "type":"WIRELESS", "level":"ERROR", "content":"DHCPC DHCP Service unavailable, recv no OFFER", "key":"001"},
+		{"index":"9", "time": "1st day 02:34:34", "type":"NAT", "level":"INFO", "content":"DHCPC DHCP Service unavailable, recv no OFFER", "key":"002"},
+		{"index":"8", "time": "1st day 02:34:34", "type":"NAT", "level":"INFO", "content":"DHCPC DHCP Service unavailable, recv no OFFER", "key":"003"},
+		{"index":"7", "time": "1st day 02:34:34", "type":"NAT", "level":"INFO", "content":"DHCPC DHCP Service unavailable, recv no OFFER", "key":"004"},
+		{"index":"6", "time": "1st day 02:34:34", "type":"NAT", "level":"INFO", "content":"DHCPC DHCP Service unavailable, recv no OFFER", "key":"005"}
+	]	
+}

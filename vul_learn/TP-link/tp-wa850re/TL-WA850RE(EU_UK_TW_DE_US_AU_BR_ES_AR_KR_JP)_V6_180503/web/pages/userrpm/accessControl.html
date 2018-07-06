@@ -1,0 +1,823 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>access Control</title>
+<style type="text/css">
+	a.act{
+		color: #78AF19;
+		margin-right: 10px;
+		text-decoration: underline;
+	}
+</style>
+</head>
+
+<body>
+<div class="func-container">
+	 <div id="access">
+	 	<!--<form id="access-setting">-->
+	    	<input type="text"  id="enable_access" name="enable" value="" />
+	    	<!--<input type="text"  id="access_dft" name="access_dft" value="" />
+	    	<p id="note" name="note"></p>
+	    	
+	    </form>-->
+	 </div>
+	
+	 <div id="access_mode_set">
+	 	<form id="access_mode_choose">
+	 		<input type="text"  id="access_mode" name="access_mode" value="" />
+	 	</form>
+	 </div>
+
+	<div id="black_mode">
+		<div id="black_devices_online">
+			<div id="online_black_grid">					
+			</div>		
+		</div>	
+
+		<div id="black_list">
+			<div id="black_grid">					
+			</div>
+		</div>
+	</div>
+
+	<div id="white_mode" style="display:none">
+		<div id="white_devices_online">
+			<div id="online_white_grid">					
+			</div>		
+		</div>	
+
+		<div id="white_list">
+			<div id="white_grid">					
+			</div>
+		</div>
+	</div>
+
+    <div id="none_alert" class="warning hidden">
+         <h4 class="title">
+            <span class="icon" ></span>
+            <span id="none_alert_text" class="text text1 hidden"></span>
+            <!-- <span id="error_repeater_text" class="text text1 hidden"></span> -->
+            <span id="error_overflow_text" class="text text1 hidden"></span>
+            <span id="error_been_block" class="text text1 hidden"></span>
+        </h4>
+
+    </div>
+
+	<div id="help_access_control"></div>
+</div>
+
+<script type="text/javascript">
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+	var URL_ACCESS = './data/access.enable.json'; // $.su.url("/admin/access_control?form=enable");   //
+	var URL_ACCESS_MODE = './data/access.set.json'; // $.su.url("/admin/access_control?form=mode");
+	var URL_ONLINE_BLACK = './data/access.blackOnline.json'; // $.su.url("/admin/access_control?form=black_devices");
+	var URL_BLACK_LIST = './data/access.black.json'; // $.su.url("/admin/access_control?form=black_list");
+	var URL_ONLINE_WHITE = './data/access.whiteOnline.json'; // $.su.url("/admin/access_control?form=white_devices");//
+	var URL_WHITE_LIST ='./data/access.white.json'; // $.su.url("/admin/access_control?form=white_list");  
+
+	var host_mac = "";
+
+	var blackMaxRules = 64;
+
+	$("div.func-container").page({
+		title: $.su.CHAR.ACCESS_CTR.ACCESSCTR,
+		help: ""	//可能是个调用的id 也可能是个url
+	});
+
+	$("div#access").panel({
+		title: $.su.CHAR.ACCESS_CTR.ACCESSCTR,
+		collapsible: false
+	});
+
+
+	var noneChooseMsg = $("div#none_alert").msg({
+	    closeBtn: false,
+	    type: "alert",
+	    cls: "warning",
+	   /* okHandler: function () {
+	        quickSetupWizard.wizard('goTo', 'access_quicksetup_summary');
+
+	        $('div#access_summary_2g_part').height()>$('div#access_summary_5g_part').height()?$('div#access_summary_5g_part').height($('div#access_summary_2g_part').height()):$('div#access_summary_2g_part').height($('div#access_summary_5g_part').height());
+	    }*/
+	});
+
+	$('span#none_alert_text').html($.su.CHAR.ACCESS_CTR.NONE_CHOOSE_TEXT);
+
+	//$('span#error_repeater_text').html($.su.CHAR.ACCESS_CTR.ERROR_REPEAT_TEXT);
+	$('span#error_overflow_text').html($.su.CHAR.ACCESS_CTR.BLACKFULL);
+	$('span#error_been_block').html($.su.CHAR.ACCESS_CTR.ERROR_BEEN_BLOCK);
+
+	var accessProxy = new $.su.Proxy({
+		url: URL_ACCESS
+	});
+
+	$("input#enable_access").switchbutton({
+		fieldLabel: $.su.CHAR.ACCESS_CTR.ENABLE_ACCESS,
+		proxy: accessProxy,
+		cls:"form-inner",
+		field: {
+			"name": "enable"
+		}
+	}).on("ev_loadData", function(e, data){
+		host_mac = data.host_mac; 
+	});
+
+	$("div#access_mode_set").panel({
+		title: $.su.CHAR.ACCESS_CTR.ACCESS_MODE,
+		collapsible: false
+	});
+
+	$("input#access_mode").radio({
+		fieldLabel:$.su.CHAR.ACCESS_CTR.DEFAULT_ACCESS_MODE,
+		columns:2,
+		items: [
+			{boxlabel: $.su.CHAR.ACCESS_CTR.BLACK_LIST, inputValue: 'black'},
+			{boxlabel: $.su.CHAR.ACCESS_CTR.WHITE_LIST, inputValue: 'white'}
+		]
+
+	});
+
+
+	// //这里多个表格调用一个proxy，proxy需要单独定义！
+	var accessSetProxy = new $.su.Proxy({
+		url: URL_ACCESS_MODE
+	});
+
+	$("form#access_mode_choose").form({
+		proxy: accessSetProxy,
+		fields: [
+			{name: "access_mode", mapping: "access_mode"}
+		],
+		submitBtn: "default"
+	}).on("ev_loadData", function(e, data){
+		if(data.access_mode == "black"){
+			$("div#black_mode").show();
+			$("div#white_mode").hide();
+
+			var blackStore = blackGrid.grid("getStore");
+		   	blackStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+		}
+		else {
+			$("div#white_mode").show();
+			$("div#black_mode").hide();
+			var whiteStore = whiteGrid.grid("getStore");
+		   	whiteStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+		}
+	});
+
+	$("div#black_devices_online").panel({
+		title: $.su.CHAR.ACCESS_CTR.DEVICE_ONLINE,
+		collapsible: false
+	});
+
+	var blackOnlineProxy = new $.su.Proxy({
+		url: URL_ONLINE_BLACK
+	});
+
+
+	var onlineBlackGrid = $("div#online_black_grid").grid({
+		store:{
+			proxy: blackOnlineProxy,
+			fields: [
+				{name: "name"},
+		 		{name: "ipaddr"},
+		 		{name: "mac"},
+		 		{name: "host"},
+		 		{name: "conn_type"}
+			],
+			autoLoad: true
+		},
+		columns: [
+			{
+				xtype: "checkcolumn",
+				width: 32
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.NAME, 
+				width:150,
+				dataIndex: "name"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.IP_ADDRESS, 
+				width:120,
+				dataIndex: "ipaddr"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.MAC_ADDRESS, 
+				width:150,
+				dataIndex: "mac"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.CONN_TYPE, 
+				width:100,
+				dataIndex: "conn_type",
+				renderer:function(val)
+				{
+					if(val == "wireless")
+					{
+						return $.su.CHAR.ACCESS_CTR.WIRELESS;
+					}
+					else
+					{
+						return $.su.CHAR.ACCESS_CTR.WIRED;
+					}
+				}
+			},
+			{
+				text: $.su.CHAR.GRID.MODIFY, 
+				dataIndex: "key",
+				renderer: function(data, i){
+					//console.log(arguments)
+					var inHTML = 	"<div class=\"button-container\">";
+						inHTML += 		"<a href=\"javascript:void(0);\" class=\"grid-content-btn btn-access-block btn-block\" data-index=\""+i+"\">";
+						inHTML +=			"<span class=\"icon\"></span>";
+						inHTML += 			"<span class=\"text\">"+$.su.CHAR.ACCESS_CTR.BLOCK+"</span>";
+						inHTML += 		"</a>";
+						inHTML += 	"</div>";
+					return inHTML;
+				}
+			}
+		],
+		operation: [{
+						xtype:"button",
+						iconCls:"btn-refresh",
+						text:$.su.CHAR.OPERATION.REFRESH,
+						handler:function(){
+							onlineBlackGrid.grid("runProgress");
+							onlineBlackGrid.grid("getStore").load({}, function(){
+								onlineBlackGrid.grid("prompt", true);
+							}, function(errorcode){
+								if(errorcode==-1){
+									onlineBlackGrid.grid("removeAllData");
+								}
+								onlineBlackGrid.grid("prompt", false);
+							}, function(){
+								onlineBlackGrid.grid("prompt", false);
+							});
+						}
+					},
+		
+					{
+						xtype: "button", 
+						text: $.su.CHAR.ACCESS_CTR.BLOCK,
+						iconCls: "btn-block",
+						handler: function(e){
+							//加验证
+							//
+
+							var selected = onlineBlackGrid.grid("getSelected");
+							
+							if(selected.length == 0) {
+								noneChooseMsg.msg('show');
+								$('span#none_alert_text').removeClass('hidden');
+								//$('span#error_repeater_text').addClass('hidden');
+								$('span#error_overflow_text').addClass('hidden');
+								$('span#error_been_block').addClass('hidden');
+								return true;
+							}
+							var blackStore = blackGrid.grid("getStore");
+							if( blackStore.data.length == blackMaxRules ){
+								$("div#black_grid").get(0).maxRulesMsg.msg('show');
+								return true;
+							}
+							var store = onlineBlackGrid.grid("getStore");
+							var d = [];
+							var temp = {};
+							temp.data = $.su.clone(store.data);	
+							keyProperty = store.keyProperty;
+							for (var i = 0; i < selected.length; i++){
+								var key = selected[i];
+								var dd = store.getData(key);
+								d.push(dd);
+							};
+							//console.log("d is", d)
+							d = $.su.json.toJSONString(d);
+							store.remove(selected, {
+								"operation": "block",
+								"data": d
+							}, function(key, data){
+		   						var blackStore = blackGrid.grid("getStore");
+					   			// if( blackStore.data.length == blackMaxRules ){
+					   			// 	$("div#black_grid").get(0).maxRulesMsg.msg('show');
+					   			// }else{
+								// var blackMacArray = $.su.json.parseJSON(d);
+								// for(var i=0;i<blackStore.data.length;i++){
+								// 	for(var j=0;j<blackMacArray.length;j++){
+								// 		if(blackStore.data[i].mac==blackMacArray[j].mac){
+								// 			noneChooseMsg.msg('show');
+								// 			$('span#error_been_block').removeClass('hidden');
+								// 			$('span#error_repeater_text').addClass('hidden');
+								// 			$('span#error_overflow_text').addClass('hidden');
+								// 			$('span#none_alert_text').addClass('hidden');
+								// 		}
+								// 	}
+								// }
+				   				blackStore.load({},function(){
+									this.data=this.data.reverse();
+								});
+					   			// }
+
+		   						var whiteStore = whiteGrid.grid("getStore");
+		   						whiteStore.load({},function(){
+									this.data=this.data.reverse();
+								});
+
+								setTimeout(function(){
+									$("#online_black_grid button:eq(0)").click();
+								},2000);
+
+   							}, function(errorcode){
+								if(errorcode==-1){
+									onlineBlackGrid.grid("removeAllData");
+								}else{
+									noneChooseMsg.msg('show');
+									$('span#none_alert_text').addClass('hidden');
+									//$('span#error_been_block').addClass('hidden');
+									//$('span#error_repeater_text').addClass('hidden');
+									if(errorcode==20002){
+										$('span#error_been_block').removeClass('hidden');
+										$('span#error_overflow_text').addClass('hidden');
+									}else if(errorcode==20003){
+										$('span#error_been_block').addClass('hidden');
+										$('span#error_overflow_text').removeClass('hidden');
+									}
+								}
+   							})
+							
+						}
+					}
+					]
+	}).on("ev_load", function(e, arr){
+		var me = $(this);
+		$(arr).each(function(index,data){
+			if(data.host == "HOST")
+			{
+				me.grid("disableRow", index);
+			}
+		})
+		
+	})
+
+	onlineBlackGrid.delegate("a.btn-access-block", "click", function(){
+	   //$.post("./data/access.inline.json", {action: "block"});
+	   //blackGrid
+	   //加验证
+	   //console.log(22);
+		var index = $(this).attr("data-index"),			//获得数据对应的index
+	   		store = onlineBlackGrid.grid("getStore"),	//获取store
+	   		keyProperty = store.keyProperty;			//key的属性名
+
+	   	var temp = {};									//数据备份，因为返回数据删除确认后，本地store的这部分数据已经被删除，所以先备份，用在下面表格
+	   	temp.data = $.su.clone(store.data);		//这里是所有data
+	   	var tempArr = [];
+	   	var d = temp.data[index];				//当前操作的数据
+	   		key = d[keyProperty];	//当前操作的key值
+	   		tempArr.push(d);			
+	   		d = $.su.json.toJSONString(tempArr);		//数据格式化
+	   	
+	   	if($(onlineBlackGrid).find(".grid-content-tr-" + key).hasClass("disabled"))
+	   	{
+	   		return;
+	   	}
+	   	//console.log(key);
+	   	if (!key){
+	   		return;
+	   	}else{
+	   		var blackStore = blackGrid.grid("getStore");
+
+			if( blackStore.data.length == blackMaxRules ){
+				$("div#black_grid").get(0).maxRulesMsg.msg('show');
+				return;
+			}
+
+	   		store.remove(key, {
+	   			"operation": "block",
+	   			"data": d 					//添加post过去时的data值，su中tostring方法
+	   		}, function(key, data){
+		   			var blackStore = blackGrid.grid("getStore");
+
+
+		   			// if( blackStore.data.length == blackMaxRules ){
+		   			// 	$("div#black_grid").get(0).maxRulesMsg.msg('show');
+		   			// }else{
+						var blackMac = $.su.json.parseJSON(d)[0].mac;
+						for(var i=0;i<blackStore.data.length;i++){
+							if(blackStore.data[i].mac==blackMac){
+								noneChooseMsg.msg('show');
+								$('span#error_been_block').removeClass('hidden');
+								//$('span#error_repeater_text').addClass('hidden');
+								$('span#error_overflow_text').addClass('hidden');
+								$('span#none_alert_text').addClass('hidden');
+							}
+						}
+		   				blackStore.load({},function(){
+							this.data=this.data.reverse();
+						});
+		   			// }
+
+		   			/*blackStore.load({}, function(data, others){
+		   				if(data.length==others.max_rules){
+		   					
+		   				}
+		   			});*/
+					setTimeout(function(){
+						$("#online_black_grid button:eq(0)").click();
+					},2000);
+	   		
+	   		}, function(errorcode){
+				if(errorcode==-1){
+					onlineBlackGrid.grid("removeAllData");
+				}else{
+					noneChooseMsg.msg('show');
+					$('span#none_alert_text').addClass('hidden');
+					//$('span#error_repeater_text').addClass('hidden');
+					if(errorcode==20002){
+						$('span#error_been_block').removeClass('hidden');
+						$('span#error_overflow_text').addClass('hidden');
+					}else if(errorcode==20003){
+						$('span#error_been_block').addClass('hidden');
+						$('span#error_overflow_text').removeClass('hidden');
+					}
+				}
+			})
+	   	};
+	   	delete temp;
+	});
+	
+	
+	$("div#black_list").panel({
+		title: $.su.CHAR.ACCESS_CTR.DEVICE_IN_BLACK,
+		collapsible: false
+	});
+
+	var blackListProxy = new $.su.Proxy({
+		url: URL_BLACK_LIST
+	});
+
+	var storeBlack = new $.su.Store({
+		proxy: blackListProxy,
+		fields: [
+			{name: "name"},
+			{name: "mac"}
+		],
+		autoLoad: true
+	});
+
+	$(blackListProxy).on('ev_read', function(event, data, others){
+		blackMaxRules = others.max_rules;
+	});
+
+
+	var blackGrid = $("div#black_grid").grid({
+		store:storeBlack,
+		maxRulesMsgText:$.su.CHAR.ACCESS_CTR.BLACKFULL,
+		paging: {
+		},
+		// editor: "default",
+		editor: {
+			content:"default",
+			validator:function(){
+				var store = blackGrid.grid("getStore");
+					keyProperty = store.keyProperty;
+					grid_array = store.data;
+				var editor = $(blackGrid.grid("getEditor"));
+				var edit_mac = editor.find("input[name=mac]").val();
+
+				for(var i=0; i<host_mac.length; i++){
+					if(host_mac[i].toUpperCase() == edit_mac.toUpperCase())
+					{
+						editor.find("input[name=mac]").textbox("setError");
+						$(blackGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000064"]);
+						return false;
+					}					
+				}
+
+				var len = grid_array.length;
+
+				if ($.isArray(grid_array) && len > 0) {
+					for(var k = 0; k < len; k++){
+						
+						if(editor[0].editing)
+						{
+							//console.log(grid_array[k].key, editor.editingId);
+							if(grid_array[k].key == editor[0].editingId)
+						    {
+								continue;
+							}
+						}
+						var data = grid_array[k];
+						if (data["mac"].toUpperCase() == edit_mac.toUpperCase()) {
+							editor.find("input[name=mac]").textbox("setError");
+							$(blackGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000051"]);
+							
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+		},
+		columns: [
+			{
+				xtype: "checkcolumn",
+				width: 32
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.NAME, 
+				width:250,
+				dataIndex: "name",
+				editor: {
+					xtype: "textbox",
+					allowBlank: true,
+					vtype:"string_visible_allow_blank",
+					maxLength:32
+				}
+			},
+	
+			{
+				text: $.su.CHAR.ACCESS_CTR.MAC_ADDRESS, 
+				width:250,
+				dataIndex: "mac",
+				editor: {
+					xtype: "textbox",
+					allowBlank: false,
+					vtype:"mac",
+					maxLength: 17
+				}
+			},
+			{
+				xtype: "settings"
+			}
+		],
+
+		operation: "prompt|add|delete"
+	}).on({
+		"ev_update":function(){
+			var blackStore = onlineBlackGrid.grid("getStore");
+		   	blackStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+
+		},
+		"ev_remove":function(){
+			var blackStore = onlineBlackGrid.grid("getStore");
+		   	blackStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+		}
+	});
+
+
+	$("div#white_devices_online").panel({
+		title: $.su.CHAR.ACCESS_CTR.DEVICE_ONLINE,
+		collapsible: false
+	});
+
+	var whiteOnlineProxy = new $.su.Proxy({
+		url: URL_ONLINE_WHITE
+	});
+
+
+	var onlineWhiteGrid = $("div#online_white_grid").grid({
+		store:{
+			proxy: whiteOnlineProxy,
+			fields: [
+			{name: "name"},
+	 		{name: "ipaddr"},
+	 		{name: "mac"},
+	 		{name: "host"},
+	 		{name: "conn_type"}
+			],
+			autoLoad: true
+		},
+		columns: [
+			// {
+			// 	xtype: "checkcolumn",
+			// 	width: 32
+			// },
+			{
+				text: $.su.CHAR.ACCESS_CTR.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.NAME, 
+				width:120,
+				dataIndex: "name"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.IP_ADDRESS, 
+				width:120,
+				dataIndex: "ipaddr"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.MAC_ADDRESS, 
+				width:150,
+				dataIndex: "mac"
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.CONN_TYPE, 
+				dataIndex: "conn_type",
+				renderer:function(val)
+				{
+					if(val == "wireless")
+					{
+						return $.su.CHAR.ACCESS_CTR.WIRELESS;
+					}
+					else
+					{
+						return $.su.CHAR.ACCESS_CTR.WIRED;
+					}
+				}
+			}
+			
+		],
+		operation: [
+			{
+				xtype:"button",
+				iconCls:"btn-refresh",
+				text:$.su.CHAR.OPERATION.REFRESH,
+				handler:function(){
+					onlineWhiteGrid.grid("runProgress");
+					onlineWhiteGrid.grid("getStore").load({}, function(){
+						onlineWhiteGrid.grid("prompt", true);
+					}, function(errorcode){
+						if(errorcode==-1){
+							onlineWhiteGrid.grid("removeAllData");
+						}
+						onlineWhiteGrid.grid("prompt", false);
+					}, function(){
+						onlineWhiteGrid.grid("prompt", false);
+					});
+				}
+			}
+		]
+		
+	});
+	
+	
+	$("div#white_list").panel({
+		title: $.su.CHAR.ACCESS_CTR.DEVICE_IN_WHITE,
+		collapsible: false
+	});
+
+	var whiteListProxy = new $.su.Proxy({
+		url: URL_WHITE_LIST
+	});
+
+	var storeWhite = new $.su.Store({
+		proxy: whiteListProxy,
+		fields: [
+			{name: "name"},
+			{name: "host"},
+			{name: "mac"}
+		],
+		autoLoad: true
+	});
+
+
+	var whiteGrid = $("div#white_grid").grid({
+		maxRulesMsgText:$.su.CHAR.ACCESS_CTR.WHITEFULL,
+		store:storeWhite,
+		editor: {
+			content:"default",
+			validator:function(){
+				var store = whiteGrid.grid("getStore");
+					keyProperty = store.keyProperty;
+					grid_array = store.data;
+				var editor = $(whiteGrid.grid("getEditor"));
+				var edit_mac = editor.find("input[name=mac]").val();
+				var len = grid_array.length;
+
+				if ($.isArray(grid_array) && len > 0) {
+					for(var k = 0; k < len; k++){
+
+						for(var m=0; m<host_mac.length; m++){
+							if(host_mac[m].toUpperCase() == edit_mac.toUpperCase())
+							{
+								editor.find("input[name=mac]").textbox("setError");
+								$(whiteGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000064"]);
+								return false;
+							}
+						}
+
+						if(editor[0].editing)
+						{
+							if(grid_array[k].key == editor[0].editingId)
+						    {
+								continue;
+							}
+						}
+						var data = grid_array[k];
+						if (data["mac"] == edit_mac) {
+							editor.find("input[name=mac]").textbox("setError");
+							$(whiteGrid.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000051"]);
+							//editor.find("input[name=mac]").textbox("setError",$.su.CHAR.ERROR["00000007"]);
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+		},
+		paging: {
+		},
+		columns: [
+			{
+				xtype: "checkcolumn",
+				width: 32
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.ACCESS_CTR.NAME, 
+				width:250,
+				dataIndex: "name",
+				editor: {
+					xtype: "textbox",
+					allowBlank: true,
+					vtype:"string_visible_allow_blank",
+					maxLength:32
+				}
+			},
+	
+			{
+				text: $.su.CHAR.ACCESS_CTR.MAC_ADDRESS, 
+				width:250,
+				dataIndex: "mac",
+				vtype:"mac",
+				maxLength:17,
+				editor: {
+					xtype: "textbox",
+					allowBlank: false,
+					vtype:"mac",
+					maxLength: 17
+				}
+			},
+			{
+				xtype: "settings"
+			}
+		],
+	
+		operation: "prompt|add|delete"
+	}).on("ev_load", function(e, arr){
+		var me = $(this);
+		$(arr).each(function(index,data){
+			if(data.host == "HOST")
+			{
+				me.grid("disableRow", index);
+			}
+		})
+		
+	}).on({
+		"ev_update":function(){
+			
+		   	var whiteStore = onlineWhiteGrid.grid("getStore");
+		   	whiteStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+		},
+		"ev_remove":function(){
+
+		   	var whiteStore = onlineWhiteGrid.grid("getStore");
+		   	whiteStore.load({},function(){
+				this.data=this.data.reverse();
+			});
+		}
+	});
+
+	var helpAccessControl = new $.su.Help({
+			container: "div#help_access_control",
+			content: ["ACCESS_CONTROL", "ACCESS_MODE", "ACCESS_DEVICE", "ACCESS_LIST"]
+	});
+
+
+});
+</script>
+</body>
+
+</html>

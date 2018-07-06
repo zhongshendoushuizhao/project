@@ -1,0 +1,15 @@
+{
+	"comments": "----实际使用中，请删除所有comments字段----",	
+	"comments": "说明：Security Access Control页面中online获取数据",
+	
+	"errorcode": "20002",
+	"success": true,
+	"data": [
+			{"name":"TP-Link_Test_Device_1", "ipaddr": "172.29.85.1", "host":"HOST", "mac":"00-19-E0-92-C4-55", "conn_type":"0", "key":"key-1", "success": true},
+			{"name":"TP-Link_Test_Device_2", "ipaddr": "172.29.85.2", "host":"NOT HOST","mac":"00-19-E0-34-FE-15", "conn_type":"0", "key":"key-2", "success": true},
+			{"name":"TP-Link_Test_Device_3", "ipaddr": "172.29.85.3", "host":"NOT HOST","mac":"00-19-E0-30-76-5F", "conn_type":"0", "key":"key-3", "success": true},
+			{"name":"TP-Link_Test_Device_4", "ipaddr": "172.29.85.4", "host":"NOT HOST","mac":"00-19-E0-3B-14-F5", "conn_type":"0", "key":"key-4", "success": true},
+			{"name":"TP-Link_Test_Device_5", "ipaddr": "172.29.85.5","host":"NOT HOST",  "mac":"00-19-E0-34-12-E5", "conn_type":"0", "key":"key-5", "success": true}
+	]
+			
+}

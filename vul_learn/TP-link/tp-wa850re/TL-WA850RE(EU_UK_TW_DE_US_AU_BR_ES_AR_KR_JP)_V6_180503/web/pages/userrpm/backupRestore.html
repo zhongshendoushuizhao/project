@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+</head>
+
+<body>
+<div class="func-container">
+	 <div id="backup_cnt">
+	 	<form id="backup-setting" enctype="multipart/form-data">
+	    	<p id="backupNote" name="backupNote"  class="note first-line"></p>
+	    	<button type="button" id="backup" name="backup"></button>
+	    </form>
+	 </div>
+	 
+
+	<div id="restore_cnt">
+	 	<div id="restore-setting">
+	    	<p id="restoreNote" name="restoreNote"  class="note first-line"></p>
+			<input id="file" name="archive" type="file" />
+			
+	    	<button type="button" id="restore" name="restore"></button>
+	    	<span id="error_str" class="error"></span>
+	    </div>
+	    
+	</div>
+
+	<div id="factory_cnt">
+	 	<div id="factory-setting">
+	    	<p id="factoryNote" name="factoryNote"  class="note first-line"></p>
+	    	 
+	    	<button type="button" id="factory" name="factory"></button>
+			<span id="factory_error_str" class="error"></span>
+	    </div>
+	   
+	</div>
+	
+	<div id="restore_alert_cnt">
+		<h4 class="title" id="restore_confirm_cnt">
+	    	<span class="icon"></span>
+	 		<span class="text" id="restore_confirm_content"></span>
+	 	</h4>
+
+	 	<div id="restore_pro_cnt" class="reboot-loading-msg hidden">
+	 		<p id="restore_note"  class="reboot-progressbar-text"></p>
+	    	<input id="restore_pro_bar" type="text" />
+	    </div>
+
+	</div> 
+
+	<div id="factory_alert_cnt">
+		<h4 class="title"  id="factory_confirm_cnt">
+			<span class="icon"></span>
+	 		<span class="text" id="factory_confirm_content"></span>
+	 	</h4>
+	 	<div id="factory_pro_cnt" class="reboot-loading-msg hidden">
+	 		<p id="factory_note"  class="reboot-progressbar-text"></p>
+	    	<input id="factory_pro_bar" type="text" />
+	    </div>
+	</div> 
+	<div id="error_alert_cnt">
+		<h4 class="title" id="file_error_cnt">
+	    	<span class="icon"></span>
+	 		<span class="text" id="file_error_content"></span>
+	 	</h4>
+		<h4 class="title" id="connection_error_cnt">
+	    	<span class="icon"></span>
+	 		<span class="text" id="connection_error_content"></span>
+	 	</h4>
+	</div>
+	<div id="help_backup"></div>
+</div>
+
+<script type="text/javascript">
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+	var rebootTime = 2*60*1000;
+
+	var BACKUP_URL = "./data/system.backup.json";
+
+	var passwordOnly = false;
+	var loginTypeProxy = new $.su.Proxy({
+        url: "./data/login.type.json",
+		async: false
+    });
+	loginTypeProxy.read({},function(data){
+		passwordOnly = data.passwordOnly;
+	});
+
+	var sysMode = '';
+
+	$("div.func-container").page({
+		title: $.su.CHAR.BACKUP.TITLE,
+		help: ""	//可能是个调用的id 也可能是个url
+	});
+
+
+
+	$("#backup_cnt").panel({
+		title: $.su.CHAR.BACKUP.BACKUP,
+		collapsible: false
+	});
+
+	$("#restore_cnt").panel({
+		title: $.su.CHAR.BACKUP.RESTORE,
+		collapsible: false
+	});
+
+	$("#factory_cnt").panel({
+		title: $.su.CHAR.BACKUP.FACTORY,
+		collapsible: false
+
+	});
+
+	$("#restore_note").html($.su.CHAR.BACKUP.RESTORE_WARN);
+	$("#factory_note").html($.su.CHAR.BACKUP.FACTORY_WARN);
+
+
+	$("p#backupNote").html($.su.CHAR.BACKUP.BACKUPTIP);
+	$("p#restoreNote").html($.su.CHAR.BACKUP.RESTORETIP);
+	$("p#factoryNote").html($.su.CHAR.BACKUP.FACTORYTIP);
+
+	var modeProxy = new $.su.Proxy({
+		url: './data/sysmode.json'
+	});
+	modeProxy.read({}, function(data){
+		rebootTime = Number(data.pro_reboot_time*1000 || rebootTime);
+	});
+
+
+	$("#backup-setting").form({
+		proxy:{
+			type: 'GET',
+			url: './data/config.bin'
+		},
+		formEnctype: "multipart/form-data",
+		traditional: true,
+		hiddenFrame: true,
+		autoLoad: false
+	});
+
+	$("#restore-setting").form({
+		proxy:{url: './data/restore.json'},
+		formEnctype: "multipart/form-data",
+		traditional: true,
+		hiddenFrame: true,
+		fields: [
+			{"name": "archive"}
+		],
+		autoLoad: false
+	}).on("ev_loadData", function(e, data){
+	});
+
+	$("#factory-setting").form({
+		proxy:{url: BACKUP_URL},
+		formEnctype: "multipart/form-data",
+		traditional: true,
+		hiddenFrame: true,
+		autoLoad: false
+	});
+
+	var restore_proxy = new $.su.Proxy({
+		url: BACKUP_URL
+	});
+
+
+	var factory_proxy = new $.su.Proxy({
+		url: BACKUP_URL
+	});
+
+	
+	
+
+	$("#backup").button({
+		text: $.su.CHAR.BACKUP.BACKUPBTN,
+		cls: "submit",
+		handler: function(){
+			$("#backup-setting").form('submit', {operation:'backup'});
+		}
+	});
+
+	$("#restore").button({
+		text: $.su.CHAR.BACKUP.RESTOREBTN,
+		handler: function(){
+			if($("#restore-setting").form('validate'))
+			{
+				$("#restore_alert_cnt").msg("show");
+			}
+			else
+			{
+				return false;
+			}
+		},
+		cls: "submit"
+	});
+
+
+	function restore_write()
+	{
+	
+		$("#restore-setting").form('submit', {operation:"restore"}, function(){
+			var proxyAgain = new $.su.Proxy({
+				url: './data/restore.confirm.json'
+			});
+
+			proxyAgain.read({}, function(){
+
+				$("#restore_alert_cnt").msg('hideButtons');
+            	$('#restore_confirm_cnt').hide();
+	            $("#restore_pro_cnt").show();
+
+				$("input#restore_pro_bar").progressbar("animate", 0, 1, rebootTime, function(){
+					location.href = "http://tplinkrepeater.net/";
+				}); 
+
+			}, function(){
+				$("#restore_alert_cnt").msg('close');
+				$("#error_alert_cnt").msg('show');
+				$("#file_error_cnt").show();
+				$("#connection_error_cnt").hide();
+			}, function(){
+				$("#restore_alert_cnt").msg('close');
+				$("#error_alert_cnt").msg('show');
+				$("#file_error_cnt").hide();
+				$("#connection_error_cnt").show();
+			});
+
+		});
+		
+	}
+
+	$("#error_alert_cnt").msg({
+		cls: 'warning reboot-confirm-size',
+   	    closeBtn: false,
+		type: "alert"
+	});
+	$("#file_error_content").html($.su.CHAR.BACKUP.FILE_ERROR);
+	$("#connection_error_content").html($.su.CHAR.BACKUP.CONNECTION_ERROR);
+	
+	$("#restore_alert_cnt").msg({
+		okHandler:function(){
+
+			restore_write();
+
+			return false;
+		},
+		cancelHandler:function(){
+			return true;
+		},
+		cls: 'warning l',
+   	    closeBtn: false,
+		type: "confirm"
+	});
+
+
+	var restore_pro_bar  = $('input#restore_pro_bar').progressbar({
+		fieldLabel: null,
+		cls: 'inline',
+		width: 400,
+		height: 6,
+		value: 0
+	});	
+	
+	$("#confirm_content").html($.su.CHAR.FIMWARE.CONFIRM_CONTENT);
+
+
+
+	function factory_write()
+	{
+		factory_proxy.write({operation:'factory'}, function(data){
+			$("#factory_alert_cnt").msg('hideButtons');
+            $('#factory_confirm_cnt').hide();
+            $("#factory_pro_cnt").show();
+
+			$('input#factory_pro_bar').progressbar("animate", 0, 1, rebootTime, function(){
+				if(data.sysmode == 'router'){
+					location.href = "http://tplinkwifi.net";
+				}else{
+					location.href = "http://tplinkrepeater.net";
+				}
+			}); 
+
+		}, function(){
+			$("#factory_alert_cnt").msg('close');
+			alert('file error');
+		}, function(){
+			$("#factory_alert_cnt").msg('close');
+			alert('connection error');
+		});
+	}
+
+	$("#factory_alert_cnt").msg({
+		okHandler:function(){
+			factory_write();
+			return false;
+		},
+		cancelHandler:function(){
+			return true;
+		},
+		cls: 'warning reboot-confirm-size',
+   	    closeBtn: false,
+		type: "confirm"
+	});
+
+	var factory_pro_bar  = $('input#factory_pro_bar').progressbar({
+		fieldLabel: null,
+		cls: 'inline',
+		width: 400,
+		height: 6,
+		value: 0
+	});
+
+	
+	$("#file").file({
+		fieldLabel: $.su.CHAR.BACKUP.FILE,
+		allowBlank:false,
+		labelCls: 'xxs',
+		extension: "bin"
+	});
+
+
+	
+
+	$("#factory").button({
+		text: $.su.CHAR.BACKUP.FACTORYBTN,
+		handler: function(){
+			$("#factory_alert_cnt").msg("show");
+		},
+		cls: "submit"
+	});
+
+	$.su.app.runningModule.addUnloadHandler(function(){
+	    restore_pro_bar.progressbar("stop");
+		restore_pro_bar.progressbar("reset");
+
+	    factory_pro_bar.progressbar("stop");
+		factory_pro_bar.progressbar("reset");
+	});
+
+
+	$("#restore_confirm_content").html($.su.CHAR.BACKUP.RESTORE_CONFIRM_CONTENT);
+	$("#factory_confirm_content").html($.su.CHAR.BACKUP.FACTORY_CONFIRM_CONTENT);
+
+	var helpBackup = new $.su.Help({
+		container: "div#help_backup",
+		content: ['BACKUP_RESTORE_BACKUP', 'BACKUP_RESTORE_RESTORE', 'BACKUP_RESTORE_FACTORY'],
+		afterLoad:function(){
+			if(passwordOnly && $(this.container).find(".note li").length == 3){
+				$(this.container).find(".note li:eq(0)").hide();
+			}else if(!passwordOnly && $(this.container).find(".note li").length == 3){
+				$(this.container).find(".note li:eq(1)").hide();
+			}
+		}
+	});
+});
+</script>
+</body>
+
+</html>

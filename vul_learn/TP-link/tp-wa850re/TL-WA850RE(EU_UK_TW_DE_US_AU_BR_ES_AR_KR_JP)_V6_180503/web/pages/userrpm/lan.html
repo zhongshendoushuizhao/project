@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>LAN</title>
+</head>
+
+<body>
+
+<div class="func-container">
+	<div id="ethernet_panel" class="hidden">
+		<form id="ethernet_form">
+			<input id="ethernet_band" name="eth_to_wifi_band"/>
+		</form>
+	</div>
+
+	<div id="settings-container">
+		<form id="settings_form">
+			<input id="rdo-type" name="lan_type"/>
+			<input id="lan_ip" name="lan_ip"/>
+			<input id="lan_mask" name="lan_mask"/>
+			<input id="lan_gateway" name="lan_gw"/>
+		</form>
+	</div>
+
+	<div id="lan_help"></div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+
+$("div#ethernet_panel").panel({
+	title: $.su.CHAR.LAN.ETHERNET,
+	collapsible: false
+});
+
+var ethernetProxy = new $.su.Proxy({
+	url: "./data/ethernet.json"
+});
+
+$("form#ethernet_form").form({
+	proxy: ethernetProxy,
+	fields: [
+		{name: "eth_to_wifi_band"}
+	],
+	submitBtn: 'default'
+}).on('ev_loadData', function(event, data){
+	if(data.show2gFlag=='true' && data.show5gFlag=='true'){
+		$("div#ethernet_panel").panel('show');
+	}else{
+		$("div#ethernet_panel").panel('hide');
+	}
+});
+
+$("input#ethernet_band").radio({
+	fieldLabel: $.su.CHAR.LAN.ETHERNET_BAND,
+	labelCls: 'xxl',
+	columns: 2,
+	items:[
+		{boxlabel: $.su.CHAR.LAN.GHZ_24, name:'eth_to_wifi_band', inputValue:'2g'},
+		{boxlabel: $.su.CHAR.LAN.GHZ_5, name:'eth_to_wifi_band', inputValue: '5g'}
+	]
+});
+
+///////////////////////////////////////////////////////////// 
+
+var lanProxy = new $.su.Proxy({
+	url: "./data/lan.json"
+});
+
+
+$(lanProxy).on('ev_write', function(event, data){
+	function goToNewUrl(param)
+	{
+		var oriUrl = top.location.href;
+		var stIindex = oriUrl.indexOf('//');
+
+		top.location.href = oriUrl.slice(0, stIindex+2) + param;
+	}
+
+	if(data.old_ipaddr){
+		data.lan_ip==data.old_ipaddr?1:goToNewUrl(data.lan_ip);
+	}
+
+}).on('ev_failed', function(event, errorcode, others, data){
+	console.log(errorcode)
+});
+
+
+$("div#settings-container").panel({
+	title: $.su.CHAR.LAN.LAN_SETTING,
+	collapsible: false
+});
+
+$("form#settings_form").form({
+	proxy: lanProxy,
+	fields: [
+		{name: "lan_type"},
+		{name: "lan_ip"},
+		{name: "lan_mask"},
+		{name: "lan_gw"},
+		{name: "eth_to_wifi_band"}
+	],
+	submitBtn: "default",
+	validator: function(){
+		var lanIP = $('input#lan_ip').textbox('getValue');
+		var lanMask = $('input#lan_mask').textbox('getValue');
+		var lanGateway = $('input#lan_gateway').textbox('getValue');
+
+		if( $.su.func.isNetIp( lanIP, lanMask) ){
+			$('input#lan_ip').textbox('setError',  $.su.CHAR.ERROR['00000106']);
+			return false;
+		}
+		if( $.su.func.isBroadCastIp( lanIP, lanMask) ){
+			$('input#lan_ip').textbox('setError',  $.su.CHAR.ERROR['00000107']);
+			return false;
+		}
+
+		if( $.su.func.isNetIp( lanGateway, lanMask) ){
+			$('input#lan_gateway').textbox('setError',  $.su.CHAR.ERROR['00000106']);
+			return false;
+		}
+		if( $.su.func.isBroadCastIp( lanGateway, lanMask) ){
+			$('input#lan_gateway').textbox('setError',  $.su.CHAR.ERROR['00000107']);
+			return false;
+		}
+		return true;
+	}
+});
+
+$("input#rdo-type").radio({
+	fieldLabel: "",
+	items: [
+		{boxlabel: $.su.CHAR.LAN.LAN_DYNAMIC_IP, inputValue: 'dynamic', id: 'dynamic-ip', name:'lan_type'},
+		{boxlabel: $.su.CHAR.LAN.LAN_STATIC_IP, inputValue: 'static', id: 'static-ip', name:'lan_type'}
+	]
+}).on("ev_change", function(e, vOld, vNew){
+	if (vNew == "dynamic"){
+		$("input#lan_ip").textbox("disable");
+		$("input#lan_mask").textbox("disable");
+		$("input#lan_gateway").textbox("disable");
+	}else{
+		$("input#lan_ip").textbox("enable");
+		$("input#lan_mask").textbox("enable");
+		$("input#lan_gateway").textbox("enable");
+	};
+})
+
+$("input#lan_ip").textbox({
+	fieldLabel: $.su.CHAR.LAN.IP_ADDRESS,
+	textFormat: $.su.format.ip,
+	vtype: 'ip'
+});
+
+$("input#lan_mask").textbox({
+	fieldLabel: $.su.CHAR.LAN.SUBNET_MASK,
+	vtype: 'netmask'
+});
+
+$("input#lan_gateway").textbox({
+	fieldLabel: $.su.CHAR.LAN.DEFAULT_GATEWAY,
+	textFormat: $.su.format.ip,
+	vtype: 'ip'
+});
+
+//$("input#rdo-type").radio("setValue", "dynamic");
+
+/*
+$("div#settings-fieldset").fieldset({
+	fields: [
+		{name: "ip"},
+		{name: "mask"},
+		{name: "gateway"}
+	]
+});
+*/ 
+
+
+	var helpLan = new $.su.Help({
+		container: "div#lan_help",
+		content: ['LAN_ETHERNERT', 'LAN_SETTINGS']
+	});
+
+});
+//]]>
+</script>	
+</body>
+</html>

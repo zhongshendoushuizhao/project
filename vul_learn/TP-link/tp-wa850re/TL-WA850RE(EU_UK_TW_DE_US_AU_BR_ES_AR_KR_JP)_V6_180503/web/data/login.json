@@ -1,0 +1,14 @@
+{
+	"success": true,
+	"errorcode": "login failed",
+	"data": {
+		"firstLogin": false,
+		"failureCount": 5,
+		"attemptsAllowed": 5,
+
+		"logined_user": "User",
+		"logined_host": "Host",
+		"logined_ip": "192.168.1.1",
+		"logined_mac": "9A-34-7F-4C-B3-70"
+	}
+}

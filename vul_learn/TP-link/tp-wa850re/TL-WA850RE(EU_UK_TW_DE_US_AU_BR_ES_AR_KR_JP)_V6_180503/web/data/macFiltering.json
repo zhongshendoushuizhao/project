@@ -1,0 +1,15 @@
+{
+	"timeout": false,
+	"success": true,
+	"data": [
+		{"mac":"A1-D4-C8-B1-09-45", "enable": "on", "note": "note1", "success": true, "key": "001"},
+		{"mac":"74-D4-35-A1-87-50", "enable": false, "note": "note2", "success": false, "key": "002"},
+		{"mac":"C2-43-E5-42-D5-68", "enable": "on", "note": "note3", "success": false, "key": "003"},
+		{"mac":"9E-3A-D3-32-EF-90", "enable": false, "note": "note4", "success": false, "key": "004"}
+		
+	],
+	"errorcode": "",
+	"others": {
+		"max_rules": 8
+	}
+}

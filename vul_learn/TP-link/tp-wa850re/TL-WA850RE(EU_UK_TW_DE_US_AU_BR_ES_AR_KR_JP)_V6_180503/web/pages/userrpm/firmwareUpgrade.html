@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<style type="text/css">
+	div.offset{
+		margin-left:500px;
+	}
+</style>
+</head>
+
+<body>
+<div class="func-container">
+	 <div id="firmware">
+	 	<form  id="firmware-setting">
+	    	<!-- <input type="text"  id="auto" name="auto" value="" />
+	    	<button type="button" id="check" name="check"></button> -->
+	    	<input name="keep" value="on" type="hidden" />
+	    	<input id="file" name="image" type="file" />
+	    	<input type="text"  id="firmware_version" name="firmware_version" value="" />
+	    	<input type="text"  id="hardware_version" name="hardware_version" value="" />
+
+			<!-- <span id="error_str" class="error"></span> -->
+	    	<button type="button" id="upgrade" name="upgrade"></button>
+	    </form>
+	    
+	 </div>
+
+	<div id="upgrade_alert_cnt">
+		<h4 class="title" id="confirm_cnt">
+			<span class="icon"></span>
+	 		<span class="text" id="confirm_content"></span>
+	 	</h4>
+
+	 	<div id="upload_loading_msg" class="reboot-loading-msg hidden">
+		      <p id="note" class="reboot-progressbar-text"></p>
+    	      <input id="pro_bar" type="text" />
+        </div>
+	</div>
+
+	<div id="upgrade_failed_cnt">
+		<h4 class="title">
+			<span class="icon" ></span>
+			<span class="text" id="error_str"></span>
+		</h4>
+	</div> 
+	<div id="help_firmware"></div>
+</div>
+
+<script type="text/javascript">
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+	var UPGRADE_URL = "./data/firmware.set.json";
+	var UPGRADE_URL_NEW = $.su.url("/admin/firmware?form=upgrade"); 
+
+
+	var query_proxy = new $.su.Proxy({
+		url: UPGRADE_URL,
+		type: 'POST'
+	});
+
+
+	
+	$("div.func-container").page({
+		title: $.su.CHAR.FIMWARE.TITLE,
+		help: ""	//可能是个调用的id 也可能是个url
+	});
+
+	$("div#firmware").panel({
+		title: $.su.CHAR.FIMWARE.TITLE,
+		collapsible: false
+	});
+
+
+	var total_time = 2*60*1000;
+	var step1_time = 3*1000;
+	var mid_val = 0.2;
+	var query_interval = false;
+	var step2_query_flag = true;
+	var count = 0;
+	var count2 = 0;
+
+	
+	
+
+
+	$("input#firmware_version").textbox({
+		fieldLabel: $.su.CHAR.FIMWARE.FIMWAREVERSION,
+		inputCls:'xxl',
+		readOnly:true
+	});
+
+
+	$("input#hardware_version").textbox({
+		fieldLabel: $.su.CHAR.FIMWARE.HARDWAREVERSION,
+		inputCls:'xxl',
+		readOnly:true
+	});
+
+	$("#file").file({
+		fieldLabel: $.su.CHAR.FIMWARE.NEWFILE,
+		allowBlank:false,
+		extension: "bin"
+	});
+
+	$("#upgrade_failed_cnt").msg({
+		cls: 'warning reboot-confirm-size',
+		type: "alert"
+	});
+
+	$("#upgrade_alert_cnt").msg({
+		okHandler:function(){
+
+            $("#upgrade_alert_cnt").msg('hideButtons');
+            $('#confirm_cnt').hide();
+            $("#upload_loading_msg").show();
+
+			$("#firmware-setting").form('submit',{operation:"firmware"}, function(){
+				//$("#pro_cnt").fadeIn(200); 
+				/*if(!query_interval)
+				{*/
+					getResult();
+					// query_interval = setInterval(getResult,1000);
+					pro_bar.progressbar("animate", 0, 1, total_time, function(){
+						 if (localStorage){
+                              localStorage.setItem("token", "");
+                          };
+                          location.href = "/";
+					});
+				/*}*/
+			},function(){
+				getResult();
+			},function(){
+
+			});
+			// //console.log(query_interval);
+			return false;
+			// setTimeout(endStep1,step1_time);	
+		},
+		// cls: "m warning",
+		cancelHandler:function(){
+			return true;
+		},
+		cls: 'warning reboot-confirm-size',
+   	    closeBtn: false,
+		type: "confirm"
+	});
+	
+
+
+
+
+	var pro_bar  = $('input#pro_bar').progressbar({
+		fieldLabel: null,
+		width: 405,
+	    height: 6,
+	    cls: 'reboot-loading-probar'
+	});
+
+
+
+	$("#note").html($.su.CHAR.FIMWARE.WARNING);
+
+
+
+	$("button#upgrade").button({
+		text: $.su.CHAR.FIMWARE.UPGRADE,
+		cls:"m",
+		handler: function(){
+			if($("#firmware-setting").form('validate'))
+			{
+				$("#upgrade_alert_cnt").msg("show");
+			}
+			else
+			{
+				return false;
+			}
+			
+			
+		},
+		cls: "submit"
+	});
+
+	
+
+	//第一阶段的操作
+	function getResult()
+	{
+		
+		query_proxy.write({operation:'check'}, function(data){
+
+			
+		}, function(errcode){
+			function hideProMsg(){
+				// clearInterval(query_interval);
+				pro_bar.progressbar("stop");
+				pro_bar.progressbar("reset");
+				// query_interval = false;
+				// pro_bar.progressbar("hide");
+				//$("#upload_loading_msg").hide();
+
+				$("#upgrade_alert_cnt").msg("close",function(){
+					$("#upgrade_alert_cnt").msg('showButtons');
+			        $('#confirm_cnt').show();
+			        $("#upload_loading_msg").hide();
+				});
+
+			}
+
+			function showAlertMag(){
+				$("#upgrade_failed_cnt").msg("show", function(){
+
+				});
+			}
+
+			if(errcode == "err_form")
+			{
+				$("#error_str").html($.su.CHAR.ERROR["00000001"]);
+				hideProMsg();
+				showAlertMag();
+			}
+			else if(errcode == "err_check")
+			{
+				// //console.log($.su.CHAR.ERROR["00000002"]);
+				$("#error_str").html($.su.CHAR.ERROR["00000002"]);
+				hideProMsg();
+				showAlertMag();
+			}
+			else if(errcode == "err_sizex")
+			{
+				$("#error_str").html($.su.CHAR.ERROR["00000003"]);
+				hideProMsg();
+				showAlertMag();
+			}
+			else if(errcode == "err_flash")
+			{
+				$("#error_str").html($.su.CHAR.ERROR["00000004"]);
+				hideProMsg();
+				showAlertMag();
+			}
+			else if(errcode == "err_reboot")
+			{
+				$("#error_str").html($.su.CHAR.ERROR["00000005"]);
+				hideProMsg();
+				showAlertMag();
+			}
+			else if(errcode == "err_other")
+			{
+				$("#error_str").html($.su.CHAR.ERROR["00000006"]);
+				hideProMsg();
+				showAlertMag();
+			}
+			else 
+			{
+				hideProMsg();
+			}
+			
+
+			
+
+
+			
+		});
+	}
+	
+	
+
+	$("#confirm_content").html($.su.CHAR.FIMWARE.CONFIRM_CONTENT);
+	
+
+	//这里多个表格调用一个proxy，proxy需要单独定义！
+	var ipv4Proxy = new $.su.Proxy({
+		url: UPGRADE_URL,
+		type: 'POST'
+	});
+
+
+	$("#firmware-setting").form({
+		proxy: ipv4Proxy,
+		formEnctype: "multipart/form-data",
+		traditional: true,
+		hiddenFrame: true,
+		fields: [
+			{name: "image"},
+			{name: "firmware_version", mapping: "firmware_version"},
+			{name: "hardware_version", mapping: "hardware_version"}
+		],
+		submitBtn: null
+	}).on("ev_loadData", function(e, data){
+		// //console.log(data);
+		// //console.log(data.totaltime);
+		total_time = Number(data.totaltime*1000 || total_time);
+		// //console.log(total_time);
+	});
+
+
+
+
+
+	$.su.app.runningModule.addUnloadHandler(function(){
+		/*if(query_interval)
+	    {
+	    	clearInterval(query_interval);
+			query_interval = false;
+	    }*/
+	    pro_bar.progressbar("stop");
+		pro_bar.progressbar("reset");
+	});
+
+	var helpFireware = new $.su.Help({
+		container: "div#help_firmware",
+		content: ["FIRMWARE_UPGRADE"]
+	});
+});
+</script>
+</body>
+
+</html>

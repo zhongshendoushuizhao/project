@@ -1,0 +1,10 @@
+@charset "utf-8";
+/* CSS Document */
+
+div.top-header div.top-control a.top-control-btn{
+	width:auto;
+}
+#time_dst .combobox-text.s,
+#time_dst .xs{
+	width:60px;
+}

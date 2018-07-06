@@ -1,0 +1,1006 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Connect to Existing Network</title>
+</head>
+
+<body>
+<div class="func-container">
+	<div id="connect-container">
+
+		<div id="region_tips_connect" class="region-tips-wrap hidden">
+			<span id="region_status_tips" class="region-status-tips"></span>
+			<button id="jump_to_basic" type="button"></button>
+		</div>
+
+		<div id="connect-form">
+
+			<div id="2g-connect" class="hidden">
+				<input id="2g_connect_ap_enable" name="enable_2g"/>
+				<button id="btn_2g_scan" type="button"></button>
+				<input id="2g_connect_ap_ssid" name="ssid_2g" />
+				<input id="2g_connect_ap_security" name="security_2g"/>
+				<input id="2g_connect_ap_password" name="password_2g"/>
+				<input id="2g_connect_ap_index" name="index_2g"/>
+			</div>
+
+			<div id="router_2g_msg">
+                <div id="2g_connect_error" class="hidden">
+                	<p id="2g_connect_error_tip" class="connection-error-p"></p>
+                </div>
+				<div id="router_2g_grid" class="quicksetup-grid"></div>
+			</div>
+
+			<div id="5g-connect" class="hidden margin-top-50">
+				<input id="5g_connect_ap_enable" name="enable_5g"/>
+				<button id="btn_5g_scan" type="button"></button>
+				<input id="5g_connect_ap_ssid"  name="ssid_5g" />
+				<input id="5g_connect_ap_security"  name="security_5g"/>
+				<input id="5g_connect_ap_password"  name="password_5g"/>
+				<input id="5g_connect_ap_index" name="index_5g"/>
+			</div>
+
+			<div id="router_5g_msg">
+                <div id="5g_connect_error" class="hidden">
+                	<p id="5g_connect_error_tip" class="connection-error-p"></p>
+                </div>
+				<div id="router_5g_grid" class="quicksetup-grid"></div>
+			</div>
+
+			<div id="router_pro_msg" class="hidden">
+				<p id="router_pro_text" class="reboot-progressbar-text"></p>
+				<input id="router_grid_pro"/>
+			</div>
+
+		</div>
+	</div>
+
+	<div id="connect_help"></div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+var connectProxy = new $.su.Proxy({
+	timeout: 15000,
+	url: "./data/connect.json"
+});
+
+var regionProxy = new $.su.Proxy({
+	timeout: 15000,
+	url: "./data/regionRequest.json"
+});
+
+var readInterval;
+var readRequest;
+var closeTimeout;
+var close2GFlag = false;
+var close5GFlag = false;
+
+var scanFlag = {
+	'2g': false,
+	'5g': false
+}
+
+var show2gFlag = true;
+var show5gFlag = true;
+
+var timeStamp2g = 0;
+var timeStamp5g = 0;
+
+$('span#region_status_tips').html($.su.CHAR.CONNECT.REGION_TIPS);
+$('p#2g_connect_error_tip').html($.su.CHAR.CONNECT.CONNECT_ERROR);
+$('p#5g_connect_error_tip').html($.su.CHAR.CONNECT.CONNECT_ERROR);
+$('#router_pro_text').html($.su.CHAR.CONNECT.SCANNING);
+
+var routerProMsg = $("div#router_pro_msg").msg({
+    type: "window",
+    //global: true,
+    closeBtn: true,
+    cls: 'l'
+}).on('ev_close', function(){
+	clearInterval(readInterval);
+	clearTimeout(readRequest);
+	clearTimeout(closeTimeout);
+	close2GFlag = true;
+	close5GFlag = true;
+	timeStamp2g = 0;
+	timeStamp5g = 0;
+
+	if(scanFlag['2g']){
+		enableScan('2g');
+	}
+
+	if(scanFlag['5g']){
+		enableScan('5g');
+	}
+});
+
+$("input#router_grid_pro").progressbar({
+	cls: "scan-progressbar",
+	showPercentage: true,
+	height: 6,
+	width: 400
+});
+
+$("button#jump_to_basic").button({
+	text: $.su.CHAR.CONNECT.GO_REGION,
+	cls: "inline-block",
+	handler: function(){
+		$.su.menu.basic.goTo('region');
+	}
+});
+
+$(connectProxy).on('ev_read', function(event, data){
+	regionProxy.read({},function(regionData){
+		if(data.region_status==false && regionData.show_region!=false){
+		var o = setTimeout( function(){ 
+			$("div#connect-form").form('disable') 
+			$('button#btn_2g_scan').button('disable');
+			$('button#btn_5g_scan').button('disable');
+			$('div#region_tips_connect').show();
+		}, 50);
+	}
+});
+});
+
+$("div#connect-form").form({
+	proxy: connectProxy,
+	fields: [
+		{name: "enable_2g"},
+		{name: "ssid_2g"},
+		{name: "security_2g"},
+		{name: "password_2g"},
+		{name: "index_2g"},
+		{name: "enable_5g"},
+		{name: "ssid_5g"},
+		{name: "security_5g"},
+		{name: "password_5g"},
+		{name: "index_5g"}
+	],
+	sendDisableData: ["enable_2g", "enable_5g"],
+	submitBtn: "default",
+	validator: function(){
+
+		var router2gSecurity; 
+		show2gFlag?router2gSecurity=$("input#2g_connect_ap_security").combobox('getValue')[0]:1;
+		var router5gSecurity;
+		 show5gFlag?router5gSecurity=$("input#5g_connect_ap_security").combobox('getValue')[0]:1;
+
+		var router2gPwd;
+		show2gFlag?router2gPwd=$('input#2g_connect_ap_password').textbox('getValue').toString():1;
+		var router5gPwd; 
+		show5gFlag?router5gPwd=$('input#5g_connect_ap_password').textbox('getValue').toString():1;
+
+		function checkPassword(securityValue, passwordValue, passwordObj){
+
+			var pattern = /^[A-Fa-f0-9]+$/;
+			var pattern_ascii = /^[A-Za-z0-9\`\~\!\@\#\$\%\^\&\*\(\)\-\=\_\+\[\]\{\}\;\:\'\"\\\|\/\?\.\,\<\>\s]+$/;
+			var patten_wpa = /^[A-Za-z0-9\`\~\!\@\#\$\&\*\(\)\-\=\_\+\[\]\{\}\;\:\'\"\\\|\/\?\.\,\<\>\%\^\ ]+$/;
+
+			if(securityValue=='wep'){
+				if( passwordValue.length==5 ){
+					if(!pattern_ascii.test(passwordValue)){
+						passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000092'].replace("%num", 5) );
+						return false;
+					}
+				}else if( passwordValue.length==13 ){
+		            if(!pattern_ascii.test(passwordValue)){
+		                passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000092'].replace("%num", 13) );
+		                return false;
+		            }
+		        }else if( passwordValue.length==10 ){
+					if(!pattern.test(passwordValue)){
+						passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000093'].replace("%num", 10) );
+						return false;
+					}
+				}else if( passwordValue.length==26 ){
+		            if(!pattern.test(passwordValue)){
+		                passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000093'].replace("%num", 26) );
+		                return false;
+		            }
+		        }else{
+					passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000090']);
+					return false;
+				}
+			}else if(securityValue=='wpa' || securityValue=='wpa2' || securityValue=='wpa/wpa2'){
+				if( passwordValue.length<8 || passwordValue.length>64 ){
+					passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000091']);
+					return false;
+				}else{
+					if( passwordValue.length==64 && !pattern.test(passwordValue)){
+						passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000091']);
+						return false;
+					}else if(!patten_wpa.test(passwordValue)){
+						passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000091']);
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		if( ( show2gFlag && $("input#2g_connect_ap_enable").checkbox('getValue')[0]=='enable_2g' && !checkPassword(router2gSecurity, router2gPwd, $('input#2g_connect_ap_password'))) || ( show5gFlag && $("input#5g_connect_ap_enable").checkbox('getValue')[0]=='enable_5g' && !checkPassword(router5gSecurity, router5gPwd, $('input#5g_connect_ap_password'))) ){
+			return false;
+		}
+		return true;
+	}
+
+}).on('ev_loadData', function(event, data){
+	if(data.show2gFlag=='false'){
+		show2gFlag = false;
+		$('div#5g-connect').show();
+		$('div#2g-connect').remove();
+	}else{
+		$('div#2g-connect').show();
+	}
+	if(data.show5gFlag=='false'){
+		show5gFlag = false;
+		$('#2g_connect_ap_enable').checkbox("hide");
+		$('div#2g-connect').show();
+		$('div#5g-connect').remove();
+	}else{
+		$('div#5g-connect').show();
+	}
+});
+
+$("div#connect-container").panel({
+	title: $.su.CHAR.CONNECT.TITLE_CONNECT,
+	collapsible: false
+});
+
+function enableScan(mode){
+	$('button#btn_' + mode + '_scan').button('enable');
+	scanFlag[mode] = false;
+}
+
+function disableScan(mode){
+	$('button#btn_' + mode + '_scan').button('disable');
+	scanFlag[mode] = true;
+}
+
+
+//2g
+$("input#2g_connect_ap_enable").checkbox({
+	fieldLabel: $.su.CHAR.CONNECT.NETWORK_24G,
+	labelCls: "xl",
+	items:[
+		{boxlabel: $.su.CHAR.CONNECT.ENABLE_2G_ROUTER_AP, inputValue:'on', uncheckedValue:'off', name:'enable_2g'}
+	]
+}).on('ev_change', function(event, oldValue, newValue){
+	if(newValue[0]=='on' || newValue[0]=='enable_2g'){
+		$("input#2g_connect_ap_ssid").textbox('enable');
+		$("input#2g_connect_ap_security").combobox('enable');
+		$('button#btn_2g_scan').button('enable');
+		if($("input#2g_connect_ap_security").combobox('getValue')!='none' ){
+			$("input#2g_connect_ap_password").textbox('enable');
+		}
+		if($("input#2g_connect_ap_security").combobox('getValue')=='wep'){
+			$("input#2g_connect_ap_index").combobox('enable');
+			$("input#2g_connect_ap_index").combobox('show');
+		}else{
+			$("input#2g_connect_ap_index").combobox('hide');
+			$("input#2g_connect_ap_index").combobox('disable');
+		}
+
+	}else{
+		$('button#btn_2g_scan').button('disable');
+		$("input#2g_connect_ap_ssid").textbox('disable');
+		$("input#2g_connect_ap_ssid").textbox('setNormal');
+		$("input#2g_connect_ap_security").combobox('disable');
+		$("input#2g_connect_ap_password").textbox('disable');
+		$("input#2g_connect_ap_password").textbox('setNormal');
+
+		$("input#2g_connect_ap_index").combobox('disable');
+		if($("input#2g_connect_ap_security").combobox('getValue')=='wep'){
+			$("input#2g_connect_ap_index").combobox('show');
+		}else{
+			$("input#2g_connect_ap_index").combobox('hide');
+		}
+
+	}
+});
+
+$("button#btn_2g_scan").button({
+	fieldLabel: '',
+	labelCls: "xl",
+	cls: "width-184",
+	text: $.su.CHAR.CONNECT.SCAN_CHOOSE,
+	handler:function(){
+		clearInterval(readInterval);
+		close2GFlag = false;
+		timeStamp2g = new Date().getTime();
+		router24gGrid.grid('removeAllData');
+
+		routerProMsg.msg("show",disableScan('2g'));
+		$("input#router_grid_pro").progressbar("reset");
+
+
+		(function(time){
+			router24gProxy.read({scan:"true",operation:"load"},function(data){
+				if(timeStamp2g != time) return;
+				var delayTime=((data&&data.scanTime_2g)||15)*1000;
+				$("input#router_grid_pro").progressbar("animate", 0, 1, delayTime);
+				readRequest = setTimeout(function(){
+
+					if(close2GFlag==false){
+
+						readInterval = setInterval(function(){
+
+							$("div#router_2g_grid").grid('show');
+
+							router24gStore.load({}, function(data){
+								if(data.length==0){
+									$('div#router_2g_grid').addClass('no-cursor');
+								}else{
+									$('div#router_2g_grid').removeClass('no-cursor');
+								}
+								clearInterval(readInterval);
+								$('div#2g_connect_error').hide();
+							}, function(){
+								router24gGrid.grid('removeAllData');
+								$('div#router_2g_grid').addClass('no-cursor');
+								// $("div#router_2g_grid").grid('hide');
+								$('div#2g_connect_error').show();
+							}, function(){
+								router24gGrid.grid('removeAllData');
+								$('div#router_2g_grid').addClass('no-cursor');
+								// $("div#router_2g_grid").grid('hide');
+								$('div#2g_connect_error').show();
+							});
+						}, 1000);
+
+						closeTimeout = setTimeout( function(){ 			
+							clearInterval(readInterval);
+							if(close2GFlag==false){
+								routerProMsg.msg("close", enableScan('2g'));
+								$("div#router_2g_msg").msg("show", disableScan('2g'));
+							}
+						}, 5000)
+					};
+
+				}, delayTime-5000);
+			});
+		})(timeStamp2g)
+
+	}
+});
+
+var router24gProxy = new $.su.Proxy({
+	timeout: 15000,
+	url: "./data/ap2g.json"
+});
+
+var router2gMsg = $("div#router_2g_msg").msg({
+	autoshow: false,
+	global: false,
+	title: $.su.CHAR.CONNECT.ROUTER_AP_24G,
+	cls: 'xxl',
+	type: "window"
+}).on('ev_close', function(){
+	enableScan('2g');
+});
+
+var router24gStore = new $.su.Store({
+	proxy: router24gProxy,
+	autoLoad: false,
+	fields: [
+		{
+			name: "ssid"
+		},{
+			name: "signal"
+		},{
+			name: "mac"
+		},{
+			name: "security"
+		}
+	]
+});
+
+var router24gGrid = $("div#router_2g_grid").grid({
+	store: router24gStore,
+	operation: 
+		[{
+			xtype: "button", 
+			text: $.su.CHAR.OPERATION.RESCAN,
+			id:"refreshBtn_2g",
+			iconCls:"btn-refresh",
+			handler:function(e){
+
+				$("div#router_2g_msg").msg("close", enableScan('2g'));
+				clearInterval(readInterval);
+				close2GFlag = false;
+				router24gGrid.grid('removeAllData');
+
+				routerProMsg.msg("show",disableScan('2g'));
+				$("input#router_grid_pro").progressbar("reset");
+				timeStamp2g = new Date().getTime();
+				(function(time){
+					router24gProxy.read({scan:"true",operation:"load"},function(data){
+						if(timeStamp2g != time) return;
+						var delayTime=((data&&data.scanTime_2g)||15)*1000;
+						$("input#router_grid_pro").progressbar("animate", 0, 1, delayTime);
+						readRequest = setTimeout(function(){
+
+							if(close2GFlag==false){
+
+								readInterval = setInterval(function(){
+
+									router24gGrid.grid('show');
+
+									router24gStore.load({}, function(data){		
+										if(data.length==0){
+											$('div#router_2g_grid').addClass('no-cursor');
+										}else{
+											$('div#router_2g_grid').removeClass('no-cursor');
+										}
+										clearInterval(readInterval);
+										$('div#2g_connect_error').hide();
+									}, function(){
+										router24gGrid.grid('removeAllData');
+										$('div#router_2g_grid').addClass('no-cursor');
+										// $("div#router_2g_grid").grid('hide');
+										$('div#2g_connect_error').show();
+									}, function(){
+										router24gGrid.grid('removeAllData');
+										$('div#router_2g_grid').addClass('no-cursor');
+										// $("div#router_2g_grid").grid('hide');
+										$('div#2g_connect_error').show();
+									});
+								}, 1000);
+
+								closeTimeout = setTimeout( function(){ 			
+									clearInterval(readInterval);
+									if(close2GFlag==false){
+										routerProMsg.msg("close", enableScan('2g'));
+										$("div#router_2g_msg").msg("show", disableScan('2g'));
+									}
+								}, 5000)
+							};
+
+						}, delayTime-5000);
+					});
+				})(timeStamp2g);
+				return true;
+		}
+	}],
+	maxLines: 10,
+	columns: [      
+        {
+            text: '',
+            xtype: 'html',
+            dataIndex: "name",
+            width: 40,
+            renderer: function(value, dd){
+                return '<div class="radio-icon"></div>';
+            }
+        },
+        {
+            text: $.su.CHAR.GRID.ID, 
+            xtype: "rownumberer",
+            width:40
+        },
+		{
+			text: $.su.CHAR.CONNECT.SSID,
+			dataIndex: "ssid",
+			width: 270,
+            renderer: function(value, index ,data){
+                return $.su.func.escapeHtml(data.ssid);
+            }
+		},{
+			text: $.su.CHAR.CONNECT.SIGNAL,
+			dataIndex: "signal",
+			width: 60,
+			renderer: function(data, index){
+				switch(data){
+					case '1':
+						return '<span class="singal-1"></span>';
+                    case '2':
+                        return '<span class="singal-2"></span>';
+					case '3':
+						return '<span class="singal-3"></span>';
+                    case '4':
+                        return '<span class="singal-4"></span>';
+					case '5':
+						return '<span class="singal-5"></span>';
+				}
+			}
+		},{
+			text: $.su.CHAR.CONNECT.MAC,
+			dataIndex: "mac",
+			width: 200
+		},{
+			text: $.su.CHAR.CONNECT.SECURITY,
+			dataIndex: "security",
+            renderer: function(value, index, data){
+                if(value == 'none'){
+                    return '<span class="ssid-unsecured"></span>';
+                }else{
+                    return '<span class="ssid-secured"></span>';
+                }
+            }
+		}		
+	]
+}).on("ev_load", function(e, arr){
+	var me = $(this);
+	$(arr).each(function(index,data){
+		if(data.security.toLowerCase() == "wpa/wpa2-enterprise")
+		{
+			me.grid("disableRow", index);
+		}
+	})
+	
+});
+
+router24gGrid.delegate("tr.grid-content-tr", "click", function(e){
+	var key = $(this).attr('data-key');
+
+	if(key!=undefined){
+		var data = router24gStore.getData(key);
+		if(data.security.toLowerCase() == "wpa/wpa2-enterprise"){
+			return;
+		}
+
+	    $('div.radio-icon').removeClass('selected');
+	    $(this).find('div.radio-icon').addClass('selected');
+
+		$("input#2g_connect_ap_ssid").textbox("setValue", data.ssid);
+		$("input#2g_connect_ap_security").combobox("setValue", data.security);
+		$("input#2g_connect_ap_password").textbox("setValue", "");
+		
+		$("div#router_2g_msg").msg("close", enableScan('2g'));		
+	}
+	
+});
+
+
+$("input#2g_connect_ap_ssid").textbox({
+	fieldLabel: $.su.CHAR.CONNECT.HOST_AP_24G,
+	labelCls: "xl",
+	cls: "inline-block",
+	maxLength: 32,
+	minLength: 0,
+	allowBlank: false,
+	autoTrim: false,
+	vtype:{
+		vtype:"utf8_lan",
+		maxLength:32
+	}
+});
+
+
+$("input#2g_connect_ap_security").combobox({
+	fieldLabel: $.su.CHAR.CONNECT.ROUTER_AP_SECURITY_24G,
+	labelCls: "xl",
+	items: [
+		{"value": "none", "name": $.su.CHAR.CONNECT.NO_SECURITY},
+		{"value": "wpa", "name": $.su.CHAR.CONNECT.WPA},
+		{"value": "wpa2", "name": $.su.CHAR.CONNECT.WPA2},
+		{"value": "wpa/wpa2", "name": $.su.CHAR.CONNECT.WPA_WPA2},
+		{"value": "wep", "name": $.su.CHAR.CONNECT.WEP}
+	]
+}).on('ev_change', function(event, oldValue, newValue){
+	$("input#2g_connect_ap_password").textbox('setNormal');
+	if(newValue[0] == 'none'){
+		$("input#2g_connect_ap_password").textbox('disable');
+		$("input#2g_connect_ap_index").combobox('disable');
+		$("input#2g_connect_ap_index").combobox('hide');
+	}else if(newValue[0]=='wep'){
+		if( $("input#2g_connect_ap_enable").checkbox('getValue')[0]=='enable_2g' ){
+			$("input#2g_connect_ap_password").textbox('enable');
+			$("input#2g_connect_ap_index").combobox('enable');
+			$("input#2g_connect_ap_index").combobox('show');
+		}else{
+			$("input#2g_connect_ap_index").combobox('disable');
+			$("input#2g_connect_ap_index").combobox('show');
+		}
+	}else{
+		if( $("input#2g_connect_ap_enable").checkbox('getValue')[0]=='enable_2g' ){
+			$("input#2g_connect_ap_password").textbox('enable');
+		}
+		$("input#2g_connect_ap_index").combobox('disable');
+		$("input#2g_connect_ap_index").combobox('hide');
+	}
+});
+
+$("input#2g_connect_ap_index").combobox({
+	fieldLabel: $.su.CHAR.CONNECT.INDEX,
+	labelCls: "xl",
+	items: [
+		{"value": "1", "name": '1', selected:true},
+		{"value": "2", "name": '2'},
+		{"value": "3", "name": '3'},
+		{"value": "4", "name": '4'}
+	]
+});
+
+$("input#2g_connect_ap_password").textbox({
+	fieldLabel: $.su.CHAR.CONNECT.ROUTER_AP_PASSWORD_24G,
+	labelCls: "xl",
+	allowBlank: false,
+	vtype: 'password',
+	maxLength: 64,
+	autoTrim: false
+});
+
+////////////////////////// 5g
+$("input#5g_connect_ap_enable").checkbox({
+	fieldLabel: $.su.CHAR.CONNECT.NETWORK_5G,
+	cls: "",
+	labelCls: "xl",
+	items:[
+		{boxlabel: $.su.CHAR.CONNECT.ENABLE_5G_ROUTER_AP, inputValue:'on', uncheckedValue:'off', name:'enable_5g'}
+	]
+}).on('ev_change', function(event, oldValue, newValue){
+	if(newValue[0]=='on' || newValue[0]=='enable_5g'){
+		$("input#5g_connect_ap_ssid").textbox('enable');
+		$("input#5g_connect_ap_security").combobox('enable');
+		$('button#btn_5g_scan').button('enable');
+		if($("input#5g_connect_ap_security").combobox('getValue')!='none' ){
+			$("input#5g_connect_ap_password").textbox('enable');
+		}
+		if($("input#5g_connect_ap_security").combobox('getValue')=='wep'){
+			$("input#5g_connect_ap_index").combobox('enable');
+			$("input#5g_connect_ap_index").combobox('show');
+		}else{
+			$("input#5g_connect_ap_index").combobox('hide');
+			$("input#5g_connect_ap_index").combobox('disable');
+		}
+	}else{
+		$('button#btn_5g_scan').button('disable');
+		$("input#5g_connect_ap_ssid").textbox('disable');
+		$("input#5g_connect_ap_ssid").textbox('setNormal');
+		$("input#5g_connect_ap_security").combobox('disable');
+		$("input#5g_connect_ap_password").textbox('disable');
+		$("input#5g_connect_ap_password").textbox('setNormal');
+
+		$("input#5g_connect_ap_index").combobox('disable');
+		if($("input#5g_connect_ap_security").combobox('getValue')=='wep'){
+			$("input#5g_connect_ap_index").combobox('show');
+		}else{
+			$("input#5g_connect_ap_index").combobox('hide');
+		}
+	}
+});
+
+$("button#btn_5g_scan").button({
+	fieldLabel: '',
+	labelCls: "xl",
+	text: $.su.CHAR.CONNECT.SCAN_CHOOSE,
+	cls: "width-184",
+	handler:function(){
+		clearInterval(readInterval);
+		close5GFlag = false;
+		timeStamp5g = new Date().getTime();
+		router5gGrid.grid('removeAllData');
+
+		routerProMsg.msg("show", disableScan('5g'));
+
+		$("input#router_grid_pro").progressbar("reset");
+		
+		(function(time){
+			router5gProxy.read({scan:"true",operation:"load"},function(data){
+				if(time != timeStamp5g) return ;
+				var delayTime=((data&&data.scanTime_5g)||15)*1000;
+				$("input#router_grid_pro").progressbar("animate", 0, 1, delayTime);
+				readRequest = setTimeout(function(){
+					if(close5GFlag==false){
+						
+						readInterval = setInterval(function(){
+							$("div#router_5g_grid").grid('show');
+
+							router5gStore.load({}, function(data){
+								if(data.length==0){
+									$('div#router_5g_grid').addClass('no-cursor');
+								}else{
+									$('div#router_5g_grid').removeClass('no-cursor');
+								}
+								clearInterval(readInterval);
+								$('div#5g_connect_error').hide();
+
+							}, function(){
+								router5gGrid.grid('removeAllData');
+								$('div#router_5g_grid').addClass('no-cursor');
+								// $("div#router_5g_grid").grid('hide');
+								$('div#5g_connect_error').show();
+							}, function(){
+								router5gGrid.grid('removeAllData');
+								$('div#router_5g_grid').addClass('no-cursor');
+								// $("div#router_5g_grid").grid('hide');
+								$('div#5g_connect_error').show();
+							});
+
+
+						}, 1000);
+
+						closeTimeout = setTimeout( function(){ 
+							clearInterval(readInterval);
+							if(close5GFlag==false){
+								routerProMsg.msg("close", enableScan('5g'));
+								$("div#router_5g_msg").msg("show", disableScan('5g'));
+							}
+						}, 5000);
+					}
+
+				}, delayTime-5000);
+			});
+		})(timeStamp5g);
+	}
+});
+
+var router5gProxy = new $.su.Proxy({
+	timeout: 15000,
+	url: "./data/ap5g.json"
+});
+
+var router5gMsg = $("div#router_5g_msg").msg({
+	autoshow: false,
+	title: $.su.CHAR.CONNECT.ROUTER_AP_5G,
+	cls: 'xxl',
+	type: "window"
+}).on('ev_close', function(){
+	enableScan('5g');
+});
+
+var router5gStore = new $.su.Store({
+	proxy: router5gProxy,
+	autoLoad: false,
+	fields: [
+		{
+			name: "ssid"
+		},{
+			name: "signal"
+		},{
+			name: "mac"
+		},{
+			name: "security"
+		}
+	]
+});
+
+var router5gGrid = $("div#router_5g_grid").grid({
+	store: router5gStore,
+	maxLines: 10,	
+	operation: 
+		[{
+			xtype: "button", 
+			text: $.su.CHAR.OPERATION.RESCAN,
+			id:"refreshBtn_5g",
+			iconCls:"btn-refresh",
+			handler:function(e){
+
+				$("div#router_5g_msg").msg("close", enableScan('5g'));
+				clearInterval(readInterval);
+				close5GFlag = false;
+				timeStamp5g = new Date().getTime();
+				router5gGrid.grid('removeAllData');
+
+				routerProMsg.msg("show", disableScan('5g'));
+				$("input#router_grid_pro").progressbar("reset");
+				(function(time){
+					router5gProxy.read({scan:"true",operation:"load"},function(data){
+						if(time != timeStamp5g) return;
+						var delayTime=((data&&data.scanTime_5g)||15)*1000;
+						$("input#router_grid_pro").progressbar("animate", 0, 1, delayTime);
+						readRequest = setTimeout(function(){
+							if(close5GFlag==false){
+								readInterval = setInterval(function(){
+									$("div#router_5g_grid").grid('show');
+									router5gStore.load({}, function(data){							
+										if(data.length==0){
+											$('div#router_5g_grid').addClass('no-cursor');
+										}else{
+											$('div#router_5g_grid').removeClass('no-cursor');
+										}
+										clearInterval(readInterval);
+										$('div#5g_connect_error').hide();
+									}, function(){
+										router5gGrid.grid('removeAllData');
+										$('div#router_5g_grid').addClass('no-cursor');
+										// $("div#router_5g_grid").grid('hide');
+										$('div#5g_connect_error').show();
+									}, function(){
+										router5gGrid.grid('removeAllData');
+										$('div#router_5g_grid').addClass('no-cursor');
+										// $("div#router_5g_grid").grid('hide');
+										$('div#5g_connect_error').show();
+									});
+								}, 1000);
+
+								closeTimeout = setTimeout( function(){ 			
+									clearInterval(readInterval);
+									if(close5GFlag==false){
+										routerProMsg.msg("close", enableScan('5g'));
+										$("div#router_5g_msg").msg("show", disableScan('5g'));
+									}
+								}, 5000)
+							};
+
+						}, delayTime-5000);
+					});
+				})(timeStamp5g)
+				return true;
+		}
+	}],
+	columns: [     
+        {
+            text: '',
+            xtype: 'html',
+            dataIndex: "name",
+            width: 40,
+            renderer: function(value, dd){
+                return '<div class="radio-icon"></div>';
+            }
+        },
+        {
+            text: $.su.CHAR.GRID.ID, 
+            xtype: "rownumberer",
+            width:40
+        },
+		{
+			text: $.su.CHAR.CONNECT.SSID,
+			dataIndex: "ssid",
+			width: 270,
+            renderer: function(value, index ,data){
+                return $.su.func.escapeHtml(data.ssid);
+            }
+		},{
+			text: $.su.CHAR.CONNECT.SIGNAL,
+			dataIndex: "signal",
+			width: 60,
+			renderer: function(data, index){
+				switch(data){
+					case '1':
+						return '<span class="singal-1"></span>';
+                    case '2':
+                        return '<span class="singal-2"></span>';
+					case '3':
+						return '<span class="singal-3"></span>';
+                    case '4':
+                        return '<span class="singal-4"></span>';
+					case '5':
+						return '<span class="singal-5"></span>';
+				}
+			}
+		},{
+			text: $.su.CHAR.CONNECT.MAC,
+			dataIndex: "mac",
+			width: 200
+		},{
+			text: $.su.CHAR.CONNECT.SECURITY,
+			dataIndex: "security",
+            renderer: function(value, index, data){
+                if(value == 'none'){
+                    return '<span class="ssid-unsecured"></span>';
+                }else{
+                    return '<span class="ssid-secured"></span>';
+                }
+            }
+		}		
+	]
+}).on("ev_load", function(e, arr){
+	var me = $(this);
+	$(arr).each(function(index,data){
+		if(data.security.toLowerCase() == "wpa/wpa2-enterprise")
+		{
+			me.grid("disableRow", index);
+		}
+	})
+	
+});
+
+router5gGrid.delegate("tr.grid-content-tr", "click", function(e){
+	var key = $(this).attr('data-key');
+
+	if(key!=undefined){
+		var data = router5gStore.getData(key);
+		if(data.security.toLowerCase() == "wpa/wpa2-enterprise"){
+			return;
+		}
+	    $('div.radio-icon').removeClass('selected');
+	    $(this).find('div.radio-icon').addClass('selected');
+	    
+		$("input#5g_connect_ap_ssid").textbox("setValue", data.ssid);
+		$("input#5g_connect_ap_security").combobox("setValue", data.security);
+		$("input#5g_connect_ap_password").textbox("setValue", "");
+		
+		$("div#router_5g_msg").msg("close", enableScan('5g'));
+	}
+	
+});
+
+$("input#5g_connect_ap_ssid").textbox({
+	fieldLabel: $.su.CHAR.CONNECT.HOST_AP_5G,
+	labelCls: "xl",
+	cls: "inline-block",
+	maxLength: 32,
+	minLength: 0,
+	allowBlank: false,
+	autoTrim: false,
+	vtype:{
+		vtype:"utf8_lan",
+		maxLength:32
+	}
+});
+
+$("input#5g_connect_ap_security").combobox({
+	fieldLabel: $.su.CHAR.CONNECT.ROUTER_AP_SECURITY_5G,
+	labelCls: "xl",
+	items: [
+		{"value": "none", "name": $.su.CHAR.CONNECT.NO_SECURITY},
+		{"value": "wpa", "name": $.su.CHAR.CONNECT.WPA},
+		{"value": "wpa2", "name": $.su.CHAR.CONNECT.WPA2},
+		{"value": "wpa/wpa2", "name": $.su.CHAR.CONNECT.WPA_WPA2},
+		{"value": "wep", "name": $.su.CHAR.CONNECT.WEP}
+	]
+}).on('ev_change', function(event, oldValue, newValue){
+	$("input#5g_connect_ap_password").textbox('setNormal');
+	if(newValue[0] == 'none'){
+		$("input#5g_connect_ap_password").textbox('disable');
+		$("input#5g_connect_ap_index").combobox('disable');
+		$("input#5g_connect_ap_index").combobox('hide');
+	}else if(newValue[0]=='wep'){
+		if( $("input#5g_connect_ap_enable").checkbox('getValue')[0]=='enable_5g' ){
+			$("input#5g_connect_ap_password").textbox('enable');
+			$("input#5g_connect_ap_index").combobox('enable');
+			$("input#5g_connect_ap_index").combobox('show');
+		}else{
+			$("input#5g_connect_ap_index").combobox('disable');
+			$("input#5g_connect_ap_index").combobox('show');
+		}
+	}else{
+		if( $("input#5g_connect_ap_enable").checkbox('getValue')[0]=='enable_5g' ){
+			$("input#5g_connect_ap_password").textbox('enable');
+		}
+		$("input#5g_connect_ap_index").combobox('disable');
+		$("input#5g_connect_ap_index").combobox('hide');
+	}
+});
+
+$("input#5g_connect_ap_index").combobox({
+	fieldLabel: $.su.CHAR.CONNECT.INDEX,
+	labelCls: "xl",
+	items: [
+		{"value": "1", "name": '1', selected:true},
+		{"value": "2", "name": '2'},
+		{"value": "3", "name": '3'},
+		{"value": "4", "name": '4'}
+	]
+});
+
+$("input#5g_connect_ap_password").textbox({
+	fieldLabel: $.su.CHAR.CONNECT.ROUTER_AP_PASSWORD_5G,
+	labelCls: "xl",
+	allowBlank: false,
+	vtype: 'password',
+	maxLength: 64,
+	autoTrim: false
+});
+
+
+	$.su.app.runningModule.addUnloadHandler(function(){
+		clearInterval(readInterval);
+	});
+
+	var helpConnect = new $.su.Help({
+		container: "div#connect_help",
+		content: ['WIRELESS_CONNECT'],
+		afterLoad: function(){
+			if(show2gFlag && !show5gFlag) $(".name-container:eq(0)").hide();
+		}
+	});
+	
+});
+//]]>
+</script>
+</body>
+</html>

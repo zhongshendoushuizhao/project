@@ -1,0 +1,9 @@
+{
+	"success": true,
+	"errorcode": false,
+	"data": {
+		"date": "07/16/2015",
+		"time": "03:59:59",
+		"internet_status": "connected"
+	}
+}

@@ -1,0 +1,12 @@
+{	
+	"timeout": false,
+	"success": true,
+	"data": [
+			{"name":"TP-Link_Test_Device_1","host":"HOST", "ipaddr": "172.29.85.1", "mac":"00-19-E0-A0-34-F2", "conn_type":"0"},
+			{"name":"TP-Link_Test_Device_2","host":"NOT HOST", "ipaddr": "172.29.85.2", "mac":"00-19-E0-09-34-E1", "conn_type":"0"},
+			{"name":"TP-Link_Test_Device_3","host":"NOT HOST", "ipaddr": "172.29.85.3", "mac":"00-19-E0-C0-B1-EE", "conn_type":"0"},
+			{"name":"TP-Link_Test_Device_4","host":"NOT HOST", "ipaddr": "172.29.85.4", "mac":"00-19-E0-CC-B2-34", "conn_type":"0"},
+			{"name":"TP-Link_Test_Device_5","host":"NOT HOST", "ipaddr": "172.29.85.5", "mac":"00-19-E0-90-B3-C4", "conn_type":"0"}
+	]
+			
+}

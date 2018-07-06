@@ -1,0 +1,25 @@
+{
+	"success": true,
+	"errorcode":"20014",
+	"data": {
+		"ap_connect_ssid_2g": "2g ssid name",
+		"ap_connect_security_2g": "2g security",
+		"ap_connect_password_2g": "2g password",
+		"ap_connect_ssid_5g": "5g ssid name",
+		"ap_connect_security_5g": "5g security",
+		"ap_connect_password_5g": "5g password",
+
+		"wireless_radio_2g": "on",
+		"wireless_hide_ssid_2g": "off",
+		"wireless_ssid_2g": "wireless 2g ssid",
+		"wireless_security_2g": "wireless 2g security",
+		"wireless_password_2g": "wireless 2g password",
+
+		"wireless_radio_5g": "on",
+		"wireless_hide_ssid_5g": "off",
+		"wireless_ssid_5g": "wireless 5g ssid",
+		"wireless_security_5g": "wireless 5g security",
+		"wireless_password_5g": "wireless 5g password"
+
+	}
+}

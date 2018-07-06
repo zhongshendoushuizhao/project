@@ -1,0 +1,13 @@
+{
+	"success": true,
+	"errorcode": "timeout",
+	"data": {
+
+		"lan_type": "static",
+		"lan_ip": "192.168.0.254",
+		"lan_mask": "255.255.255.0",
+		"lan_gw": "192.168.0.1",
+		"old_ipaddr": "192.168.0.1",
+		"eth_to_wifi_band": "off"
+	}
+}

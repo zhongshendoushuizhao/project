@@ -1,0 +1,12 @@
+{
+	"timeout": false,
+	"success": true,
+	"data": [
+		{ "type": "2.4GHz", "name": "TP-Link_Test_Device_1", "mac": "74-D4-35-A1-87-50" },
+		{ "type": "2.4GHz", "name": "TP-Link_Test_Device_2", "mac": "A1-D4-C8-B1-09-45" },
+		{ "type": "5GHz", "name": "TP-Link_Test_Device_3", "mac": "C2-43-E5-42-D5-68" },
+		{ "type": "5GHz", "name": "TP-Link_Test_Device_4", "mac": "9E-3A-D3-32-EF-90" },
+		{ "type": "Wired", "name": "TP-Link_Test_Device_5", "mac": "9A-34-7F-4C-B3-70" },
+		{ "type": "Wired", "name": "TP-Link_Test_Device_6", "mac": "00-14-78-B1-09-45" }
+	]
+}

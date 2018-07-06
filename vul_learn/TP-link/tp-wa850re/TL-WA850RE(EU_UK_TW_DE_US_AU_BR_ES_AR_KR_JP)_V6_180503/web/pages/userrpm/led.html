@@ -1,0 +1,368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>LED</title>
+</head>
+
+<body>
+
+<div class="func-container">
+	<div id="led_control">
+
+		<form id="led_status_form">
+
+			<input id="night_mode_status" name="night_mode"/>
+
+			<div>
+
+				<input id="schedule_start_hour" name="start_hour"/>
+				<span>:</span>
+				<input id="schedule_start_min" name="start_min"/>
+
+				<span class="time-seperate">-</span>
+
+				<input id="schedule_end_hour" name="end_hour"/>
+				<span>:</span>
+				<input id="schedule_end_min" name="end_min"/>
+			</div>
+			<!-- <p id="note" class="note first-line"></p> -->
+			<p class="note">
+				<span class="title note-title"></span>
+				<span class="text" id="led_tip"></span>
+			</p>
+		</form>
+	</div>
+	<div id="led_help"></div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+
+	$("div#led_control").panel({
+		title: $.su.CHAR.LED_CONTROL.TITLE,
+		collapsible: false
+	});
+	$("span.note-title").html($.su.CHAR.OPERATION.NOTE);
+	$("span#led_tip").html($.su.CHAR.LED_CONTROL.LED_TIME_SETTINGS);
+	$("#led_control").on("click","a#go-to-time",function(){
+		$.su.menu.basic.goTo("time-settings");
+	});
+	var scheduleProxy = new $.su.Proxy({
+		url: "./data/led.control.json"
+	});
+
+	$("form#led_status_form").form({
+		proxy: scheduleProxy,
+		fields: [
+			{name: "night_mode"},
+			{name: "start_hour"},
+			{name: "start_min"},
+			{name: "end_hour"},
+			{name: "end_min"}
+		],
+		submitBtn: 'default',
+		validator: function(){
+			
+			/*$('input#schedule_start_hour').combobox('setNormal');
+			$('input#schedule_end_hour').combobox('setNormal');
+			$('input#schedule_start_min').combobox('setNormal');
+			$('input#schedule_end_min').combobox('setNormal');
+			var startHour = parseInt( $('input#schedule_start_hour').combobox('getValue')[0] );
+			var startMinute = parseInt( $('input#schedule_start_min').combobox('getValue')[0] );
+
+			var endHour = parseInt( $('input#schedule_end_hour').combobox('getValue')[0] );
+			var endMinute = parseInt( $('input#schedule_end_min').combobox('getValue')[0] );
+			
+			if(startHour==endHour&&startMinute==endMinute){
+				$('input#schedule_start_hour').combobox('setError',$.su.CHAR.ERROR['00000114']);
+				$('input#schedule_end_hour').combobox('setError');
+				$('input#schedule_start_min').combobox('setError');
+				$('input#schedule_end_min').combobox('setError');
+				return false;
+			}*/
+			/*if( startHour > endHour ){
+				$('input#schedule_start_hour').combobox('setError');
+				$('input#schedule_end_hour').combobox('setError');
+				return false;
+			}else if( (startHour==endHour) && (startMinute>=endMinute) ){
+				$('input#schedule_start_min').combobox('setError');
+				$('input#schedule_end_min').combobox('setError');
+				return false;
+			}*/
+
+			return true;
+
+		}
+	});
+	function checkSame(){
+		$("form#led_status_form").find("button").button("enable");
+		$('input#schedule_start_hour').combobox('setNormal');
+		$('input#schedule_end_hour').combobox('setNormal');
+		$('input#schedule_start_min').combobox('setNormal');
+		$('input#schedule_end_min').combobox('setNormal');
+		var startHour = parseInt( $('input#schedule_start_hour').combobox('getValue')[0] );
+		var startMinute = parseInt( $('input#schedule_start_min').combobox('getValue')[0] );
+
+		var endHour = parseInt( $('input#schedule_end_hour').combobox('getValue')[0] );
+		var endMinute = parseInt( $('input#schedule_end_min').combobox('getValue')[0] );
+		
+		if(startHour==endHour&&startMinute==endMinute){
+			$("form#led_status_form").find("button").button("disable")
+			$('input#schedule_start_hour').combobox('setError',$.su.CHAR.ERROR['00000114']);
+			$('input#schedule_end_hour').combobox('setError');
+			$('input#schedule_start_min').combobox('setError');
+			$('input#schedule_end_min').combobox('setError');
+		}
+	}
+	$('input#night_mode_status').checkbox({
+		fieldLabel: null,
+		cls:"margin-right-10",
+		items:[
+			{boxlabel: $.su.CHAR.LED_CONTROL.NIGHT_MODE, inputValue:'on', uncheckedValue:'off', name:'night_mode'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		if(newValue.length == 0 || newValue[0]=='off'){
+			$('input#schedule_start_hour').combobox('disable');
+			$('input#schedule_start_min').combobox('disable');
+			$('input#schedule_end_hour').combobox('disable');
+			$('input#schedule_end_min').combobox('disable');
+		}else{
+			$('input#schedule_start_hour').combobox('enable');
+			$('input#schedule_start_min').combobox('enable');
+			$('input#schedule_end_hour').combobox('enable');
+			$('input#schedule_end_min').combobox('enable');
+		}
+	});
+
+	$('input#schedule_start_hour').combobox({
+		fieldLabel: $.su.CHAR.LED_CONTROL.LED_OFF_TIME,
+		labelCls: 's',
+		inputCls: 's',
+		errorTipsCls:"centerError",
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.LED_CONTROL.HOUR0, value:'0'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR1, value: '1'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR2, value: '2'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR3, value: '3'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR4, value: '4'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR5, value: '5'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR6, value: '6'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR7, value: '7'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR8, value: '8'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR9, value: '9'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR10, value: '10'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR11, value: '11'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR12, value: '12'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR13, value: '13'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR14, value: '14'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR15, value: '15'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR16, value: '16'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR17, value: '17'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR18, value: '18'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR19, value: '19'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR20, value: '20'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR21, value: '21'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR22, value: '22'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR23, value: '23'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame();
+	});
+
+	$('input#schedule_start_min').combobox({
+		fieldLabel: null,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.LED_CONTROL.MIN0, value:'0'},
+			{name: $.su.CHAR.LED_CONTROL.MIN1, value: '1'},
+			{name: $.su.CHAR.LED_CONTROL.MIN2, value: '2'},
+			{name: $.su.CHAR.LED_CONTROL.MIN3, value: '3'},
+			{name: $.su.CHAR.LED_CONTROL.MIN4, value: '4'},
+			{name: $.su.CHAR.LED_CONTROL.MIN5, value: '5'},
+			{name: $.su.CHAR.LED_CONTROL.MIN6, value: '6'},
+			{name: $.su.CHAR.LED_CONTROL.MIN7, value: '7'},
+			{name: $.su.CHAR.LED_CONTROL.MIN8, value: '8'},
+			{name: $.su.CHAR.LED_CONTROL.MIN9, value: '9'},
+			{name: $.su.CHAR.LED_CONTROL.MIN10, value: '10'},
+			{name: $.su.CHAR.LED_CONTROL.MIN11, value: '11'},
+			{name: $.su.CHAR.LED_CONTROL.MIN12, value: '12'},
+			{name: $.su.CHAR.LED_CONTROL.MIN13, value: '13'},
+			{name: $.su.CHAR.LED_CONTROL.MIN14, value: '14'},
+			{name: $.su.CHAR.LED_CONTROL.MIN15, value: '15'},
+			{name: $.su.CHAR.LED_CONTROL.MIN16, value: '16'},
+			{name: $.su.CHAR.LED_CONTROL.MIN17, value: '17'},
+			{name: $.su.CHAR.LED_CONTROL.MIN18, value: '18'},
+			{name: $.su.CHAR.LED_CONTROL.MIN19, value: '19'},
+			{name: $.su.CHAR.LED_CONTROL.MIN20, value: '20'},
+			{name: $.su.CHAR.LED_CONTROL.MIN21, value: '21'},
+			{name: $.su.CHAR.LED_CONTROL.MIN22, value: '22'},
+			{name: $.su.CHAR.LED_CONTROL.MIN23, value: '23'},
+			{name: $.su.CHAR.LED_CONTROL.MIN24, value: '24'},
+			{name: $.su.CHAR.LED_CONTROL.MIN25, value: '25'},
+			{name: $.su.CHAR.LED_CONTROL.MIN26, value: '26'},
+			{name: $.su.CHAR.LED_CONTROL.MIN27, value: '27'},
+			{name: $.su.CHAR.LED_CONTROL.MIN28, value: '28'},
+			{name: $.su.CHAR.LED_CONTROL.MIN29, value: '29'},
+			{name: $.su.CHAR.LED_CONTROL.MIN30, value: '30'},
+			{name: $.su.CHAR.LED_CONTROL.MIN31, value: '31'},
+			{name: $.su.CHAR.LED_CONTROL.MIN32, value: '32'},
+			{name: $.su.CHAR.LED_CONTROL.MIN33, value: '33'},
+			{name: $.su.CHAR.LED_CONTROL.MIN34, value: '34'},
+			{name: $.su.CHAR.LED_CONTROL.MIN35, value: '35'},
+			{name: $.su.CHAR.LED_CONTROL.MIN36, value: '36'},
+			{name: $.su.CHAR.LED_CONTROL.MIN37, value: '37'},
+			{name: $.su.CHAR.LED_CONTROL.MIN38, value: '38'},
+			{name: $.su.CHAR.LED_CONTROL.MIN39, value: '39'},
+			{name: $.su.CHAR.LED_CONTROL.MIN40, value: '40'},
+			{name: $.su.CHAR.LED_CONTROL.MIN41, value: '41'},
+			{name: $.su.CHAR.LED_CONTROL.MIN42, value: '42'},
+			{name: $.su.CHAR.LED_CONTROL.MIN43, value: '43'},
+			{name: $.su.CHAR.LED_CONTROL.MIN44, value: '44'},
+			{name: $.su.CHAR.LED_CONTROL.MIN45, value: '45'},
+			{name: $.su.CHAR.LED_CONTROL.MIN46, value: '46'},
+			{name: $.su.CHAR.LED_CONTROL.MIN47, value: '47'},
+			{name: $.su.CHAR.LED_CONTROL.MIN48, value: '48'},
+			{name: $.su.CHAR.LED_CONTROL.MIN49, value: '49'},
+			{name: $.su.CHAR.LED_CONTROL.MIN50, value: '50'},
+			{name: $.su.CHAR.LED_CONTROL.MIN51, value: '51'},
+			{name: $.su.CHAR.LED_CONTROL.MIN52, value: '52'},
+			{name: $.su.CHAR.LED_CONTROL.MIN53, value: '53'},
+			{name: $.su.CHAR.LED_CONTROL.MIN54, value: '54'},
+			{name: $.su.CHAR.LED_CONTROL.MIN55, value: '55'},
+			{name: $.su.CHAR.LED_CONTROL.MIN56, value: '56'},
+			{name: $.su.CHAR.LED_CONTROL.MIN57, value: '57'},
+			{name: $.su.CHAR.LED_CONTROL.MIN58, value: '58'},
+			{name: $.su.CHAR.LED_CONTROL.MIN59, value: '59'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame();
+	});
+
+	$('input#schedule_end_hour').combobox({
+		fieldLabel: null,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.LED_CONTROL.HOUR0, value:'0'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR1, value: '1'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR2, value: '2'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR3, value: '3'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR4, value: '4'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR5, value: '5'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR6, value: '6'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR7, value: '7'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR8, value: '8'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR9, value: '9'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR10, value: '10'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR11, value: '11'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR12, value: '12'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR13, value: '13'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR14, value: '14'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR15, value: '15'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR16, value: '16'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR17, value: '17'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR18, value: '18'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR19, value: '19'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR20, value: '20'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR21, value: '21'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR22, value: '22'},
+			{name: $.su.CHAR.LED_CONTROL.HOUR23, value: '23'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame();
+	});
+
+	$('input#schedule_end_min').combobox({
+		fieldLabel: null,
+		inputCls: 's',
+		cls: 'inline-block',
+		items:[
+			{name: $.su.CHAR.LED_CONTROL.MIN0, value:'0'},
+			{name: $.su.CHAR.LED_CONTROL.MIN1, value: '1'},
+			{name: $.su.CHAR.LED_CONTROL.MIN2, value: '2'},
+			{name: $.su.CHAR.LED_CONTROL.MIN3, value: '3'},
+			{name: $.su.CHAR.LED_CONTROL.MIN4, value: '4'},
+			{name: $.su.CHAR.LED_CONTROL.MIN5, value: '5'},
+			{name: $.su.CHAR.LED_CONTROL.MIN6, value: '6'},
+			{name: $.su.CHAR.LED_CONTROL.MIN7, value: '7'},
+			{name: $.su.CHAR.LED_CONTROL.MIN8, value: '8'},
+			{name: $.su.CHAR.LED_CONTROL.MIN9, value: '9'},
+			{name: $.su.CHAR.LED_CONTROL.MIN10, value: '10'},
+			{name: $.su.CHAR.LED_CONTROL.MIN11, value: '11'},
+			{name: $.su.CHAR.LED_CONTROL.MIN12, value: '12'},
+			{name: $.su.CHAR.LED_CONTROL.MIN13, value: '13'},
+			{name: $.su.CHAR.LED_CONTROL.MIN14, value: '14'},
+			{name: $.su.CHAR.LED_CONTROL.MIN15, value: '15'},
+			{name: $.su.CHAR.LED_CONTROL.MIN16, value: '16'},
+			{name: $.su.CHAR.LED_CONTROL.MIN17, value: '17'},
+			{name: $.su.CHAR.LED_CONTROL.MIN18, value: '18'},
+			{name: $.su.CHAR.LED_CONTROL.MIN19, value: '19'},
+			{name: $.su.CHAR.LED_CONTROL.MIN20, value: '20'},
+			{name: $.su.CHAR.LED_CONTROL.MIN21, value: '21'},
+			{name: $.su.CHAR.LED_CONTROL.MIN22, value: '22'},
+			{name: $.su.CHAR.LED_CONTROL.MIN23, value: '23'},
+			{name: $.su.CHAR.LED_CONTROL.MIN24, value: '24'},
+			{name: $.su.CHAR.LED_CONTROL.MIN25, value: '25'},
+			{name: $.su.CHAR.LED_CONTROL.MIN26, value: '26'},
+			{name: $.su.CHAR.LED_CONTROL.MIN27, value: '27'},
+			{name: $.su.CHAR.LED_CONTROL.MIN28, value: '28'},
+			{name: $.su.CHAR.LED_CONTROL.MIN29, value: '29'},
+			{name: $.su.CHAR.LED_CONTROL.MIN30, value: '30'},
+			{name: $.su.CHAR.LED_CONTROL.MIN31, value: '31'},
+			{name: $.su.CHAR.LED_CONTROL.MIN32, value: '32'},
+			{name: $.su.CHAR.LED_CONTROL.MIN33, value: '33'},
+			{name: $.su.CHAR.LED_CONTROL.MIN34, value: '34'},
+			{name: $.su.CHAR.LED_CONTROL.MIN35, value: '35'},
+			{name: $.su.CHAR.LED_CONTROL.MIN36, value: '36'},
+			{name: $.su.CHAR.LED_CONTROL.MIN37, value: '37'},
+			{name: $.su.CHAR.LED_CONTROL.MIN38, value: '38'},
+			{name: $.su.CHAR.LED_CONTROL.MIN39, value: '39'},
+			{name: $.su.CHAR.LED_CONTROL.MIN40, value: '40'},
+			{name: $.su.CHAR.LED_CONTROL.MIN41, value: '41'},
+			{name: $.su.CHAR.LED_CONTROL.MIN42, value: '42'},
+			{name: $.su.CHAR.LED_CONTROL.MIN43, value: '43'},
+			{name: $.su.CHAR.LED_CONTROL.MIN44, value: '44'},
+			{name: $.su.CHAR.LED_CONTROL.MIN45, value: '45'},
+			{name: $.su.CHAR.LED_CONTROL.MIN46, value: '46'},
+			{name: $.su.CHAR.LED_CONTROL.MIN47, value: '47'},
+			{name: $.su.CHAR.LED_CONTROL.MIN48, value: '48'},
+			{name: $.su.CHAR.LED_CONTROL.MIN49, value: '49'},
+			{name: $.su.CHAR.LED_CONTROL.MIN50, value: '50'},
+			{name: $.su.CHAR.LED_CONTROL.MIN51, value: '51'},
+			{name: $.su.CHAR.LED_CONTROL.MIN52, value: '52'},
+			{name: $.su.CHAR.LED_CONTROL.MIN53, value: '53'},
+			{name: $.su.CHAR.LED_CONTROL.MIN54, value: '54'},
+			{name: $.su.CHAR.LED_CONTROL.MIN55, value: '55'},
+			{name: $.su.CHAR.LED_CONTROL.MIN56, value: '56'},
+			{name: $.su.CHAR.LED_CONTROL.MIN57, value: '57'},
+			{name: $.su.CHAR.LED_CONTROL.MIN58, value: '58'},
+			{name: $.su.CHAR.LED_CONTROL.MIN59, value: '59'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		checkSame();
+	});
+
+
+	var helpLED = new $.su.Help({
+		container: "div#led_help",
+		content: ['LED_CONTROL_SETTINGS']
+	});
+
+
+});
+//]]>
+</script>	
+</body>
+</html>

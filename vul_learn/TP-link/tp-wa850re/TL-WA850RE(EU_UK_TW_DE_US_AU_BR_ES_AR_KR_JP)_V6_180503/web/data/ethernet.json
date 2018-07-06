@@ -1,0 +1,10 @@
+{
+	"success": true,
+	"errorcode": "timeout",
+	"data": {
+		"show2gFlag": "true",
+		"show5gFlag": "true",	
+
+		"eth_to_wifi_band": "5g"
+	}
+}

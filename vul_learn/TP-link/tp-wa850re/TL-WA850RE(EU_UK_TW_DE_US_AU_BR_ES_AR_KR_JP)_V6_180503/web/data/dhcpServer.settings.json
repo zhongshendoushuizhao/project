@@ -1,0 +1,15 @@
+{
+	"errCode": false,
+	"success": true,
+	"data": 
+	{	
+		"enable": "auto",
+		"ipaddr_start": "192.168.0.100",
+		"ipaddr_end": "192.168.0.199",		
+		"leasetime": "120",
+		"gateway": "192.168.0.1",
+		"domain": "192.168.0.1",
+		"pri_dns": "192.168.0.1",
+		"snd_dns": "192.168.0.1"
+	}
+}

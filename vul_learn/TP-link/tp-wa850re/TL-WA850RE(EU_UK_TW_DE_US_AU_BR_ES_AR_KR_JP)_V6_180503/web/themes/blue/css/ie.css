@@ -1,0 +1,471 @@
+@charset "utf-8";
+/* CSS Document */
+*{
+	scrollbar-arrow-color: #ffffff;
+    scrollbar-3dlight-color: #ffffff;
+    scrollbar-highlight-color: #ffffff;
+    scrollbar-shadow-color: #ffffff;
+    scrollbar-darkshadow-color: #ffffff;
+    scrollbar-face-color: #9BDCEB;
+    scrollbar-track-color: #ffffff;
+}
+div.mask{
+	filter: alpha(opacity=30);
+}
+.form-panel div.form-prompt div.bg{
+	filter: alpha(opacity=70);
+}
+div.text-container input.text-hint,
+div.text-container input.text-text{
+	line-height: 22px\0;
+}
+div.container.widget-container.button-container{
+	margin-left: 5px;
+}
+div.button-container button.button-button,
+div.button-container.submit button.button-button{
+	background: url(../img/ie-05.png) no-repeat left -326px transparent;
+	padding: 0;
+}
+div.button-container button.button-button span.text{
+	background: url(../img/ie-05.png) no-repeat right -398px transparent;
+	display: block;
+	padding: 8px 5px 7px 0;
+	margin-left: 5px;
+}
+
+/* blue btn */
+div.button-container.disabled div.button-wrap-outer button.button-button{
+	background: url(../img/ie-05.png) no-repeat left 0px transparent;
+}
+div.button-container.disabled div.button-wrap-outer button.button-button span.text{
+	background: url(../img/ie-05.png) no-repeat right -36px transparent;
+}
+
+
+div.button-container.disabled button.button-button, div.button-container.disabled button.button-button:hover, div.button-container.disabled button.button-button:active,
+div.button-container.submit.disabled button.button-button, div.button-container.submit.disabled button.button-button:hover, div.button-container.submit.disabled button.button-button:active{
+	background: url(../img/ie-05.png) no-repeat left 0px transparent;
+}
+div.button-container.disabled button.button-button span.text, div.button-container.disabled button.button-button:hover span.text, div.button-container.disabled button.button-button:active span.text,
+div.button-container.submit.disabled button.button-button span.text, div.button-container.submit.disabled button.button-button:hover span.text, div.button-container.submit.disabled button.button-button:active span.text{
+	background: url(../img/ie-05.png) no-repeat right -36px transparent;
+}
+
+div.button-container.clicked button.button-button,
+div.button-container button.button-button:hover{
+	background-color: transparent;
+	background-position: left -180px;
+}
+div.button-container.clicked button.button-button span.text,
+div.button-container button.button-button:hover span.text{
+	background-position: right -252px;
+}
+
+div.button-container.clicked button.button-button,
+div.button-container button.button-button:active{
+	background-color: transparent;
+	background-position: 1px -178px;
+}
+div.button-container.clicked button.button-button span.text,
+div.button-container button.button-button:active span.text{
+	background-position: right -252px;
+}
+
+div.wizard-container div.wizard-btn button.button-button,
+div.msg-btn-container div.button-container button.button-button, 
+div.button-container.submit button.button-button{
+	background: url(../img/ie-05.png) no-repeat left -288px transparent;
+	padding: 0;
+}
+div.wizard-container div.wizard-btn button.button-button span.text,
+div.msg-btn-container div.button-container button.button-button span.text,
+div.button-container.submit button.button-button span.text{
+	background: url(../img/ie-05.png) no-repeat right -361px transparent;
+	font-size: 14px;
+	padding: 10px 5px 9px 0;
+}
+div.wizard-container div.wizard-btn.clicked button.button-button,
+div.wizard-container div.wizard-btn button.button-button:hover,
+div.msg-btn-container div.button-container.clicked button.button-button,
+div.msg-btn-container div.button-container button.button-button:hover,
+div.button-container.submit.clicked button.button-button,
+div.button-container.submit button.button-button:hover{
+	background: url(../img/ie-05.png) no-repeat left -147px transparent;
+}
+div.wizard-container div.wizard-btn.clicked button.button-button,
+div.wizard-container div.wizard-btn button.button-button:hover,
+div.msg-btn-container div.button-container.clicked button.button-button,
+div.msg-btn-container div.button-container button.button-button:hover,
+div.button-container.submit.clicked button.button-button,
+div.button-container.submit button.button-button:hover{
+	background: url(../img/ie-05.png) no-repeat left -142px transparent;
+}
+div.wizard-container div.wizard-btn button.button-button:active,
+div.msg-btn-container div.button-container.clicked button.button-button:active,
+div.msg-btn-container div.button-container button.button-button:active,
+div.button-container.submit button.button-button:active,
+div.button-container.submit.clicked button.button-button:active{
+	background: url(../img/ie-05.png) no-repeat left -140px transparent;
+}
+div.wizard-container div.wizard-btn.clicked button.button-button span.text,
+div.wizard-container div.wizard-btn button.button-button:hover span.text,
+div.msg-btn-container div.button-container.clicked button.button-button span.text,
+div.msg-btn-container div.button-container button.button-button:hover span.text,
+div.button-container.submit.clicked button.button-button span.text,
+div.button-container.submit button.button-button:hover span.text{
+	background: url(../img/ie-05.png) no-repeat right -215px transparent;
+}
+div.wizard-container div.wizard-btn button.button-button:active span.text,
+div.msg-btn-container div.button-container.clicked button.button-button:active span.text,
+div.msg-btn-container div.button-container button.button-button:active span.text,
+div.button-container.submit button.button-button:active span.text,
+div.button-container.submit.clicked button.button-button:active span.text{
+	background: url(../img/ie-05.png) no-repeat right -215px transparent;
+}
+/*disable*/
+div.wizard-container div.wizard-btn.disabled button.button-button,
+div.wizard-container div.wizard-btn.disabled button.button-button:hover,
+div.wizard-container div.wizard-btn.disabled button.button-button:active{
+	background: url(../img/ie-05.png) no-repeat left 0px transparent;
+}
+div.wizard-container div.wizard-btn.disabled button.button-button span.text,
+div.wizard-container div.wizard-btn.disabled button.button-button:hover span.text,
+div.wizard-container div.wizard-btn.disabled button.button-button:active span.text{
+	background: url(../img/ie-05.png) no-repeat right -36px transparent;
+}
+div.msg-btn-container.disabled div.button-container button.button-button,
+div.msg-btn-container.disabled div.button-container button.button-button:hover,
+div.msg-btn-container.disabled div.button-container button.button-button:active{
+	background: url(../img/ie-05.png) no-repeat left 0px transparent;
+}
+div.msg-btn-container.disabled div.button-container button.button-button span.text, 
+div.msg-btn-container.disabled div.button-container button.button-button:hover span.text,
+div.msg-btn-container.disabled div.button-container button.button-button:active span.text{
+	background: url(../img/ie-05.png) no-repeat right -36px transparent;
+}
+
+/*button-group*/
+div.button-group-container ul.button-group-container li button.button-group-button,
+div.button-group-container.disabled ul.button-group-container li button.button-group-button{
+	border: 0px none;
+	padding: 6px 7px;
+	background-color: inherit;
+}
+div.button-group-container.on-off-container ul.button-group-container li button.button-group-button{
+	width: 47px;
+}
+div.button-group-container ul.button-group-container li button.button-group-button.fst{
+	background: url(../img/ie-05.png) no-repeat -150px -524px;
+}
+div.button-group-container ul.button-group-container li button.button-group-button.fst.selected{
+	background: url(../img/ie-05.png) no-repeat 1px -524px;
+}
+div.button-group-container ul.button-group-container li button.button-group-button.lst{
+	background: url(../img/ie-05.png) no-repeat -46px -524px;
+}
+div.button-group-container ul.button-group-container li button.button-group-button.lst.selected{
+	background: url(../img/ie-05.png) no-repeat -195px -524px;
+}
+div.button-group-container.disabled ul.button-group-container li button.button-group-button.fst{
+	background: url(../img/ie-05.png) no-repeat -150px -556px;
+}
+div.button-group-container.disabled ul.button-group-container li button.button-group-button.fst.selected{
+	background: url(../img/ie-05.png) no-repeat 1px -556px;
+}
+div.button-group-container.disabled ul.button-group-container li button.button-group-button.lst{
+	background: url(../img/ie-05.png) no-repeat -46px -556px;
+}
+div.button-group-container.disabled ul.button-group-container li button.button-group-button.lst.selected{
+	background: url(../img/ie-05.png) no-repeat -195px -556px;
+}
+/*div.button-group-container ul.button-group-container li button.button-group-button.selected{
+
+}*/
+
+/** css for style.css used in ie **/
+/*div.top-header div.top-header-wrap div.top-nav ul li{
+	width: 125px;
+}*/
+div.top-header div.top-header-wrap div.top-nav ul li a.nav{
+	min-width: 126px;
+	background-color: inherit;
+	background: url(../img/ie-05.png) no-repeat 300px -479px;
+}
+div.top-header div.top-header-wrap div.top-nav ul li a.nav:hover{
+	background-color: inherit;
+	background-position: -130px -479px;
+}
+div.top-header div.top-header-wrap div.top-nav ul li.selected a.nav{
+	background-color: inherit;
+	background-position: 0px -479px;
+}
+div.top-header div.top-control div.lan-select-container{
+	margin-left: 80px;
+}
+div.top-header div.top-control a.top-control-btn:hover{
+	background-color: inherit;
+	background: url(../img/ie-05.png) no-repeat 0px -430px;
+}
+div.wizard-container div.process-flow div.process-flow-step span.icon{
+	height: 14px;
+	width: 14px;
+	background-color: inherit;
+	background: url(../img/icons-01.png) no-repeat -219px -309px;
+}
+div.wizard-container div.process-flow div.process-flow-step.processed span.icon{
+	background-color: inherit;
+	background: url(../img/icons-01.png) no-repeat -219px -333px;
+}
+
+/*for ie msg container*/
+div.msg-container.reboot-confirm-size{
+	width: 510px;
+}
+div.msg-container.m{
+	width: 420px;
+}
+div.msg-container.l{
+	width: 544px;
+}
+div.msg-container.xl{
+	width: 735px;
+}
+div.msg-container.xxl{
+	width: 890px;
+}
+
+/**  msg box  shadow **/
+div.msg-container{
+	padding: 0;
+	background: none;
+	background-color: transparent;
+}
+div.msg-wrap{
+	background-color: #fff;
+	padding:0 10px 0 10px;
+}
+div.position-top-left, div.position-top-right, div.position-bottom-left, div.position-bottom-right{
+	position: absolute;
+	width: 17px;
+	height: 11px;
+
+	_font-size: 0;
+}
+div.position-top-left{
+	top: 3px;
+	left: 4px;
+	background: url(../img/ie-06.png) no-repeat 0px -56px;
+
+	_width: 13px;
+	_background: url(../img/ie-06.png) no-repeat 0px -55px;
+
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader (src="", enabled=true, sizingMethod=scale);
+}
+div.position-top-right{
+	top: 2px;
+	right: -1px;
+	background: url(../img/ie-06.png) no-repeat 0px -38px;
+
+	_height: 12px;
+	_background: url(../img/ie-06.png) no-repeat 0px -37px;
+
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader (src="", enabled=true, sizingMethod=scale);
+}
+div.position-bottom-left{
+	bottom: 4px;
+	left: 3px;
+	background: url(../img/ie-06.png) no-repeat 0px -76px;
+
+	_height: 10px;
+	_width: 14px;
+	_background: url(../img/ie-06.png) no-repeat 0px -77px;
+
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader (src="", enabled=true, sizingMethod=scale);
+}
+div.position-bottom-right{
+	bottom: 4px;
+	right: -1px;
+	background: url(../img/ie-06.png) no-repeat 0px -95px;
+
+	_height: 10px;
+	_background: url(../img/ie-06.png) no-repeat 0px -96px;
+
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader (src="", enabled=true, sizingMethod=scale);
+}
+div.position-top-center{
+	margin: 0 16px 0 17px;
+	height: 13px;
+	background: url(../img/ie-01.png) no-repeat right bottom;
+
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader (src="", enabled=true, sizingMethod=scale);
+}
+div.position-bottom-center{
+	margin: 0 16px 0 17px;
+	height: 14px;
+	background: url(../img/ie-01.png) no-repeat center top;
+
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader (src="", enabled=true, sizingMethod=scale);
+}
+div.position-center-left{
+	padding-left: 11px;
+	background: url(../img/ie-02.png) no-repeat left top;
+
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader (src="", enabled=true, sizingMethod=scale);
+}
+div.position-center-right{
+	padding-right: 11px;
+	background: url(../img/ie-02.png) no-repeat right top;
+
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader (src="", enabled=true, sizingMethod=scale);
+}
+a.msg-close{
+	margin: 5px 10px 0 0;
+}
+/**  help content **/
+div.help-container div.help-content-container{
+	padding: 0;
+	background: transparent;
+}
+div.help-content-wrap{
+	background-color: #fff;
+	padding: 28px 12px 38px 22px;
+}
+div.help-container div.help-content-container span.help-content-delta{
+	top: -2px;
+}
+div.help-container div.help-content-container{
+	top: 50px;
+}
+/** combobox **/
+div.combobox-container div.combobox-wrap div.combobox-list-wrap{
+	background: transparent;
+	top: 20px;
+}
+div.combobox-list-wrap div.combobox-list-content-wrap{
+	background-color: #fff;
+}
+div.combobox-list-wrap div.position-top-left, div.combobox-list-wrap div.position-bottom-left{
+	position: absolute;
+	width: 8px;
+	height: 7px;
+}
+div.combobox-list-wrap div.position-bottom-left{
+	bottom: 7px;
+	left: 9px;
+	background: url(../img/ie-06.png) no-repeat 0px -28px;
+}
+div.combobox-list-wrap div.position-top-left{
+	top: 7px;
+	left: 9px;
+	background: url(../img/ie-06.png) no-repeat 0px -10px;
+}
+div.combobox-list-wrap div.position-top-center{
+	margin: 0 3px 0 17px;
+	height: 14px;
+	background: url(../img/ie-03.png) no-repeat right bottom;
+}
+div.combobox-list-wrap div.position-bottom-center{
+	margin: 0 3px 0 17px;
+	height: 14px;
+	background: url(../img/ie-03.png) no-repeat right top;
+}
+div.combobox-list-wrap div.position-center-left{
+	padding-left: 11px;
+	background: url(../img/ie-04.png) no-repeat left top;
+}
+div.combobox-list-wrap div.position-center-right{
+	padding-right: 11px;
+	background: url(../img/ie-04.png) no-repeat right top;
+}
+div.lan-select-container div.combobox-wrap div.combobox-list-wrap{
+	top:12px !important;
+}
+div.grid-panel div.operation-container a.operation-btn{
+	vertical-align: inherit;
+}
+div.grid-panel div.panel-tbar-container div.button-container button.button-button{
+	background-image: none;
+}
+
+div.grid-panel div.panel-tbar-container div.button-container button.button-button span.text{
+	background-image: none;
+	margin: inherit;
+	padding: inherit;
+	display: inline-block;
+}
+
+div.grid-container div.grid-content-container-outer{
+	border-right: 0px none;
+}
+div.grid-container.allow-scroll div.grid-content-container-outer{
+	border-right: 1px solid #d9d9d9;
+}
+
+div.ml5{
+	margin-left: 9px;
+}
+
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap,
+div.switch-button-container a.switch-button-btn.on span.switch-button-btn-wrap,
+div.switch-button-container a.switch-button-btn.off span.switch-button-btn-wrap,
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap span.switch-button-btn-slider,
+div.switch-button-container a.switch-button-btn.disabled span.switch-button-btn-wrap span.switch-button-btn-slider{
+	background-color: transparent;
+	border: 0px none;
+}
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap{
+	background: url(../img/ie-07.png) no-repeat top left;
+	width: 58px;
+	height: 28px;
+}
+div.switch-button-container a.switch-button-btn.disabled span.switch-button-btn-wrap span.switch-button-btn-slider{
+	width: 28px;
+}
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap span.switch-button-text-wrap span.switch-button-text{
+	line-height: 28px;
+}
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap span.switch-button-text-wrap span.switch-button-text.off{
+	margin-left: 26px;
+}
+div.switch-button-container a.switch-button-btn.on span.switch-button-btn-wrap{
+	background-position: left top;
+}
+div.switch-button-container a.switch-button-btn.on.disabled span.switch-button-btn-wrap{
+	background-position: left -60px;
+}
+div.switch-button-container a.switch-button-btn.off span.switch-button-btn-wrap{
+	background-position: left -30px;
+}
+div.switch-button-container a.switch-button-btn.off.disabled span.switch-button-btn-wrap{
+	background-position: left -90px;
+}
+
+div.reboot-loading-msg{
+	margin: 30px 10px 0 -30px;
+}
+div.file-container div.file-wrap input.file-input{
+	line-height: 32px;
+}
+div.file-container div.file-wrap-outer div.file-button-container button.button-button{
+	min-width: 62px;
+}
+div.scan-progressbar div.progressbar-text{
+	display: inline;
+}
+div.scan-progressbar div.progressbar-text span.progressbar-percentage{
+	margin-right: 0px;
+	margin-left: 10px;
+}
+div#router_pro_msg{
+	min-width: 550px;
+}
+div.grid-container div.grid-content-container tr.grid-content-tr a.grid-content-btn.btn-block{
+	margin-top: -8px;
+}
+div#connect-form button#btn_2g_scan {
+    margin-left: -5px
+}
+div#connect-form button#btn_5g_scan {
+    margin-left: -5px
+}

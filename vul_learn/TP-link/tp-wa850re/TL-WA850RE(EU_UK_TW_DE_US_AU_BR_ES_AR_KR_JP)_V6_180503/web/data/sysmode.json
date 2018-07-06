@@ -1,0 +1,15 @@
+{
+	"success": true,
+	"errorcode": "",
+	"data": {
+		"support": "1",
+		"mode": "repeater",
+		"repeater_type": "0",
+		"default_ext_ssid": 1,
+		"show2gFlag": "true",
+		"show5gFlag": "true",
+
+		"pro_reboot_time": "60",
+		"pro_quicksetup_time": "60"
+	}
+}

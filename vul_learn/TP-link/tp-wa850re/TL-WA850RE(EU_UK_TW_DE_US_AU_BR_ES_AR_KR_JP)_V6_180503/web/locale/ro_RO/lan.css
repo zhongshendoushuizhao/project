@@ -1,0 +1,286 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*顶层导航栏*/
+div.top-header div.top-header-wrap h1{
+	width: 190px;
+}
+div.top-header div.top-header-wrap div.top-nav ul li a.nav{
+	max-width: 120px;
+	min-width: 120px;
+	padding: 0 5px;
+	line-height: normal;
+	word-break: normal;
+}
+div.top-header div.top-header-wrap{
+	position: relative;
+}
+div.top-header div.top-header-wrap div.top-control{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+/*顶层图标文案两行*/
+/*div.top-header div.top-control a.top-control-btn {
+	word-break: break-all;
+	height: 59px;
+}
+div.top-header div.top-control a.top-control-btn:hover {
+	background: url(../../themes/blue/img/ie-05.png) no-repeat 0px -589px\9;
+}*/
+
+/*顶层图标文案三行*/
+/*div.top-header div.top-control a.top-control-btn {
+	word-break: break-all;
+	height: 71px;
+}
+div.top-header div.top-control a.top-control-btn:hover {
+	background: url(../../themes/blue/img/ie-05.png) no-repeat -54px -589px\9;
+}*/
+
+/*侧边一级
+div.menu-container ul.menu-tree li.fst a.fst{
+    line-height: normal;
+    position: relative;
+    display: table;
+    box-sizing: border-box;
+    min-height: 50px;
+    word-break: normal;
+}
+div.menu-container ul.menu-tree li.fst a.fst span.icon{
+    position: absolute;
+    top: 50%;
+    margin-top: -11px;
+}
+div.menu-container ul.menu-tree li.fst a.fst span.text{
+    display: table-cell;
+    padding-left: 50px;
+    padding-right: 4px;
+}
+
+/*侧边二级
+div.menu-container ul.sec li.sec a.sec{
+    line-height: normal;
+    position: relative;
+    display: table;
+    min-height: 42px;
+    width: 136px;
+    word-break: normal;
+}
+div.menu-container ul.sec li.sec a.sec span.icon{
+    display: list-item;
+	list-style: disc;
+	line-height: 42px;
+}
+div.menu-container ul.sec li.sec a.sec span.text{
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 5px;
+}
+
+/*quick setup下拉框/timesetting timezone下拉框*/
+div#quicksetup-language-setting div.combobox-wrap input.combobox-text.xxxl {
+	width: 380px;
+    width: 390px\9;
+}
+div#auto_cnt div.combobox-container div.combobox-wrap input.combobox-text.xxxxl {
+	width: 380px;
+    width: 390px\9;
+}
+
+/*basic status router*/
+input#router_wireless_24g_channel{
+	width: 213px;
+}
+div#router_panel div.widget-container div.widget-fieldlabel-wrap.xxs {
+	width: 60px;
+}
+div#router_panel div.map-panel-cnt p.status-textarea-read label.xxs {
+	width: 60px;
+}
+/*printer*/
+input#printer_name{
+	width: 300px;	
+}
+/*usb_panel*/
+div#usb_panel div.widget-fieldlabel-wrap.xxs {
+	width: 115px;
+}
+
+/*switch*/
+div.switch-button-container span.switch-button-btn-wrap{
+	width: 66px;
+}
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap span.switch-button-text-wrap span.switch-button-text {
+	width:44px;
+}
+/*div.switch-button-container a.on.switch-button-btn span.switch-button-btn-wrap{
+	width: 93px\9;
+	background: url(../../themes/blue/img/ie-07.png) repeat left top\9;
+}
+div.switch-button-container a.off.switch-button-btn span.switch-button-btn-wrap{
+	width: 93px\9;
+	background: url(../../themes/blue/img/ie-07.png) repeat left -30px\9;
+}*/
+span#share-all-tips {
+	width: 345px;
+}
+input#enable_dos + div + div div.tips-content{
+	width: 230px;
+}
+span#txt-mode-tips{
+	width: 340px;
+}
+
+/*step*/
+div.steps p{
+	padding-left: 77px;
+}
+
+/*radio 过长*/
+div.widget-container div.widget-fieldlabel-wrap.l + div.widget-wrap-outer{
+    max-width: 452px;
+}
+div.widget-container div.widget-fieldlabel-wrap.m + div.widget-wrap-outer{
+    max-width: 490px;
+}
+div.widget-container div.widget-fieldlabel-wrap.s + div.widget-wrap-outer{
+    max-width: 520px;
+}
+div.widget-container div.widget-fieldlabel-wrap + div.widget-wrap-outer{
+    max-width: 520px;
+}
+div.widget-container div.widget-fieldlabel-wrap.m + div.widget-wrap-outer.progressbar-wrap-outer {
+    max-width: 600px;
+}
+
+/*advanced status wireless clients*/
+/*div.access-wired-panel h4.status span#status_access_wired_title{
+    display: inline-block;
+    height: 31px;
+    line-height: 31px;
+    height: 29px\9;
+    line-height: 29px\9;
+}
+div.access-wireless-panel h4.status span#status_access_wireless_title{
+    display: inline-block;
+    width: 80px;
+}*/
+
+/*advanced status wired/wireless*/
+label.label_status_s {
+	display: inline-block;
+	width: 97px;
+	margin-left: 2px;
+}
+
+/*parent control/qos下按钮太长导致IE下的换行*/
+/*div#own_editor div.widget-container div.widget-fieldlabel-wrap.m {
+    width: 130px;
+}
+input#method_rd + div.widget-fieldlabel-wrap.s {
+    width: 99px;
+}
+div#app_list_all_container div#device_cnt div.widget-container div.widget-fieldlabel-wrap.s {
+    width: 110px;
+}
+div#app_list_all_container div#device_cnt input.text-text.l{
+    width: 130px;
+}
+virtual server
+port triggering
+administration
+*/
+
+/*timesetting 下拉框*/
+input#start_month + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.xs{
+	width: 82px;
+}
+input#end_month + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.xs{
+	width: 82px;
+}
+input#start_week + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.xs{
+	width: 50px;
+}
+input#end_week + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.xs{
+	width: 50px;
+}
+input#start_hour + div.combobox-wrap-outer div.combobox-wrap div.combobox-container div.combobox-wrap input.combobox-text.time_hour{
+	width: 52px;
+}
+input#end_hour + div.combobox-wrap-outer div.combobox-wrap div.combobox-container div.combobox-wrap input.combobox-text.time_hour{
+	width: 52px;
+}
+
+/*systemlog下拉框*/
+/*label#lbl_type + div.combobox-container div.combobox-wrap input.combobox-text.xl {
+	width: 230px;
+	width: 240px\9;
+}*/
+input#level + div.combobox-wrap-outer input.combobox-text.m {
+    width: 135px;
+}
+
+/*systemlog logat logevery对齐*/
+div#mail_cnt div.radio-group-wrap ul li > div.widget-wrap{
+	width: 155px;
+}
+div#mail_cnt div.radio-group-wrap ul li div.tips-content {
+	width: 140px;
+}
+div#mail_cnt div.radio-group-wrap ul li div.radio-content-wrap {
+	padding-left: 0px;
+	margin-left: 0px;
+}
+
+/*system para 2.4G/5g WLAN*/
+/*form#w24g-setting div.widget-container div.widget-fieldlabel-wrap.l{
+	width: 275px;
+}
+form#w24g-setting div.widget-container.radio-group-container div.widget-fieldlabel-wrap.l {
+width: 266px;
+}
+form#w5g-setting div.widget-container div.widget-fieldlabel-wrap.l{
+	width: 275px;
+}
+form#w5g-setting div.widget-container.radio-group-container div.widget-fieldlabel-wrap.l {
+	width: 266px;
+}*/
+
+/*syspara dos*/
+/*table#tbl_dos tr td.value div.widget-fieldlabel-wrap.xxs {
+    width: 150px;
+}
+table#tbl_dos tr td.value div.tips-content {
+    width: 160px;
+}*/
+
+/*duplex*/
+input#internet_duplex + div.widget-fieldlabel-wrap + div.combobox-wrap-outer div.combobox-wrap input.combobox-text.l {
+	width: 180px;
+}
+form#access_mode_choose div.widget-container.radio-group-container div.widget-fieldlabel-wrap.m{
+	width: 210px;
+}
+
+/* add by szz*/
+div.top-header div.top-control a.top-control-btn{
+	width: 75px;
+}
+/*div.online_black_grid */
+
+div#black_mode div#online_black_grid th.grid-header-3, div#black_mode div#online_black_grid td.grid-content-td-3 {
+    width: 105px;
+}
+div.margin-top-20 input.combobox-text{
+	width:100px !important;
+}
+div.fixed-width {
+    width: 135px !important;
+}
+#weekday_cnt,
+#white_list_weekday_cnt, 
+#black_list_weekday_cnt {
+   margin-right:-400px;
+}

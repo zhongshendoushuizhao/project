@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Region</title>
+</head>
+
+<body>
+<div class="func-container">
+	<div id="region_container">
+		<form id="region_form">
+			<input id="combo_region" name="region_country"/>
+			<input id="region_status"/>
+			<button id="region_submit" type="button"></button>
+		</form>
+		<div id="region_confirm_msg" class="">
+			<h4 class="title" id="confirm_cnt">
+				<span class="icon"></span>
+		 		<span class="text" id="region_confirm_tip"></span>
+		 	</h4>
+		</div>
+	</div>
+	
+	<div id="region_help"></div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+//region
+$("div#region_container").panel({
+	title: $.su.CHAR.BASIC.REGION_SETTING,
+	collapsible: false
+});
+
+////////// region
+
+$('#region_confirm_tip').html( $.su.CHAR.BASIC.CONFIRM_TIP);
+
+$('button#region_submit').button({
+	text: $.su.CHAR.BASIC.SAVE,
+	cls: "submit",
+	handler: function(){
+    	regionConfirmMsg.msg("show");
+	}
+});
+
+$('button#region_submit').button('disable');
+
+$("input#region_status").status({
+	proxy: null,
+	cls: "inline-block"
+});
+
+var regionConfirmMsg = $("div#region_confirm_msg").msg({
+    type: "confirm",
+    closeBtn: true,
+    cls: 'l warning',
+    okHandler: function(e){
+	//	$("form#region_form").form("submit");
+		$('button#region_submit').button('disable');
+
+    	$('input#region_status').status("setLoading");
+
+		var regionProxy = new $.su.Proxy({
+		    url: './data/regionRequest.json'
+		});
+
+		var firstFlag = false;
+
+		var regionRequest = '';
+
+		regionProxy.write({flag: firstFlag, region:$("input#combo_region").combobox('getValue')[0]}, function(data){
+			firstFlag = true;
+			$('input#region_status').status("setNormal");
+			$('button#region_submit').button('enable');
+			
+			$("form#region_form").form("prompt", true);
+
+		},function(){
+			firstFlag = true;
+
+			regionRequest = setInterval(function(){
+				regionProxy.write({flag: firstFlag, region:$("input#combo_region").combobox('getValue')[0]}, function(data){
+					firstFlag = true;
+					$('input#region_status').status("setNormal");
+					$('button#region_submit').button('enable');
+					clearInterval(regionRequest);
+					$("form#region_form").form("prompt", true);
+
+				},function(){
+					firstFlag = true;
+				}, function(){
+					firstFlag = true;
+					$('button#region_submit').button('enable');
+					$("form#region_form").form("prompt", false);
+				});
+
+			}, 5000);
+
+
+		}, function(){
+			firstFlag = true;
+
+			regionRequest = setInterval(function(){
+				regionProxy.write({flag: firstFlag, region:$("input#combo_region").combobox('getValue')[0]}, function(data){
+					firstFlag = true;
+					$('input#region_status').status("setNormal");
+					$('button#region_submit').button('enable');
+					clearInterval(regionRequest);
+					$("form#region_form").form("prompt", true);
+
+				},function(){
+					firstFlag = true;
+				}, function(){
+					firstFlag = true;
+					$('button#region_submit').button('enable');
+					$("form#region_form").form("prompt", false);
+				});
+
+			}, 5000);
+			
+		});
+    }
+});
+
+var regionItem = $.su.loadComboData("./data/region.json", {}, [
+    {
+        srcKey:"name", 
+        dstKey:"name", 
+        func:function(src, para){
+            return para[src];
+        }, 
+        para:$.su.CHAR.REGION
+    },
+    {srcKey:"value", dstKey:"value"},
+], 'GET');
+
+var regionCombo = $("input#combo_region").combobox({
+    fieldLabel: $.su.CHAR.BASIC.REGION,
+    labelCls: "s",
+    inputCls:"xxxl",
+    items: [],
+    noneSelectedRemind: true,
+    noneSelectedText: $.su.CHAR.BASIC.NONE_REGION_TIP,
+	cls: "inline-block"
+}).on("ev_change", function(){
+	// console.log(156)
+	$('button#region_submit').button('enable');
+});
+
+regionCombo.combobox("loadData",regionItem);
+regionCombo.combobox('disable');
+$('button#region_submit').button('disable');
+
+var regionProxy = new $.su.Proxy({
+    url: './data/regionRequest.json'
+});
+
+$("form#region_form").form({
+	proxy: regionProxy,
+	fields: [
+		{name: "region_country", mapping: "region_country"}			
+	],
+	autoLoad: true,
+	submitBtn: false
+}).on('ev_loadData', function(event, data){
+	if(data.country_lock == false){
+		regionCombo.combobox('enable');
+		// console.log(178)
+		if(data.region_country!=''){
+			$('button#region_submit').button('enable');
+		}
+	}else{
+		regionCombo.combobox('disable');
+		$('button#region_submit').button('disable');
+	}
+	
+	if(data.show2gFlag=='true' && data.show5gFlag=='true'){
+		$('div#map_wrap').removeClass('basic-2g-only');
+		$('div#map_wrap').removeClass('basic-5g-only');
+	}else if(data.show2gFlag=='true' && data.show5gFlag=='false'){
+		$('div#map_wrap').addClass('basic-2g-only');
+		$('div#repeater_wireless_5g').remove();
+		$('div#wireless_24g').addClass('selected');
+	}else if(data.show2gFlag=='false' && data.show5gFlag=='true'){
+		$('div#map_wrap').addClass('basic-5g-only');
+		$('div#repeater_wireless_24g').remove();
+		$('div#wireless_5g_panel').show();
+		$('div#wireless_24g_panel').hide();
+		$('div#wireless_5g').addClass('selected');
+	}
+	$('div#map_container').show();
+	$('div#info_container').show();
+});
+
+	var helpBasic = new $.su.Help({
+		container: "div#region_help",
+		content: ['BASIC_REGION']
+	});
+
+});
+//]]>
+</script>	
+</body>
+</html>

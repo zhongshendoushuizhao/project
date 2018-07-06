@@ -1,0 +1,1036 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Basic</title>
+<style>
+.map-block{
+	margin:10px 0 40px 30px;
+}
+.map-block:after{
+	content:"";
+	display:block;
+	height:0;
+	visibility:hidden;
+	clear:both;
+}
+#basic-mode-map{
+	margin-bottom:20px;
+}
+.high-map{
+	width: 100px;
+	float:left;
+}
+.high-icon-router{
+	width: 64px;
+    height: 64px;
+	margin: 8px 18px;
+    background: url(themes/green/img/icons.png) no-repeat -1px -287px;
+}
+.high-icon-repeater{
+	width: 64px;
+    height: 64px;
+	margin: 8px 18px;
+    background: url(themes/green/img/repeater.png) no-repeat -53px -1px;
+}
+.high-device{
+	width:80px;
+}
+.high-icon-device{
+	width: 64px;
+    height: 64px;
+	margin: 8px;
+    background: url(themes/green/img/icons.png) no-repeat -397px -221px;
+}
+.high-map p{
+    text-align: center;
+	color:#555;
+}
+.arrow{
+	width: 142px;
+    height: 58px;
+	margin:32px 8px 22px 8px;
+    background: url(themes/green/img/repeater.png) no-repeat -79px -67px;
+}
+.high-mode-block .arrow{
+    background: url(themes/green/img/repeater.png) no-repeat -223px -67px;
+}
+.arrow_info{
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	font-size:14px;
+}
+.arrow_info p{
+	color:#fff;
+}
+.arrow_info p:first-Child{
+	margin-top:12px;
+}
+.high-mode-block .arrow_info p{
+    margin-top: 17px;
+    font-size: 20px;
+}
+.map-router-p,
+.map-repeater-p,
+.map-device-p{
+	margin-top:10px;
+}
+.arrow_info .dividing-line{
+	width:56px;
+	margin: 0 auto;
+	border-top:1px solid #fff;
+}
+.device-tips{
+	float: left;
+    font-size: 8px;
+    margin: -80px 0 0 70px;
+	color:#777;
+}
+.router-tips{
+	font-size: 8px;
+    display: inline-block;
+    width: 165px;
+    text-align: center;
+    margin:10px 0 0 -30px;
+}
+.router-tips span{
+	color:#0094bc;
+}
+.bigFont span.text{
+	font-size:14px;
+}
+#high-tips:before{
+    content: "";
+    display: inline-block;
+    margin: 0 5px -3px 0px;
+    width: 18px;
+    height: 18px;
+    background: url(themes/green/img/icons.png) no-repeat -21px -21px;
+}
+#high-tips{
+	color:#0094bc;
+	position: absolute;
+    top: 1px;
+    font-size: 14px;
+    left: 160px;
+}
+.wall{    
+	background: url(themes/green/img/icons.png) no-repeat -265px -221px;
+}
+#router_2g_grid .editor-buttons-container,
+#router_5g_grid .editor-buttons-container{
+	display:none;
+}
+.submit-margin-bottom{
+	margin-bottom:20px !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="func-container">
+
+    <form id="high-form">
+	<div id="basic-container">
+		<input id="basic-mode" />
+		<div id="basic-mode-map" class="map-block">
+			<div class="high-router high-map">
+				<div class="high-icon-router"></div>
+				<p class="map-router-p"></p>
+			</div>
+			<div class="arrow high-map">
+				<div class="arrow_info">
+					<p class="g2"></p>
+					<div class="dividing-line"></div>
+					<p class="g5"></p>
+				</div>
+			</div>
+			<div class="high-repeater high-map">
+				<div class="high-icon-repeater"></div>
+				<p class="map-repeater-p"></p>
+			</div>
+			<div class="arrow high-map">
+				<div class="arrow_info">
+					<p class="g2"></p>
+					<div class="dividing-line"></div>
+					<p class="g5"></p>
+				</div>
+			</div>
+			<div class="high-device high-map">
+				<div class="high-icon-device"></div>
+				<p class="map-device-p"></p>
+				<span class="device-tips"></span>
+			</div>
+		</div>
+	</div>
+	<div id="high-speed-container">
+		<div id="high-tips" class="link"></div>
+		<input id="high-mode" />
+		
+		<div id="high-mode-map5" class="map-block high-mode-block">
+			<div class="high-router high-map">
+				<div class="high-icon-router"></div>
+				<p class="map-router-p"></p>
+				<span class="router-tips"></span>
+			</div>
+			<div class="arrow high-map">
+				<div class="arrow_info">
+					<p class="g5"></p>
+				</div>
+			</div>
+			<div class="high-repeater high-map">
+				<div class="high-icon-repeater"></div>
+				<p class="map-repeater-p"></p>
+			</div>
+			<div class="arrow high-map">
+				<div class="arrow_info">
+					<p class="g2"></p>
+				</div>
+			</div>
+			<div class="high-device high-map">
+				<div class="high-icon-device"></div>
+				<p class="map-device-p"></p>
+				<span class="device-tips"></span>
+			</div>
+		</div>
+		
+		<div id="high-mode-map2" class="map-block high-mode-block">
+			<div class="high-router high-map">
+				<div class="high-icon-router"></div>
+				<p class="map-router-p"></p>
+			</div>
+			<div class="arrow high-map">
+				<div class="arrow_info">
+					<p class="g2"></p>
+				</div>
+			</div>
+			<div class="high-repeater high-map">
+				<div class="high-icon-repeater"></div>
+				<p class="map-repeater-p"></p>
+			</div>
+			<div class="arrow high-map">
+				<div class="arrow_info">
+					<p class="g5"></p>
+				</div>
+			</div>
+			<div class="high-device high-map">
+				<div class="high-icon-device"></div>
+				<p class="map-device-p"></p>
+				<span class="device-tips"></span>
+			</div>
+		</div>
+		
+	</div>
+		<input id="high-tmp" name="mode" class="hidden"/>
+	<button id="high-submit"></button>
+	</form>
+	<div id="submit_comfirm">		
+		<h4 class="title">
+			<span class="icon"></span>
+	 		<span class="text" id="submit_comfirm_content"></span>
+	 	</h4>
+	</div>
+	<div id="router_pro_msg">
+		<p id="router_pro_text" class="reboot-progressbar-text"></p>
+		<input id="router_grid_pro"/>
+	</div>
+	
+	<div id="router_2g_msg">
+		<div id="2g_connect_error" class="hidden">
+			<p id="2g_connect_error_tip" class="connection-error-p"></p>
+		</div>
+		<div id="router_2g_grid" class="quicksetup-grid"></div>
+	</div>
+	<div id="router_2g_editor">
+		<input id="editor_2g_ssid" name="ssid"/>
+		<input id="editor_2g_password" name="password"/>
+		<button type="button" id="2g_connect"></button>
+	</div>
+
+	<div id="router_5g_msg">
+		<div id="5g_connect_error" class="hidden">
+			<p id="5g_connect_error_tip" class="connection-error-p"></p>
+		</div>
+		<div id="router_5g_grid" class="quicksetup-grid"></div>
+	</div>
+	<div id="router_5g_editor">
+		<input id="editor_5g_ssid" name="ssid"/>
+		<input id="editor_5g_password" name="password"/>
+		<button type="button" id="5g_connect"></button>
+	</div>
+</div>
+<div id="help"></div>
+<script type="text/javascript">
+//<![CDATA[
+
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+function checkPassword(securityValue, passwordValue, passwordObj){
+
+	var pattern = /^[A-Fa-f0-9]+$/;
+	var pattern_ascii = /^[A-Za-z0-9\`\~\!\@\#\$\%\^\&\*\(\)\-\=\_\+\[\]\{\}\;\:\'\"\\\|\/\?\.\,\<\>\s]+$/;
+	var patten_wpa = /^[A-Za-z0-9\`\~\!\@\#\$\&\*\(\)\-\=\_\+\[\]\{\}\;\:\'\"\\\|\/\?\.\,\<\>\%\^\ ]+$/;
+
+	if(securityValue=='wep'){
+		if( passwordValue.length==5 ){
+			if(!pattern_ascii.test(passwordValue)){
+				passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000092'].replace("%num", 5) );
+				return false;
+			}
+		}else if( passwordValue.length==13 ){
+			if(!pattern_ascii.test(passwordValue)){
+				passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000092'].replace("%num", 13) );
+				return false;
+			}
+		}else if( passwordValue.length==10 ){
+			if(!pattern.test(passwordValue)){
+				passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000093'].replace("%num", 10) );
+				return false;
+			}
+		}else if( passwordValue.length==26 ){
+			if(!pattern.test(passwordValue)){
+				passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000093'].replace("%num", 26) );
+				return false;
+			}
+		}else{
+			passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000090']);
+			return false;
+		}
+	}else if(securityValue=='wpa' || securityValue=='wpa2' || securityValue=='wpa/wpa2'){
+		if( passwordValue.length<8 || passwordValue.length>64 ){
+			passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000091']);
+			return false;
+		}else{
+			if( passwordValue.length==64 && !pattern.test(passwordValue)){
+				passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000091']);
+				return false;
+			}else if(!patten_wpa.test(passwordValue)){
+				passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000091']);
+				return false;
+			}
+		}
+	}
+	return true;
+}
+$(document).ready(function(e){
+	var HIGH_SPEED_URL = "./data/highspeed.json";
+	var REPEATER_URL = "./data/repeater.wireless.json";
+	var CONNECT_URL = "./data/connect.json";
+	
+	var ap2g=false;
+	var ap5g=false;
+	var setup="";
+	var readRequest;
+	var readInterval;
+	var ssid5gRouterAp;
+	var ssid5gSecurity;
+	var ssid2gRouterAp;
+	var ssid2gSecurity;
+	var repeaterTypeProxy = new $.su.Proxy({
+        url: REPEATER_URL
+    });	
+	var connectProxy = new $.su.Proxy({
+        url: CONNECT_URL
+    });
+	repeaterTypeProxy.read({},function(data){
+		if(data.repeater_type==1){
+			$(".high-icon-repeater").addClass("wall");
+		}else{
+			$(".high-icon-repeater").removeClass("wall");
+		}
+	})
+	connectProxy.read({},function(data){
+		if(data.enable_2g == "on"){
+			ap2g=true;
+		}
+		if(data.enable_5g == "on"){
+			ap5g=true;
+		}
+	})
+	
+	var high_proxy = new $.su.Proxy({
+		url:HIGH_SPEED_URL
+	});
+	$("div#basic-container").panel({
+		title: $.su.CHAR.HIGH_SPEED.BASIC_MODE,
+		collapsible: false
+	});
+	$("div#high-speed-container").panel({
+		title: $.su.CHAR.HIGH_SPEED.HIGH_MODE,
+		collapsible: false
+	});
+	
+	$(".map-router-p").text( $.su.CHAR.HIGH_SPEED.ROUTER);
+	$(".map-repeater-p").text( $.su.CHAR.HIGH_SPEED.REPEATER);
+	$(".map-device-p").text( $.su.CHAR.HIGH_SPEED.DEVICE);
+	$(".arrow_info p.g2").text($.su.CHAR.HIGH_SPEED.G2HZ);
+	$(".arrow_info p.g5").text($.su.CHAR.HIGH_SPEED.G5HZ);
+	$(".device-tips").text($.su.CHAR.HIGH_SPEED.G2+"/"+$.su.CHAR.HIGH_SPEED.G5);
+	$(".router-tips").html($.su.CHAR.HIGH_SPEED.ROUTER_TIPS);
+	$("#high-mode-map2 .device-tips").text($.su.CHAR.HIGH_SPEED.G5);
+	$("#high-mode-map5 .device-tips").text($.su.CHAR.HIGH_SPEED.G2);
+	$("#high-tips").text($.su.CHAR.HIGH_SPEED.HIGH_MODE_TIPS);
+	$('#router_pro_text').html($.su.CHAR.CONNECT.SCANNING);
+	$('p#2g_connect_error_tip').html($.su.CHAR.QUICK_SETUP.CONNECT_ERROR);
+	$('p#5g_connect_error_tip').html($.su.CHAR.QUICK_SETUP.CONNECT_ERROR);
+	$('form#high-form').form({
+		proxy: high_proxy,
+		fields: [
+			{name: 'mode', mapping: 'mode'}
+		],
+		autoLoad: true,
+	}).on("ev_loadData",function(e,data){
+		if(data.mode){
+			if(data.mode=="basic"){
+				$("#basic-mode").radio("setValue","basic");
+			}else{
+				$("#high-mode").radio("setValue",data.mode);
+			}
+		}
+	}).on("ev_beforeLoadData",function(e,data){
+		$("#basic-mode").radio("setValue","");
+		$("#high-mode").radio("setValue","");
+	});
+	
+	$("#high-tmp").textbox({
+	});
+	$("#basic-mode").radio({
+		fieldLabel: null,
+		cls:"bigFont",
+		items:[
+			{boxlabel: $.su.CHAR.HIGH_SPEED.BASIC_MODE_INTRO, inputValue:'basic', name:'', content:'#basic-mode-map'}
+		]
+	}).on("ev_click",function(e,v){
+		console.log(arguments)
+		$("#high-mode").radio("setValue","");
+		$("#high-tmp").textbox("setValue",v);
+	});	
+	$("#high-mode").radio({
+		fieldLabel: null,
+		cls:"bigFont",
+		items:[
+			{boxlabel: $.su.CHAR.HIGH_SPEED.HIGH_MODE_5INTRO, inputValue:'high5', name:'', content:'#high-mode-map5'},
+			{boxlabel: $.su.CHAR.HIGH_SPEED.HIGH_MODE_2INTRO, inputValue:'high2', name:'', content:'#high-mode-map2'}
+		]
+	}).on("ev_click",function(e,v){
+		$("#basic-mode").radio("setValue","");
+		$("#high-tmp").textbox("setValue",v);
+	});
+	
+	$("#high-submit").button({
+		text: $.su.CHAR.OPERATION.SAVE,
+		cls: "submit",
+		handler: function(e){
+			if($("#high-tmp").textbox("getValue").indexOf("5")>-1){
+				$("#submit_comfirm_content").html($.su.CHAR.HIGH_SPEED.MSG_COMFIRM.replace(/%num/g,"5"));
+				if(ap5g){
+					$('form#high-form').form("submit");
+				}else{
+					setup=5;
+					$("#submit_comfirm").msg("show");
+				}
+			}else if($("#high-tmp").textbox("getValue").indexOf("2")>-1){
+				$("#submit_comfirm_content").html($.su.CHAR.HIGH_SPEED.MSG_COMFIRM.replace(/%num/g,"2.4"));
+				if(ap2g){
+					$('form#high-form').form("submit");
+				}else{
+					setup=2;
+					$("#submit_comfirm").msg("show");
+				}			
+			}else{
+				setup="";
+				$("#submit_comfirm").msg("show");
+			}
+		}
+	});
+	$("#submit_comfirm").msg({
+		okHandler:function(){
+			routerProMsg.msg("show");
+			$("input#router_grid_pro").progressbar("reset");
+			$("input#router_grid_pro").progressbar("animate", 0, 1, 15000);
+			if(setup==5){
+				router5gStore.load({scan:true});
+				clearTimeout(readRequest);
+				clearInterval(readInterval);
+				readRequest = setTimeout(function(){
+					readInterval = setInterval(function(){
+						$("div#router_5g_grid").grid('show');
+						router5gStore.load({}, function(data){							
+							if(data.length==0){
+								$('div#router_5g_grid').addClass('no-cursor');
+							}else{
+								$('div#router_5g_grid').removeClass('no-cursor');
+							}
+							clearInterval(readInterval);
+							$('div#5g_connect_error').hide();
+						}, function(){
+							router5gGrid.grid('removeAllData');
+							$('div#router_5g_grid').addClass('no-cursor');
+							$('div#5g_connect_error').show();
+						}, function(){
+							router5gGrid.grid('removeAllData');
+							$('div#router_5g_grid').addClass('no-cursor');
+							$('div#5g_connect_error').show();
+						});
+					}, 1000);
+
+					var t = setTimeout( function(){ 			
+						clearInterval(readInterval);
+						if($("div#router_pro_msg").css("display")!="none"){
+							routerProMsg.msg("close");
+							$("div#router_5g_msg").msg("show");
+						}
+					}, 5000);
+				}, 10000);
+			}else{
+				router2gStore.load({scan:true});
+				clearTimeout(readRequest);
+				clearInterval(readInterval);
+				readRequest = setTimeout(function(){
+					readInterval = setInterval(function(){
+						$("div#router_2g_grid").grid('show');
+						router2gStore.load({}, function(data){							
+							if(data.length==0){
+								$('div#router_2g_grid').addClass('no-cursor');
+							}else{
+								$('div#router_2g_grid').removeClass('no-cursor');
+							}
+							clearInterval(readInterval);
+							$('div#2g_connect_error').hide();
+						}, function(){
+							router2gGrid.grid('removeAllData');
+							$('div#router_2g_grid').addClass('no-cursor');
+							$('div#2g_connect_error').show();
+						}, function(){
+							router2gGrid.grid('removeAllData');
+							$('div#router_2g_grid').addClass('no-cursor');
+							$('div#2g_connect_error').show();
+						});
+					}, 1000);
+
+					var t = setTimeout( function(){ 			
+						clearInterval(readInterval);
+						if($("div#router_pro_msg").css("display")!="none"){
+							routerProMsg.msg("close");
+							$("div#router_2g_msg").msg("show");
+						}
+					}, 5000);
+				}, 10000);
+			}
+		},
+		cancelHandler:function(){
+		},
+		cls: 'warning reboot-confirm-size',
+   	    closeBtn: true,
+		type: "alert"
+	});
+	
+	var routerProMsg = $("div#router_pro_msg").msg({
+		type: "window",
+		closeBtn: true,
+		cls: 'l'
+	}).on('ev_close', function(){
+		clearTimeout(readRequest);
+		clearInterval(readInterval);
+	});
+	$("input#router_grid_pro").progressbar({
+		cls: "scan-progressbar",
+		showPercentage: true,
+		height: 6,
+		width: 400
+	});
+	
+	var router5gProxy = new $.su.Proxy({
+		timeout: 15000,
+		url: "./data/ap5g.json"
+	});	
+	var router2gProxy = new $.su.Proxy({
+		timeout: 15000,
+		url: "./data/ap2g.json"
+	});
+
+	var router5gMsg = $("div#router_5g_msg").msg({
+		autoshow: false,
+		title: $.su.CHAR.CONNECT.ROUTER_AP_5G,
+		cls: 'xxl',
+		type: "window"
+	}).on('ev_close', function(){
+		clearTimeout(readRequest);
+		clearInterval(readInterval);
+	});
+	var router2gMsg = $("div#router_2g_msg").msg({
+		autoshow: false,
+		title: $.su.CHAR.CONNECT.ROUTER_AP_24G,
+		cls: 'xxl',
+		type: "window"
+	}).on('ev_close', function(){
+		clearTimeout(readRequest);
+		clearInterval(readInterval);
+	});
+
+	var router5gStore = new $.su.Store({
+		proxy: router5gProxy,
+		autoLoad: false,
+		fields: [
+			{
+				name: "ssid"
+			},{
+				name: "signal"
+			},{
+				name: "mac"
+			},{
+				name: "security"
+			}
+		]
+	});
+	var router2gStore = new $.su.Store({
+		proxy: router2gProxy,
+		autoLoad: false,
+		fields: [
+			{
+				name: "ssid"
+			},{
+				name: "signal"
+			},{
+				name: "mac"
+			},{
+				name: "security"
+			}
+		]
+	});
+
+	var editor5GSsid = $("input#editor_5g_ssid").textbox({
+		fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_5G_SSID,
+		labelCls: "l",
+		cls: 'inline-block',
+		autoTrim: false
+	});
+	var editor2GSsid = $("input#editor_2g_ssid").textbox({
+		fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_2G_SSID,
+		labelCls: "l",
+		cls: 'inline-block',
+		autoTrim: false
+	});
+
+	var editor5GPassword = $("input#editor_5g_password").textbox({
+		fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_PASSWORD_5G,
+		labelCls: "l",
+		autoTrim: false,
+		cls: 'inline-block',
+		maxLength: 64
+	}).on('keydown', function(data){
+		if (data.key == "Enter" || data.keyCode == 13){
+			data.preventDefault();
+		};
+	});
+	var editor2GPassword = $("input#editor_2g_password").textbox({
+		fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_PASSWORD_24G,
+		labelCls: "l",
+		autoTrim: false,
+		cls: 'inline-block',
+		maxLength: 64
+	}).on('keydown', function(data){
+		if (data.key == "Enter" || data.keyCode == 13){
+			data.preventDefault();
+		};
+	});
+	$("button#5g_connect").button({
+		text: $.su.CHAR.QUICK_SETUP.NEXT,
+		cls: "submit submit-margin-bottom inline-block",
+		handler: function(){
+			if(checkPassword(ssid5gSecurity,editor5GPassword.textbox("getValue"),editor5GPassword)){
+				$("button#5g_connect").button("disable");
+				connectProxy.write({
+					enable_5g:"on",
+					ssid_5g:editor5GSsid.textbox("getValue"),
+					security_5g:ssid5gSecurity,
+					password_5g:editor5GPassword.textbox("getValue")
+				},function(){
+					$("button#5g_connect").button("enable");
+					$("#router_5g_msg").msg("close");
+					$('form#high-form').form("submit");
+				});
+			}
+		}
+	});
+	$("button#2g_connect").button({
+		text: $.su.CHAR.QUICK_SETUP.NEXT,
+		cls: "submit submit-margin-bottom inline-block",
+		handler: function(){
+			if(checkPassword(ssid5gSecurity,editor5GPassword.textbox("getValue"),editor5GPassword)){
+				$("button#2g_connect").button("disable");
+				connectProxy.write({
+					enable_2g:"on",
+					ssid_2g:editor2GSsid.textbox("getValue"),
+					security_2g:ssid2gSecurity,
+					password_2g:editor2GPassword.textbox("getValue")
+				},function(){
+					$("button#2g_connect").button("enable");
+					$("#router_2g_msg").msg("close");
+					$('form#high-form').form("submit");
+				});
+			}
+		}
+	});
+	var router5gGrid = $("div#router_5g_grid").grid({
+		store: router5gStore,	
+		editor:{
+			content: '#router_5g_editor',
+			fields: {
+				"name": "ssid",
+				"name": "password"
+			}
+		},
+		maxLines: 10,	
+		operation: 
+		[{
+			xtype: "button", 
+			text: $.su.CHAR.OPERATION.RESCAN,
+			id:"refreshBtn_5g",
+			iconCls:"btn-refresh",
+			handler:function(e){
+
+				$("div#router_5g_msg").msg("close");
+				clearInterval(readInterval);
+				router5gGrid.grid('removeAllData');
+				routerProMsg.msg("show");
+				$("input#router_grid_pro").progressbar("reset");
+				$("input#router_grid_pro").progressbar("animate", 0, 1, 15000);
+				router5gStore.load({scan:true});
+				readRequest = setTimeout(function(){
+					readInterval = setInterval(function(){
+						$("div#router_5g_grid").grid('show');
+						router5gStore.load({}, function(data){							
+							if(data.length==0){
+								$('div#router_5g_grid').addClass('no-cursor');
+							}else{
+								$('div#router_5g_grid').removeClass('no-cursor');
+							}
+							clearInterval(readInterval);
+							$('div#5g_connect_error').hide();
+						}, function(){
+							router5gGrid.grid('removeAllData');
+							$('div#router_5g_grid').addClass('no-cursor');
+							$('div#5g_connect_error').show();
+						}, function(){
+							router5gGrid.grid('removeAllData');
+							$('div#router_5g_grid').addClass('no-cursor');
+							$('div#5g_connect_error').show();
+						});
+					}, 1000);
+
+					var t = setTimeout( function(){ 			
+						clearInterval(readInterval);
+						if($("div#router_pro_msg").css("display")!="none"){
+							routerProMsg.msg("close");
+							$("div#router_5g_msg").msg("show");
+						}
+					}, 5000);
+				}, 10000);
+			}
+		}],
+		columns: [     
+			{
+				text: '',
+				xtype: 'html',
+				dataIndex: "name",
+				width: 80,
+				renderer: function(value, dd){
+					return '<div class="radio-icon"></div>';
+				}
+			},
+			{
+				text: $.su.CHAR.GRID.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.CONNECT.SSID,
+				dataIndex: "ssid",
+				width: 270,
+				renderer: function(value, index ,data){
+					return $.su.func.escapeHtml(data.ssid);
+				}
+			},{
+				text: $.su.CHAR.CONNECT.SIGNAL,
+				dataIndex: "signal",
+				width: 100,
+				renderer: function(data, index){
+					switch(data){
+						case '1':
+							return '<span class="singal-1"></span>';
+						case '2':
+							return '<span class="singal-2"></span>';
+						case '3':
+							return '<span class="singal-3"></span>';
+						case '4':
+							return '<span class="singal-4"></span>';
+						case '5':
+							return '<span class="singal-5"></span>';
+					}
+				}
+			},{
+				text: $.su.CHAR.CONNECT.MAC,
+				dataIndex: "mac",
+				width: 200
+			},{
+				text: $.su.CHAR.CONNECT.SECURITY,
+				dataIndex: "security",
+				renderer: function(value, index, data){
+					if(value == 'none'){
+						return '<span class="ssid-unsecured"></span>';
+					}else{
+						return '<span class="ssid-secured"></span>';
+					}
+				}
+			}		
+		]
+	}).on("ev_load", function(e, arr){
+		var me = $(this);
+		$(arr).each(function(index,data){
+			if(data.security.toLowerCase() == "wpa/wpa2-enterprise")
+			{
+				me.grid("disableRow", index);
+			}
+		})
+	});
+	router5gGrid.delegate("tr.grid-content-tr", "click", function(e){
+		var key = $(this).attr("data-key");
+		var data = router5gStore.getData(key);
+
+		if(data.security.toLowerCase() == "wpa/wpa2-enterprise"){
+			return;
+		}
+		$('div#router_5g_grid div.radio-icon').removeClass('selected');
+		$(this).find('div.radio-icon').addClass('selected');
+		ssid5gRouterAp = data.ssid;
+		ssid5gSecurity =  data.security;
+		ssid5gIndex = '1';
+		var editor = router5gGrid.grid('getEditor');
+		
+		if( $(editor).editor('isEditing') ){
+			editor5GPassword.textbox('setValue', '');
+			$(editor).editor('cancelEdit');
+		}
+		if(ssid5gSecurity!='none'){
+			if(ssid5gRouterAp==''){
+				editor5GSsid.textbox('setValue', '');
+				editor5GSsid.textbox('show');
+			}else{
+				editor5GSsid.textbox('setValue', ssid5gRouterAp);
+				editor5GSsid.textbox('hide');
+			}
+			$(editor).editor('startEdit', key);
+		}else{ 
+			if(ssid5gRouterAp==''){
+				editor5GSsid.textbox('setValue', '');
+				editor5GSsid.textbox('show');
+				editor5GPassword.textbox('hide');
+				$(editor).editor('startEdit', key);
+			}else{
+				editor5GSsid.textbox('setValue', ssid5gRouterAp);
+				editor5GSsid.textbox('hide');
+				connectProxy.write({
+					enable_5g:"on",
+					ssid_5g:ssid5gRouterAp,
+					security_5g:ssid5gSecurity,
+					password_5g:editor5GPassword.textbox("getValue")
+				},function(){
+					$("#router_5g_msg").msg("close");
+					$('form#high-form').form("submit");
+				},function(){
+					
+				});
+			}
+		}
+	});
+	
+	var router2gGrid = $("div#router_2g_grid").grid({
+		store: router2gStore,	
+		editor:{
+			content: '#router_2g_editor',
+			fields: {
+				"name": "ssid",
+				"name": "password"
+			}
+		},
+		maxLines: 10,	
+		operation: 
+		[{
+			xtype: "button", 
+			text: $.su.CHAR.OPERATION.RESCAN,
+			id:"refreshBtn_2g",
+			iconCls:"btn-refresh",
+			handler:function(e){
+				$("div#router_2g_msg").msg("close");
+				clearInterval(readInterval);
+				router2gGrid.grid('removeAllData');
+				routerProMsg.msg("show");
+				$("input#router_grid_pro").progressbar("reset");
+				$("input#router_grid_pro").progressbar("animate", 0, 1, 15000);
+				router2gStore.load({scan:true});
+				readRequest = setTimeout(function(){
+					readInterval = setInterval(function(){
+						$("div#router_2g_grid").grid('show');
+						router2gStore.load({}, function(data){							
+							if(data.length==0){
+								$('div#router_2g_grid').addClass('no-cursor');
+							}else{
+								$('div#router_2g_grid').removeClass('no-cursor');
+							}
+							clearInterval(readInterval);
+							$('div#2g_connect_error').hide();
+						}, function(){
+							router2gGrid.grid('removeAllData');
+							$('div#router_2g_grid').addClass('no-cursor');
+							$('div#2g_connect_error').show();
+						}, function(){
+							router2gGrid.grid('removeAllData');
+							$('div#router_2g_grid').addClass('no-cursor');
+							$('div#2g_connect_error').show();
+						});
+					}, 1000);
+
+					var t = setTimeout( function(){ 			
+						clearInterval(readInterval);
+						if($("div#router_pro_msg").css("display")!="none"){
+							routerProMsg.msg("close");
+							$("div#router_2g_msg").msg("show");
+						}
+					}, 5000);
+				}, 10000);
+			}
+		}],
+		columns: [     
+			{
+				text: '',
+				xtype: 'html',
+				dataIndex: "name",
+				width: 80,
+				renderer: function(value, dd){
+					return '<div class="radio-icon"></div>';
+				}
+			},
+			{
+				text: $.su.CHAR.GRID.ID, 
+				xtype: "rownumberer",
+				width:40
+			},
+			{
+				text: $.su.CHAR.CONNECT.SSID,
+				dataIndex: "ssid",
+				width: 270,
+				renderer: function(value, index ,data){
+					return $.su.func.escapeHtml(data.ssid);
+				}
+			},{
+				text: $.su.CHAR.CONNECT.SIGNAL,
+				dataIndex: "signal",
+				width: 100,
+				renderer: function(data, index){
+					switch(data){
+						case '1':
+							return '<span class="singal-1"></span>';
+						case '2':
+							return '<span class="singal-2"></span>';
+						case '3':
+							return '<span class="singal-3"></span>';
+						case '4':
+							return '<span class="singal-4"></span>';
+						case '5':
+							return '<span class="singal-5"></span>';
+					}
+				}
+			},{
+				text: $.su.CHAR.CONNECT.MAC,
+				dataIndex: "mac",
+				width: 200
+			},{
+				text: $.su.CHAR.CONNECT.SECURITY,
+				dataIndex: "security",
+				renderer: function(value, index, data){
+					if(value == 'none'){
+						return '<span class="ssid-unsecured"></span>';
+					}else{
+						return '<span class="ssid-secured"></span>';
+					}
+				}
+			}		
+		]
+	}).on("ev_load", function(e, arr){
+		var me = $(this);
+		$(arr).each(function(index,data){
+			if(data.security.toLowerCase() == "wpa/wpa2-enterprise")
+			{
+				me.grid("disableRow", index);
+			}
+		})
+	});
+	
+	router2gGrid.delegate("tr.grid-content-tr", "click", function(e){
+		var key = $(this).attr("data-key");
+		var data = router2gStore.getData(key);
+
+		if(data.security.toLowerCase() == "wpa/wpa2-enterprise"){
+			return;
+		}
+		$('div#router_2g_grid div.radio-icon').removeClass('selected');
+		$(this).find('div.radio-icon').addClass('selected');
+		ssid2gRouterAp = data.ssid;
+		ssid2gSecurity =  data.security;
+		ssid2gIndex = '1';
+		var editor = router2gGrid.grid('getEditor');
+		
+		if( $(editor).editor('isEditing') ){
+			editor2GPassword.textbox('setValue', '');
+			$(editor).editor('cancelEdit');
+		}
+		if(ssid2gSecurity!='none'){
+			if(ssid2gRouterAp==''){
+				editor2GSsid.textbox('setValue', '');
+				editor2GSsid.textbox('show');
+			}else{
+				editor2GSsid.textbox('setValue', ssid2gRouterAp);
+				editor2GSsid.textbox('hide');
+			}
+			$(editor).editor('startEdit', key);
+		}else{ 
+			if(ssid2gRouterAp==''){
+				editor2GSsid.textbox('setValue', '');
+				editor2GSsid.textbox('show');
+				editor2GPassword.textbox('hide');
+				$(editor).editor('startEdit', key);
+			}else{
+				editor2GSsid.textbox('setValue', ssid2gRouterAp);
+				editor2GSsid.textbox('hide');
+				connectProxy.write({
+					enable_2g:"on",
+					ssid_2g:ssid2gRouterAp,
+					security_2g:ssid2gSecurity,
+					password_2g:editor2GPassword.textbox("getValue")
+				},function(){
+					$("#router_2g_msg").msg("close");
+					$('form#high-form').form("submit");
+				},function(){
+				
+				});
+			}
+		}
+	});
+
+	var helpExtend = new $.su.Help({
+		container: "div#help",
+		content: []
+	});
+});
+//]]>
+</script>
+</body>
+</html>
+
+

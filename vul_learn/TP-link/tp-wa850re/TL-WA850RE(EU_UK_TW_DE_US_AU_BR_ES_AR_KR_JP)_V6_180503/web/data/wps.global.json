@@ -1,0 +1,10 @@
+{
+	"timeout": false,
+	"success": true,
+	"data":{
+		"wps_enable": 1,
+        "wps_available_status": 1,
+        "wps_is_frontend": 0,
+        "wps_timeout": 10000
+	}
+}

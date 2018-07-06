@@ -1,0 +1,10 @@
+{
+	"errorcode": false,
+	"success": true,
+	"data": {
+		"wireless_24g": "connected",
+		"wireless_5g": "disconnected",
+		"router_24g": "disconnected",
+		"router_5g": "connected"
+	}
+}

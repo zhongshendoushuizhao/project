@@ -1,0 +1,25 @@
+{
+	"comments": "----实际使用中，请删除所有comments字段----",	
+	"comments": "说明：time setting页面中获取所有条目数据",
+	
+	"timeout": false,
+	"success": true,
+	"data":{
+		"dst_enable": "on",
+		"start_month": "Nov",
+		"start_week": "3rd",
+		"start_day": "Thur",
+		"start_hour": "5am",
+		"end_month": "Nov",
+		"end_week": "3rd",
+		"end_day": "Thur",
+		"end_hour": "6am",
+		"dst_status":"down"
+	}
+}
+
+
+
+
+
+		

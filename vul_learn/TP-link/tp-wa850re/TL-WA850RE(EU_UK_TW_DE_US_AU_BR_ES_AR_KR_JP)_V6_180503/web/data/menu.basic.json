@@ -1,0 +1,63 @@
+{
+	"success":	true,
+	"timeout":	false,
+	"data":	{
+		"model":	"ac2500",
+		"page":	"sittings",
+		"menu":	[
+			{
+				"name":	"basic"
+			},
+			{
+				"name":	"basic_ap"
+			}, {
+				"name":	"region"
+			}, {
+				"name":	"wireless",
+				"children":	[{
+						"name":	"wireless-setting"
+					},{
+						"name":	"operation-mode"
+					},{
+						"name":	"connect"
+					}, {
+						"name":	"extend-settings"
+					}, {
+						"name":	"access-ctr"
+					}, {
+						"name":	"wps"
+					}]
+			}, {
+				"name":	"network"
+			},{
+				"name":	"advance-setting",
+				"children":	[{
+						"name":	"power-schedule"
+					},
+					{
+						"name":	"wifi-coverage"
+					},
+					{
+						"name":	"access-ctr-adv"
+					},
+					{
+						"name":	"high-speed"
+					}]
+			},{
+				"name":	"system-tools",
+				"children":	[{
+						"name":	"time-settings_dst"
+					}, {
+						"name":	"led-control"
+					}, {
+						"name":	"firmware-upgrade"
+					}, {
+						"name":	"restore-backup"
+					}, {
+						"name":	"account"
+					}, {
+						"name":	"system-log"
+					}]
+			}]
+	}
+}

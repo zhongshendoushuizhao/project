@@ -1,0 +1,13 @@
+{	
+	"success": true,
+	"errorcode":"err_check",
+	"data":{	
+		"firmware_version": "1.0.0 Build 20150703 Rel.32899",
+		"hardware_version": "RE580D v1.0",
+		"region": "EU",
+		"ops":"upload",
+		"totaltime":"10",
+		"currenttime":"100",
+		"is_default": false
+	}
+}

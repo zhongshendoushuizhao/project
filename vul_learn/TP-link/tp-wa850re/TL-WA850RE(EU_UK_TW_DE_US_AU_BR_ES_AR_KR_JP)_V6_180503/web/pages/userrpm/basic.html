@@ -1,0 +1,1095 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Basic</title>
+</head>
+
+<body>
+<div id="status_content" class="func-container hidden">
+	
+	<div id="map_container">
+
+		<div class="basic-map-wrap">
+
+			<div id="map_internet" class="map-internet map-internet-connect">
+				<div id="map_icon_internet" class="map-icon-internet">
+					<span id="map_icon_internet_status" class="map-icon-internet-status hidden"></span>
+				</div>
+				<p id="map_internet_p"></p>
+			</div>
+
+            <div class="summary-map-horizontal summary-map-horizontal-one"></div>
+
+            <div id="map_router" class="map-router">
+                <div id="map_icon_router" class="map-icon-router"></div>
+                <p id="map_router_p"></p>
+                <div id="map_router_tip" class="map-router-tip hidden">
+                    <div id="map_router_24g" class="map-router-wrap hidden">
+                        <div id="map_router_24g_img" class="map-router-security-icon"></div>  <!-- style L1126 -->
+                        <p id="map_router_24g_text"></p>
+                    </div>
+                    <div id="map_router_bar" class="map-router-bar hidden"></div>
+                    <div id="map_router_5g" class="map-router-wrap map-router-wrap-right hidden">
+                        <div id="map_router_5g_img" class="map-router-security-icon"></div>
+                        <p id="map_router_5g_text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-map-horizontal summary-map-horizontal-two">
+            	<div id="router_rp_link" class="router-repeater-link hidden"></div>
+            </div>            
+
+            <div id="map_repeater" class="basic-router">
+                <div id="repeater_icon" class="repeater-icon selected"></div>
+                <span id="repeater_text" class="text repeater-text"></span>
+                <div id="map_repeater_tip" class="map-router-tip hidden">
+                    <div id="map_repeater_24g" class="map-router-wrap hidden">
+                        <div id="map_repeater_24g_img" class="map-router-security-icon selected"></div>  <!-- style L1126 -->
+                        <p id="map_repeater_24g_text"></p>
+                    </div>
+                    <div id="map_repeater_bar" class="map-router-bar hidden"></div>
+                    <div id="map_repeater_5g" class="map-router-wrap map-router-wrap-right hidden">
+                        <div id="map_repeater_5g_img" class="map-router-security-icon selected"></div>
+                        <p id="map_repeater_5g_text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-map-horizontal summary-map-horizontal-three"></div>
+
+            <div id="map_clients" class="map-wireless">
+				<div id="map_icon_clients" class="map-icon-wireless">
+					<span id="map_num_clients" class="map-icon-num hidden"></span>
+				</div>
+				<p id="map_clients_p"></p>
+			</div>
+
+		</div>
+
+		<p id="map_note" class="status-note"></p>
+	</div>
+	
+	<div id="info_container">
+
+		<div id="internet_panel" class="map-panel hidden">
+            <h4 class="map-panel-title">
+                <span class="map-panel-icon-internet"></span>
+                <span class="map-panel-icon-text" id="map_title_internet"></span>
+            </h4>
+            <div id="" class="map-panel-cnt">
+                <input id="internet_status" name="status"/>
+            </div>
+        </div>
+
+		<div id="router_panel" class="map-panel router-panel hidden">
+			<h4 class="map-panel-title">
+				<span class="map-panel-icon-router"></span>
+				<span class="map-panel-icon-text" id="router_24g_panel_title"></span>
+			</h4>
+			<div id="" class="map-panel-cnt">
+				<form id="router_form">
+					<div id="router_form_2g" class="router-part-half">
+						<h5 id="router_2g_title" class="map-form-title"></h5>
+						<div id="router_form_2g_inner">
+					    	<p class="status-textarea-read">
+					    		<label id="router_24g_ssid_label" class="s"></label>
+					    		<span id="router_24g_ssid" class="selectable ml"></span>
+					    	</p>
+							<!-- <input id="router_24g_ssid" name="ap_ssid_24g"/> -->
+							<input id="router_24g_singal" name="ap_signal_24g"/>
+							<input id="router_24g_mac" name="ap_mac_24g"/>
+						</div>
+					</div>
+
+					<div id="router_form_5g" class="router-part-half">
+						<h5 id="router_5g_title" class="map-form-title"></h5>
+						<div id="router_form_5g_inner">
+					    	<p class="status-textarea-read">
+					    		<label id="router_5g_ssid_label" class="s"></label>
+					    		<span id="router_5g_ssid" class="selectable ml"></span>
+					    	</p>
+							<!-- <input id="router_5g_ssid" name="ap_ssid_5g"/> -->
+							<input id="router_5g_singal" name="ap_signal_5g"/>
+							<input id="router_5g_mac" name="ap_mac_5g"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+
+		<div id="repeater_panel" class="map-panel repeater-panel">
+			<h4 class="map-panel-title">
+				<span class="map-panel-icon-repeater" id="repeater_panel_icon"></span>
+				<span class="map-panel-icon-text" id="repeater_panel_title"></span>
+			</h4>
+			<div id="" class="map-panel-cnt">
+				<form id="repeater_form">
+					<div id="repeater_wireless_24g" class="map-form-left hidden">
+						<h5 id="repeater_24g_title" class="map-form-title"></h5>
+						<!-- <input id="repeater_24g_ssid" name="repeater_ssid_24g"/> -->
+						<div id="repeater_wireless_24g_inner">
+					    	<p class="status-textarea-read">
+					    		<label id="repeater_24g_ssid_label" class="s"></label>
+					    		<span class="selectable ml" id="repeater_24g_ssid"></span>
+					    	</p>
+							<input id="repeater_24g_channel" name="repeater_channel_24g"/>
+							<input id="repeater_24g_mac" name="repeater_mac_24g"/>
+						</div>
+					</div>
+					<div id="repeater_wireless_5g" class="map-form-right hidden">
+						<h5 id="repeater_5g_title" class="map-form-title"></h5>
+						<!-- <input id="repeater_5g_ssid" name="repeater_ssid_5g"/> -->
+						<div id="repeater_wireless_5g_inner">
+					    	<p class="status-textarea-read">
+					    		<label id="repeater_5g_ssid_label" class="s"></label>
+					    		<span class="selectable ml" id="repeater_5g_ssid"></span>
+					    	</p>
+							<input id="repeater_5g_channel" name="repeater_channel_5g"/>
+							<input id="repeater_5g_mac" name="repeater_mac_5g"/>	
+						</div>			
+					</div>
+					<div id="repeater_wired" class="map-form-left">
+						<h5 id="repeater_wired_title" class="map-form-title"></h5>
+						<input id="repeater_wired_dhcp" name="wired_dhcp"/>
+						<input id="repeater_wired_ip" name="wired_ip"/>
+						<input id="repeater_wired_type" name="wired_type"/>				
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div id="wireless_24g_panel" class="map-panel hidden">
+			<h4 class="map-panel-title">
+				<span class="map-panel-icon-wireless"></span>
+				<span class="map-panel-icon-text" id="wireless_24g_panel_title"></span>
+			</h4>
+			<div id="" class="map-panel-cnt">
+				<div id="clients_grid" class="hidden"></div>
+				<div id="clients_grid_single" class="hidden"></div>
+			</div>
+		</div>
+
+	</div>
+
+	
+	<div id="summary_container"></div>
+
+	<div id="basic_help"></div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+var clientsRefresh = false;
+var routerRefresh = false;
+
+var singleFlag = false;
+
+function clearRefresh(){
+	clientsRefresh==false?1:clearInterval(clientsRefresh);
+	routerRefresh==false?1:clearInterval(routerRefresh);
+
+	$('div#map_icon_internet').removeClass('selected');
+	$('div#map_icon_router').removeClass('selected');
+	$('div#map_router_24g_img').removeClass('selected');
+	$('div#map_router_5g_img').removeClass('selected');
+	$('div#repeater_icon').removeClass('selected');
+	$('div#map_repeater_24g_img').removeClass('selected');
+	$('div#map_repeater_5g_img').removeClass('selected');
+	$('div#map_icon_clients').removeClass('selected');
+}
+
+
+function transSingal(singal, item){
+	switch(singal){
+		case '0':
+			item.textbox('setValue', $.su.CHAR.BASIC.NO_SIGNAL);
+			break;
+		case '1':
+			item.textbox('setValue', $.su.CHAR.BASIC.LOW);
+			break;
+		case '2':
+			item.textbox('setValue', $.su.CHAR.BASIC.MEDIAN);
+			break;
+		case '3':
+			item.textbox('setValue', $.su.CHAR.BASIC.HIGH);
+			break;
+	}
+}
+
+function transSecurity(singal, item){
+	switch(singal){
+		case '0':
+			item.textbox('setValue', $.su.CHAR.BASIC.NO_SECURITY);
+			break;
+		case '1':
+			item.textbox('setValue', $.su.CHAR.BASIC.WPA_PSK);
+			break;
+		case '2':
+			item.textbox('setValue', $.su.CHAR.BASIC.WPA2_PSK);
+			break;
+		case '3':
+			item.textbox('setValue', $.su.CHAR.BASIC.WPA_WPA2_PSK);
+			break;
+		case '4':
+			item.textbox('setValue', $.su.CHAR.BASIC.WEP);
+			break;
+	}
+}
+
+function transDhcp( dhcpValue,item ){
+	switch(dhcpValue){
+		case '0':
+			item.textbox('setValue', $.su.CHAR.BASIC.OFF);
+			break;
+		case '1':
+			item.textbox('setValue', $.su.CHAR.BASIC.ON);
+			break;
+		case '2':
+			item.textbox('setValue', $.su.CHAR.BASIC.AUTO_ON);
+			break;
+		case '3':
+			item.textbox('setValue', $.su.CHAR.BASIC.AUTO_OFF);
+			break;
+	}
+}
+
+function transType( typeValue, item ){
+	switch(typeValue){
+		case '0':
+			item.textbox('setValue', $.su.CHAR.BASIC.STATIC_IP);
+			break;
+		case '1':
+			item.textbox('setValue', $.su.CHAR.BASIC.DYNAMIC_IP);
+			break;
+		case '2':
+			item.textbox('setValue', $.su.CHAR.BASIC.DYNAMIC_FAILED);
+			break;
+		}
+}
+
+function transStatus( typeValue, item ){
+	switch( typeValue.toUpperCase() ){
+		case 'ENABLE':
+			item.removeClass('disabled');
+			break;
+		case 'DISABLE':
+			item.addClass('disabled');
+			break;
+		case 'CONNECTED':
+			item.removeClass('disconnected');
+			break;
+		case 'DISCONNECTED':
+			item.addClass('disconnected');
+			break;
+	}
+}
+
+function transSecurityIcon( status, item ){
+	switch(status){
+		case '-1':
+			item.addClass('not-open');
+			item.removeClass('not-secure');
+			break;
+		case '0':
+			item.addClass('not-secure');
+			item.removeClass('not-open');
+			break;
+		default:
+			item.removeClass('not-secure');
+			item.removeClass('not-open');
+	}
+}
+
+function transInternetStatus(status, item){
+	item.show();
+	switch(status.toUpperCase()){
+		case 'CONNECTED':
+			item.removeClass('map-icon-internet-disconn');
+			item.removeClass('map-icon-internet-poor-conn');
+			item.addClass('map-icon-internet-conn');
+            $("input#internet_status").textbox("setValue", $.su.CHAR.BASIC_NETWORK.CONNECTED);
+			break;
+		case 'DISCONNECTED':
+			item.removeClass('map-icon-internet-conn');
+			item.removeClass('map-icon-internet-poor-conn');
+			item.addClass('map-icon-internet-disconn');
+            $("input#internet_status").textbox("setValue", $.su.CHAR.BASIC_NETWORK.DISCONNECTED);
+			break;
+		case 'UNKNOWN':
+		case 'PROCESSING':
+			item.removeClass('map-icon-internet-conn');
+			item.removeClass('map-icon-internet-disconn');
+			item.addClass('map-icon-internet-poor-conn');
+            $("input#internet_status").textbox("setValue", $.su.CHAR.BASIC_NETWORK.UNKNOWN);
+			break;
+	}
+}
+
+$(document).ready(function(e){
+
+
+/////////// map
+
+/*$("div#map_container").panel({
+	title: $.su.CHAR.BASIC.STATUS,
+	collapsible: false
+});*/
+
+
+var routerProxy = new $.su.Proxy({
+	url: "./data/router.status.json"
+});
+
+var repeaterProxy = new $.su.Proxy({
+	url: "./data/repeater.wireless.json"
+});
+
+var clientProxy = new $.su.Proxy({
+	url: "./data/device.all.json"
+});
+
+var deviceProxy = new $.su.Proxy({
+	url: "./data/firmware.set.json"
+});
+
+$('span#repeater_text').html($.su.CHAR.BASIC.REPEATER);
+
+deviceProxy.read({}, function(data){
+	$('span#repeater_text').html(data.hardware_version.split(" ")[0]);
+});
+
+
+$('p#map_note').html($.su.CHAR.BASIC.NOTE);
+
+
+$('h5#router_2g_title').html($.su.CHAR.BASIC.WIRELESS_24GHZ);
+$('h5#router_5g_title').html($.su.CHAR.BASIC.WIRELESS_5GHZ);
+
+$('span#wireless_24g_panel_title').html($.su.CHAR.BASIC.CLIENTS);
+$('span#wireless_5g_panel_title').html($.su.CHAR.BASIC.GHZ5);
+$('span#repeater_panel_title').html($.su.CHAR.BASIC.REPEATER);
+$('span#router_24g_panel_title').html($.su.CHAR.BASIC.HOST_NETWORK);
+// $('span#router_5g_panel_title').html($.su.CHAR.BASIC.ROUTER_AP_5G);
+
+$('h5#repeater_24g_title').html($.su.CHAR.BASIC.EXTEND_24GHZ);
+$('h5#repeater_5g_title').html($.su.CHAR.BASIC.EXTEND_5GHZ);
+$('h5#repeater_wired_title').html($.su.CHAR.BASIC.WIRED);
+
+$('span#map_title_internet').html($.su.CHAR.BASIC_NETWORK.INTERNET);
+$('p#map_internet_p').html($.su.CHAR.BASIC.INTERNET);
+$('p#map_router_p').html($.su.CHAR.BASIC.ROUTER);
+$('p#map_router_24g_text').html($.su.CHAR.BASIC.GHZ24);
+$('p#map_router_5g_text').html($.su.CHAR.BASIC.GHZ5);
+$('p#map_repeater_24g_text').html($.su.CHAR.BASIC.GHZ24);
+$('p#map_repeater_5g_text').html($.su.CHAR.BASIC.GHZ5);
+$('p#map_clients_p').html($.su.CHAR.BASIC.CLIENTS);
+
+
+var clientGrid = $("div#clients_grid").grid({
+    store:{
+        fields: [
+        	{name: "type"},
+            {name: "name"},
+            {name: "mac"}
+        ],
+        autoLoad: false
+    },
+	maxLines: 5,
+	columns: [
+		{
+			text: $.su.CHAR.BASIC.TYPE,
+			dataIndex: "type",
+			width: 200,
+			renderer:function(val){
+				return $.su.CHAR.BASIC[val.toUpperCase()]?$.su.CHAR.BASIC[val.toUpperCase()]:val;
+			}
+		},
+		{
+			text: $.su.CHAR.BASIC.DEVICE_NAME,
+			dataIndex: "name",
+			width: 200
+		},
+		{
+			text: $.su.CHAR.BASIC.MAC_ADDRESS,
+			dataIndex: "mac"
+		}	
+	]
+});
+
+var clientSingleGrid = $("div#clients_grid_single").grid({
+    store:{
+        fields: [
+            {name: "name"},
+            {name: "mac"}
+        ],
+        autoLoad: false
+    },
+	maxLines: 5,
+	columns: [
+		{
+			text: $.su.CHAR.BASIC.DEVICE_NAME,
+			dataIndex: "name",
+			width: 300
+		},
+		{
+			text: $.su.CHAR.BASIC.MAC_ADDRESS,
+			dataIndex: "mac"
+		}	
+	]
+});
+
+$("form#repeater_form").form({
+	proxy: null,
+	fields: [
+		{name: "repeater_channel_24g"},
+		{name: "repeater_mac_24g"},
+		{name: "repeater_channel_5g"},
+		{name: "repeater_mac_5g"},
+		{name: "wired_ip"}
+	],
+	submitBtn: false
+});
+
+var repeaterRefresh = false;
+	
+repeaterProxy.read({}, function(data){
+
+	$("form#repeater_form").form('loadData', data);
+
+	var L2Status = false;
+	var L3Status = false;
+
+	if(data.repeater_channel_24g=="Automatic"){
+		$("#repeater_24g_channel").textbox("setValue",$.su.CHAR.BASIC.AUTO)
+	}
+	if(data.repeater_channel_5g=="Automatic"){
+		$("#repeater_5g_channel").textbox("setValue",$.su.CHAR.BASIC.AUTO)
+	}
+/*router repeater link status */
+	if(data.repeater_conn_24g=='connected' || data.repeater_conn_5g=='connected'){
+		L2Status='ok'
+	}else if(data.repeater_conn_24g=='disconnected' && data.repeater_conn_5g=='disconnected'){
+		L2Status='fail';
+	}
+
+	if(data.ipconn_status == 'connected'){
+		L3Status = 'ok';
+	}else if(data.ipconn_status == 'disconnected'){
+		L3Status = 'fail';
+	}else if(data.ipconn_status == 'unknown'){
+		L3Status = 'unknown';
+	}
+
+	if(L2Status=='ok' && ( L3Status=='fail' || L3Status=='unknown' ) ){
+		$('div#router_rp_link').show();
+		$('div#router_rp_link').removeClass('fail');
+		$('div#router_rp_link').addClass('unknown');
+	}else if(L2Status=='fail' && L3Status=='fail'){
+		$('div#router_rp_link').show();
+		$('div#router_rp_link').removeClass('unknown');
+		$('div#router_rp_link').addClass('fail');
+	}else{		
+		$('div#router_rp_link').hide();
+	}
+
+	if(data.repeater_type=='1'){
+		$('div#repeater_icon').removeClass('desk-repeater-icon');
+		$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater');
+		$('div#repeater_icon').removeClass('desk-repeater2-icon');
+		$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater2');
+		$('div#repeater_icon').addClass('repeater-icon');
+		$('span#repeater_panel_icon').addClass('map-panel-icon-repeater');
+		$('div#map_repeater_tip').css({left: '70px'});
+	}else if(data.repeater_type=='0'){
+		$('div#repeater_icon').removeClass('repeater-icon');
+		$('span#repeater_panel_icon').removeClass('map-panel-icon-repeater');
+		$('div#repeater_icon').removeClass('desk-repeater2-icon');
+		$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater2');
+		$('div#repeater_icon').addClass('desk-repeater-icon');
+		$('span#repeater_panel_icon').addClass('desk-map-panel-icon-repeater');
+		$('div#map_repeater_tip').css({left: '80px'});
+	}else if(data.repeater_type=='2'){
+		$('div#repeater_icon').removeClass('repeater-icon');
+		$('span#repeater_panel_icon').removeClass('map-panel-icon-repeater');
+		$('div#repeater_icon').removeClass('desk-repeater-icon');
+		$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater');
+		$('div#repeater_icon').addClass('desk-repeater2-icon');
+		$('span#repeater_panel_icon').addClass('desk-map-panel-icon-repeater2');
+		$('div#map_repeater_tip').css({left: '80px'});
+	}else if(data.repeater_type=='3'){
+		$('div#repeater_icon').removeClass('repeater-icon');
+		$('span#repeater_panel_icon').removeClass('map-panel-icon-repeater');
+		$('div#repeater_icon').removeClass('desk-repeater-icon');
+		$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater');
+		$('div#repeater_icon').addClass('desk-repeater-usb-icon');
+		$('span#repeater_panel_icon').addClass('desk-map-panel-icon-repeater-usb');
+		$('div#map_repeater_tip').css({left: '80px'});
+	}
+
+	if(data.repeater_enable_24g=='enable'){
+		$('div#repeater_wireless_24g_inner').show();
+		$('h5#repeater_24g_title').html($.su.CHAR.BASIC.EXTEND_24GHZ);
+		$('h5#repeater_24g_title').removeClass('disabled');
+	}else{
+		$('div#repeater_wireless_24g_inner').hide();
+		$('h5#repeater_24g_title').html($.su.CHAR.BASIC.EXTEND_24GHZ_OFF);
+		$('h5#repeater_24g_title').addClass('disabled');
+	}
+
+	if(data.repeater_enable_5g=='enable'){
+		$('div#repeater_wireless_5g_inner').show();
+		$('h5#repeater_5g_title').html($.su.CHAR.BASIC.EXTEND_5GHZ);
+		$('h5#repeater_5g_title').removeClass('disabled');
+	}else{
+		$('div#repeater_wireless_5g_inner').hide();
+		$('h5#repeater_5g_title').html($.su.CHAR.BASIC.EXTEND_5GHZ_OFF);
+		$('h5#repeater_5g_title').addClass('disabled');
+	}
+
+	transInternetStatus(data.internet_status, $('span#map_icon_internet_status'));
+
+	$('span#repeater_24g_ssid').html($.su.func.escapeHtml(data.repeater_ssid_24g));
+	$('span#repeater_5g_ssid').html($.su.func.escapeHtml(data.repeater_ssid_5g));
+
+	transDhcp( data.wired_dhcp, $('input#repeater_wired_dhcp') );
+	transType( data.wired_type, $('input#repeater_wired_type') );
+
+
+	transSecurityIcon(data.repeater_security_24g, $('div#map_repeater_24g_img'));
+	transSecurityIcon(data.repeater_security_5g, $('div#map_repeater_5g_img'));
+
+	$('div#map_repeater_tip').show();
+	
+	if (data.repeater_conn_24g != 'connected' && data.repeater_conn_5g != 'connected'){
+		$('p#map_note').show();
+	}else{
+		$('p#map_note').hide();
+	};
+
+	if(data.show2gFlag=='true' && data.show5gFlag=='true'){
+		singleFlag = false;
+		$('div#clients_grid').removeClass('hidden');
+	}else{
+		singleFlag = true;
+		$('div#clients_grid_single').removeClass('hidden');
+	}
+	if(singleFlag&&$.su.CHAR.HELP.BASIC_STATUS.CONTENT.length==19){
+		$.su.CHAR.HELP.BASIC_STATUS.CONTENT.splice(16,1);
+	}
+	var helpBasic = new $.su.Help({
+		container: "div#basic_help",
+		content: ['BASIC_STATUS']
+	});
+	
+	if(data.show2gFlag=='true'){
+		$('div#map_repeater_24g').removeClass('hidden');
+		$('div#repeater_wireless_24g').removeClass('hidden');
+	}else{
+		$('div#map_repeater_24g').addClass('hidden');
+		$('div#repeater_wireless_24g').addClass('hidden');
+	}
+	if(data.show5gFlag=='true'){
+		$('div#map_repeater_5g').removeClass('hidden');
+		$('div#repeater_wireless_5g').removeClass('hidden');
+	}else{
+		$('div#map_repeater_5g').addClass('hidden');
+		$('div#repeater_wireless_5g').addClass('hidden');
+	}
+	if(data.show2gFlag=='false' && data.show5gFlag=='true'){
+		$('div#map_repeater_5g').css({left: '0'});
+		$('div#map_repeater').css({left: '375px'});		
+	}
+	if(data.show2gFlag=='true' && data.show5gFlag=='true'){
+		$('div#map_repeater_bar').removeClass('hidden');
+		$('div#map_repeater_5g').css({left: '48px'});
+		$('div#map_repeater').css({left: '355px'});	
+	}else{
+		$('div#map_repeater_bar').addClass('hidden');
+	}
+	
+	$('div#status_content').removeClass('hidden');
+
+	repeaterRefresh = setInterval(function(){
+		if($.su.app.runningModule.name != "basic"){
+			clearInterval(repeaterRefresh);
+		}
+		repeaterProxy.read({}, function(data){
+			$("form#repeater_form").form('loadData', data);
+
+			$('span#repeater_24g_ssid').html($.su.func.escapeHtml(data.repeater_ssid_24g));
+			$('span#repeater_5g_ssid').html($.su.func.escapeHtml(data.repeater_ssid_5g));
+			if(data.repeater_channel_24g=="Automatic"){
+				$("#repeater_24g_channel").textbox("setValue",$.su.CHAR.BASIC.AUTO)
+			}
+			if(data.repeater_channel_5g=="Automatic"){
+				$("#repeater_5g_channel").textbox("setValue",$.su.CHAR.BASIC.AUTO)
+			}
+		/*router repeater link status */
+			if(data.repeater_conn_24g=='connected' || data.repeater_conn_5g=='connected'){
+				L2Status='ok'
+			}else if(data.repeater_conn_24g=='disconnected' && data.repeater_conn_5g=='disconnected'){
+				L2Status='fail';
+			}
+
+			if(data.ipconn_status == 'connected'){
+				L3Status = 'ok';
+			}else if(data.ipconn_status == 'disconnected'){
+				L3Status = 'fail';
+			}else if(data.ipconn_status == 'unknown'){
+				L3Status = 'unknown';
+			}
+
+			if(L2Status=='ok' && ( L3Status=='fail' || L3Status=='unknown' ) ){
+				$('div#router_rp_link').show();
+				$('div#router_rp_link').removeClass('fail');
+				$('div#router_rp_link').addClass('unknown');
+			}else if(L2Status=='fail' && L3Status=='fail'){
+				$('div#router_rp_link').show();
+				$('div#router_rp_link').removeClass('unknown');
+				$('div#router_rp_link').addClass('fail');
+			}else{		
+				$('div#router_rp_link').hide();
+			}
+
+			
+			if(data.repeater_type=='1'){
+				$('div#repeater_icon').removeClass('desk-repeater-icon');
+				$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater');
+				$('div#repeater_icon').removeClass('desk-repeater2-icon');
+				$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater2');
+				$('div#repeater_icon').addClass('repeater-icon');
+				$('span#repeater_panel_icon').addClass('map-panel-icon-repeater');
+				$('div#map_repeater_tip').css({left: '70px'});
+			}else if(data.repeater_type=='0'){
+				$('div#repeater_icon').removeClass('repeater-icon');
+				$('span#repeater_panel_icon').removeClass('map-panel-icon-repeater');
+				$('div#repeater_icon').removeClass('desk-repeater2-icon');
+				$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater2');
+				$('div#repeater_icon').addClass('desk-repeater-icon');
+				$('span#repeater_panel_icon').addClass('desk-map-panel-icon-repeater');
+				$('div#map_repeater_tip').css({left: '80px'});
+			}else if(data.repeater_type=='2'){
+				$('div#repeater_icon').removeClass('repeater-icon');
+				$('span#repeater_panel_icon').removeClass('map-panel-icon-repeater');
+				$('div#repeater_icon').removeClass('desk-repeater-icon');
+				$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater');
+				$('div#repeater_icon').addClass('desk-repeater2-icon');
+				$('span#repeater_panel_icon').addClass('desk-map-panel-icon-repeater2');
+				$('div#map_repeater_tip').css({left: '80px'});
+			}else if(data.repeater_type=='3'){
+				$('div#repeater_icon').removeClass('repeater-icon');
+				$('span#repeater_panel_icon').removeClass('map-panel-icon-repeater');
+				$('div#repeater_icon').removeClass('desk-repeater-icon');
+				$('span#repeater_panel_icon').removeClass('desk-map-panel-icon-repeater');
+				$('div#repeater_icon').addClass('desk-repeater-usb-icon');
+				$('span#repeater_panel_icon').addClass('desk-map-panel-icon-repeater-usb');
+				$('div#map_repeater_tip').css({left: '80px'});
+			}
+			
+			if(data.repeater_enable_24g=='enable'){
+				$('div#repeater_wireless_24g_inner').show();
+				$('h5#repeater_24g_title').html($.su.CHAR.BASIC.EXTEND_24GHZ);
+				$('h5#repeater_24g_title').removeClass('disabled');
+			}else{
+				$('div#repeater_wireless_24g_inner').hide();
+				$('h5#repeater_24g_title').html($.su.CHAR.BASIC.EXTEND_24GHZ_OFF);
+				$('h5#repeater_24g_title').addClass('disabled');
+			}
+
+			if(data.repeater_enable_5g=='enable'){
+				$('div#repeater_wireless_5g_inner').show();
+				$('h5#repeater_5g_title').html($.su.CHAR.BASIC.EXTEND_5GHZ);
+				$('h5#repeater_5g_title').removeClass('disabled');
+			}else{
+				$('div#repeater_wireless_5g_inner').hide();
+				$('h5#repeater_5g_title').html($.su.CHAR.BASIC.EXTEND_5GHZ_OFF);
+				$('h5#repeater_5g_title').addClass('disabled');
+			}
+
+			transInternetStatus(data.internet_status, $('span#map_icon_internet_status'));
+
+			transDhcp( data.wired_dhcp, $('input#repeater_wired_dhcp') );
+			transType( data.wired_type, $('input#repeater_wired_type') );
+
+			transSecurityIcon(data.repeater_security_24g, $('div#map_repeater_24g_img'));
+			transSecurityIcon(data.repeater_security_5g, $('div#map_repeater_5g_img'));
+			
+			if (data.repeater_conn_24g != 'connected' && data.repeater_conn_5g != 'connected'){
+				$('p#map_note').show();
+			}else{
+				$('p#map_note').hide();
+			};
+
+			if(data.show2gFlag=='true'){
+				$('div#map_repeater_24g').removeClass('hidden');
+				$('div#repeater_wireless_24g').removeClass('hidden');
+			}else{
+				$('div#map_repeater_24g').addClass('hidden');
+				$('div#repeater_wireless_24g').addClass('hidden');
+			}
+			if(data.show5gFlag=='true'){
+				$('div#map_repeater_5g').removeClass('hidden');
+				$('div#repeater_wireless_5g').removeClass('hidden');
+			}else{
+				$('div#map_repeater_5g').addClass('hidden');
+				$('div#repeater_wireless_5g').addClass('hidden');
+			}
+			if(data.show2gFlag=='false' && data.show5gFlag=='true'){
+				$('div#map_repeater_5g').css({left: '0'});
+				$('div#map_repeater').css({left: '375px'});		
+			}
+			if(data.show2gFlag=='true' && data.show5gFlag=='true'){
+				$('div#map_repeater_bar').removeClass('hidden');
+				$('div#map_repeater_5g').css({left: '48px'});
+				$('div#map_repeater').css({left: '355px'});	
+			}else{
+				$('div#map_repeater_bar').addClass('hidden');
+			}
+		});
+	}, 2000);
+});
+
+
+routerProxy.read({}, function(data){
+	if(data.show2gFlag=='true'){
+		$('div#map_router_24g').removeClass('hidden');
+		$('div#router_form_2g').removeClass('hidden');
+	}else{
+		$('div#map_router_24g').addClass('hidden');
+		$('div#router_form_2g').addClass('hidden');
+	}
+	if(data.show5gFlag=='true'){
+		$('div#map_router_5g').removeClass('hidden');
+		$('div#router_form_5g').removeClass('hidden');
+	}else{
+		$('div#map_router_5g').addClass('hidden');
+		$('div#router_form_5g').addClass('hidden');
+	}
+	if(data.show2gFlag=='false' && data.show5gFlag=='true'){
+		$('div#map_router_5g').css({left: '0'});
+		$('div#map_router').css({left: '165px'});		
+	}
+	if(data.show2gFlag=='true' && data.show5gFlag=='true'){
+		$('div#map_router_bar').removeClass('hidden');
+		$('div#map_router_5g').css({left: '40'});
+		$('div#map_router').css({left: '145px'});	
+	}else{
+		$('div#map_router_bar').addClass('hidden');
+	}
+
+	if(data.ap_enable_24g=='enable'){
+		$('div#router_form_2g_inner').show();
+		$('h5#router_2g_title').html($.su.CHAR.BASIC.WIRELESS_24GHZ);
+		$('h5#router_2g_title').removeClass('disabled');
+	}else{
+		$('div#router_form_2g_inner').hide();
+		$('h5#router_2g_title').html($.su.CHAR.BASIC.WIRELESS_24GHZ_OFF);
+		$('h5#router_2g_title').addClass('disabled');
+	}
+
+	if(data.ap_enable_5g=='enable'){
+		$('div#router_form_5g_inner').show();
+		$('h5#router_5g_title').html($.su.CHAR.BASIC.WIRELESS_5GHZ);
+		$('h5#router_5g_title').removeClass('disabled');
+	}else{
+		$('div#router_form_5g_inner').hide();
+		$('h5#router_5g_title').html($.su.CHAR.BASIC.WIRELESS_5GHZ_OFF);
+		$('h5#router_5g_title').addClass('disabled');
+	}
+
+	transSingal( data.ap_signal_24g, $('input#router_24g_singal') );
+	transSecurityIcon(data.ap_security_status_24g, $('div#map_router_24g_img'));
+
+	transSingal( data.ap_signal_5g, $('input#router_5g_singal') );
+	transSecurityIcon(data.ap_security_status_5g, $('div#map_router_5g_img'));
+
+	$('div#map_router_tip').removeClass('hidden');
+});	
+
+clientProxy.read({}, function(data){
+	singleFlag==true?clientSingleGrid.grid('getStore').loadData(data):clientGrid.grid('getStore').loadData(data);
+	// if(data.length!=0){
+		$('span#map_num_clients').show();
+		$('span#map_num_clients').html(data.length);
+	// }else{
+	// 	$('span#map_num_clients').hide();
+	// }
+},function(){
+	$('span#map_num_clients').show();
+	$('span#map_num_clients').html(0);
+});
+
+$('label#repeater_24g_ssid_label').html( $.su.CHAR.BASIC.SSID + ':' );
+$('label#repeater_5g_ssid_label').html( $.su.CHAR.BASIC.SSID + ':' );
+
+
+$("input#internet_status").textbox({
+    fieldLabel: $.su.CHAR.BASIC_NETWORK.INTERNET_STATUS,
+	readOnly: true
+});
+
+$("input#repeater_24g_channel").textbox({
+	fieldLabel: $.su.CHAR.BASIC.CHANNEL,
+	labelCls:"xs",
+	inputCls: 'ml',
+	readOnly: true
+});
+
+$("input#repeater_24g_mac").textbox({
+	fieldLabel: $.su.CHAR.BASIC.MAC,
+	labelCls:"xs",
+	inputCls: 'ml',
+	readOnly: true
+});
+
+$("input#repeater_5g_ssid").textbox({
+	fieldLabel: $.su.CHAR.BASIC.SSID,
+	labelCls:"xs",
+	inputCls: 'ml',
+	readOnly: true
+});
+
+$("input#repeater_5g_channel").textbox({
+	fieldLabel: $.su.CHAR.BASIC.CHANNEL,
+	labelCls:"xs",
+	inputCls: 'ml',
+	readOnly: true
+});
+
+$("input#repeater_5g_mac").textbox({
+	fieldLabel: $.su.CHAR.BASIC.MAC,
+	labelCls:"xs",
+	inputCls: 'ml',
+	readOnly: true
+});
+
+$("input#repeater_wired_dhcp").textbox({
+	fieldLabel: $.su.CHAR.BASIC.DHCP_SERVER,
+	labelCls:"xs",
+	inputCls: 'ml',
+	readOnly: true
+});
+
+$("input#repeater_wired_ip").textbox({
+	fieldLabel: $.su.CHAR.BASIC.IP_ADDRESS,
+	labelCls:"xs",
+	inputCls: 'ml',
+	readOnly: true
+});
+
+$("input#repeater_wired_type").textbox({
+	fieldLabel: $.su.CHAR.BASIC.TYPE,
+	labelCls:"xs",
+	inputCls: 'ml',
+	readOnly: true
+});
+
+
+$("form#router_form").form({
+	proxy: routerProxy,
+	fields: [
+		// {name: "ap_ssid_24g"},
+		{name: "ap_mac_24g"},
+		{name: "ap_channel_24g"},
+		// {name: "ap_ssid_5g"},
+		{name: "ap_mac_5g"},
+		{name: "ap_channel_5g"}
+	],
+	submitBtn: false
+}).on('ev_loadData', function(event, data){
+	$('span#router_24g_ssid').html($.su.func.escapeHtml(data.ap_ssid_24g));
+	$('span#router_5g_ssid').html($.su.func.escapeHtml(data.ap_ssid_5g));
+});
+
+$('label#router_24g_ssid_label').html($.su.CHAR.BASIC.SSID+':');
+/*
+$("input#router_24g_ssid").textbox({
+	fieldLabel: $.su.CHAR.BASIC.SSID,
+	labelCls: 'xxxs',
+	inputCls: 'm',
+	readOnly: true
+});
+*/
+$("input#router_24g_singal").textbox({
+	fieldLabel: $.su.CHAR.BASIC.SIGNAL,
+	labelCls: 'xs',
+	inputCls: 'ml',
+	readOnly: true,
+	cls: "signal-strength"
+});
+
+$("input#router_24g_mac").textbox({
+	fieldLabel: $.su.CHAR.BASIC.MAC,
+	labelCls: 'xs',
+	inputCls: 'ml',
+	readOnly: true
+});
+
+$('label#router_5g_ssid_label').html($.su.CHAR.BASIC.SSID+':');
+/*
+$("input#router_5g_ssid").textbox({
+	fieldLabel: $.su.CHAR.BASIC.SSID,
+	labelCls: 'xxxs',
+	inputCls: 'm',
+	readOnly: true
+});
+*/
+$("input#router_5g_singal").textbox({
+	fieldLabel: $.su.CHAR.BASIC.SIGNAL,
+	labelCls: 'xs',
+	inputCls: 'ml',
+	readOnly: true,
+	cls: "signal-strength"
+});
+
+$("input#router_5g_mac").textbox({
+	fieldLabel: $.su.CHAR.BASIC.MAC,
+	labelCls: 'xs',
+	inputCls: 'ml',
+	readOnly: true
+});
+
+$('div#map_internet').click(function(){
+	$('div#router_panel').hide();
+	$('div#wireless_24g_panel').hide();
+	$('div#repeater_panel').hide();
+	$('div#internet_panel').fadeIn(150);
+	clearRefresh();	
+	$('div#map_icon_internet').addClass('selected');
+});
+
+$('div#map_router').click(function(){
+	$('div#internet_panel').hide();
+	$('div#wireless_24g_panel').hide();
+	$('div#repeater_panel').hide();
+	$('div#router_panel').fadeIn(150);
+	clearRefresh();	
+	$('div#map_icon_router').addClass('selected');
+	$('div#map_router_24g_img').addClass('selected');
+	$('div#map_router_5g_img').addClass('selected');
+	routerRefresh = setInterval(function(){
+		if($.su.app.runningModule.name != "basic"){
+			clearInterval(routerRefresh);
+		}
+		routerProxy.read({}, function(data){
+			if(data.show2gFlag=='true'){
+				$('div#map_router_24g').removeClass('hidden');
+				$('div#router_form_2g').removeClass('hidden');
+			}else{
+				$('div#map_router_24g').addClass('hidden');
+				$('div#router_form_2g').addClass('hidden');
+			}
+			if(data.show5gFlag=='true'){
+				$('div#map_router_5g').removeClass('hidden');
+				$('div#router_form_5g').removeClass('hidden');
+			}else{
+				$('div#map_router_5g').addClass('hidden');
+				$('div#router_form_5g').addClass('hidden');
+			}
+			if(data.show2gFlag=='false' && data.show5gFlag=='true'){
+				$('div#map_router_5g').css({left: '0'});
+				$('div#map_router').css({left: '165px'});		
+			}
+			if(data.show2gFlag=='true' && data.show5gFlag=='true'){
+				$('div#map_router_bar').removeClass('hidden');
+				$('div#map_router_5g').css({left: '48px'});
+				$('div#map_router').css({left: '145px'});	
+			}else{
+				$('div#map_router_bar').addClass('hidden');
+			}
+
+			if(data.ap_enable_24g=='enable'){
+				$('div#router_form_2g_inner').show();
+				$('h5#router_2g_title').html($.su.CHAR.BASIC.WIRELESS_24GHZ);
+				$('h5#router_2g_title').removeClass('disabled');
+			}else{
+				$('div#router_form_2g_inner').hide();
+				$('h5#router_2g_title').html($.su.CHAR.BASIC.WIRELESS_24GHZ_OFF);
+				$('h5#router_2g_title').addClass('disabled');
+			}
+
+			if(data.ap_enable_5g=='enable'){
+				$('div#router_form_5g_inner').show();
+				$('h5#router_5g_title').html($.su.CHAR.BASIC.WIRELESS_5GHZ);
+				$('h5#router_5g_title').removeClass('disabled');
+			}else{
+				$('div#router_form_5g_inner').hide();
+				$('h5#router_5g_title').html($.su.CHAR.BASIC.WIRELESS_5GHZ_OFF);
+				$('h5#router_5g_title').addClass('disabled');
+			}
+
+			transSingal( data.ap_signal_24g, $('input#router_24g_singal') );
+			transSecurityIcon(data.ap_security_status_24g, $('div#map_router_24g_img'));
+
+			transSingal( data.ap_signal_5g, $('input#router_5g_singal') );
+			transSecurityIcon(data.ap_security_status_5g, $('div#map_router_5g_img'));
+
+			$('div#map_router_tip').removeClass('hidden');
+		});		
+	}, 2000);
+});
+
+$('div#map_repeater').click(function(){
+	$('div#internet_panel').hide();
+	$('div#router_panel').hide();
+	$('div#wireless_24g_panel').hide();
+	$('div#repeater_panel').fadeIn(150);
+	clearRefresh();	
+	$('div#repeater_icon').addClass('selected');
+	$('div#map_repeater_24g_img').addClass('selected');
+	$('div#map_repeater_5g_img').addClass('selected');
+});
+
+
+$('div#map_clients').click(function(){
+	$('div#internet_panel').hide();
+	$('div#wireless_5g_panel').hide();
+	$('div#router_panel').hide();
+	// $('div#router_5g_panel').hide();
+	$('div#repeater_panel').hide();
+	$('div#wireless_24g_panel').fadeIn(150);
+	clearRefresh();
+	$('div#map_icon_clients').addClass('selected');
+
+	clientsRefresh = setInterval(function(){
+		
+		if($.su.app.runningModule.name != "basic"){
+			clearInterval(clientsRefresh);
+		}
+		clientProxy.read({}, function(data){
+			singleFlag==true?clientSingleGrid.grid('getStore').loadData(data):clientGrid.grid('getStore').loadData(data);
+			// if(data.length!=0){
+				$('span#map_num_clients').show();
+				$('span#map_num_clients').html(data.length);
+			// }else{
+			// 	$('span#map_num_clients').hide();
+			// }
+		},function(){
+			singleFlag==true?clientSingleGrid.grid('removeAllData'):clientGrid.grid('removeAllData');
+			$('span#map_num_clients').html(0);
+		});
+	}, 2000);
+});
+
+	$.su.app.runningModule.addUnloadHandler(function(){
+		clearInterval(repeaterRefresh);
+		clearInterval(clientsRefresh);
+		clearInterval(routerRefresh);
+	});
+
+
+});
+//]]>
+</script>	
+</body>
+</html>

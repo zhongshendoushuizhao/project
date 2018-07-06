@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Internet</title>
+</head>
+
+<body>
+<div class="func-container">
+	 <div id="lan-ipv4">
+	 	<form id="lan-ipv4-setting">
+	    	<input type="text"  id="dhcpServer" name="enable" value=""/>
+	    	<div id="lan_fieldset">
+		    	<input type="text"  id="start_ip_address" name="ipaddr_start" value="" />
+		    	<span>-</span>
+		    	<input type="text"  id="end_ip_address" name="ipaddr_end" value="" />
+		    	<input   id="lease_time" name="leasetime" value="" />
+		    	<input   id="gateway" name="gateway" value="" />
+		    	<input   id="domain" name="domain" value="" />
+		    	<input   id="dns1" name="pri_dns" value="" />
+		    	<input   id="dns2" name="snd_dns" value="" />
+		    </div>
+	    </form>
+	 </div>
+
+
+	 <div id="checkList">
+	 	<div id="checkListGrid"></div>
+	 </div>
+
+
+	 <div id="addrReverse">
+	 	<div id="addrReverseGrid">
+	     		
+		</div>
+		<div id="addrReverse_cnt">
+			<input id="addr_macaddr" name="mac"/>
+			<input id="addr_ipaddr" name="ip"/>
+			<input id="addr_description" name="name"/>
+			<input id="enable_addr_reverse" name="enable"/>
+		</div>
+	 </div>
+
+	 <div id="dhcp_server_help"></div>
+</div>
+
+<script type="text/javascript">
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+
+	$("div.func-container").page({
+		title: $.su.CHAR.DHCP_SERVER.TITLE,
+		help: ""	//可能是个调用的id 也可能是个url
+	});
+	
+	//ipv4
+	$("div#lan-ipv4").panel({
+		title: $.su.CHAR.DHCP_SERVER.SETTINGS
+	});
+
+
+	var lanIP = 0;
+	var lanMask = 0;
+
+	var lanProxy = new $.su.Proxy({
+		url: './data/status_lan_ipv4.json'
+	});
+
+	lanProxy.read({}, function(data){
+		lanIP = data.lan_ipv4_ipaddr;
+		lanMask = data.lan_ipv4_netmask;
+	});
+
+
+	$("#lan_fieldset").fieldset({
+		fields: [
+			{name: "ipaddr_start"},
+			{name: "ipaddr_end"},
+			{name: "leasetime"},
+			{name: "gateway"},
+			{name: "domain"},
+			{name: "pri_dns"},
+			{name: "snd_dns"}
+		]
+	});
+
+	$("input#dhcpServer").radio({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.TITLE,
+		columns: 3,
+		items:[
+			{boxlabel: $.su.CHAR.DHCP_SERVER.AUTO, name:'enable', inputValue:'auto'},
+			{boxlabel: $.su.CHAR.DHCP_SERVER.ON, name:'enable', inputValue: 'on'},
+			{boxlabel: $.su.CHAR.DHCP_SERVER.OFF, name:'enable', inputValue: 'off'}
+		]
+	}).on('ev_change', function(event, oldValue, newValue){
+		if(newValue=='auto'){
+			$("#lan_fieldset").fieldset('disable');
+		}else{
+			$("#lan_fieldset").fieldset('enable');
+		}
+	});
+
+	$("input#start_ip_address").textbox({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.IP_ADDR_POOL,
+		cls: 'inline part-seperate',
+		allowBlank: false,
+		textFormat: $.su.format.ip,
+		vtype: 'ip'
+	});
+
+	$("input#end_ip_address").textbox({
+		fieldLabel: null,
+		cls: 'inline part-seperate',
+		allowBlank: false,
+		textFormat: $.su.format.ip,
+		vtype: 'ip'
+	});
+
+
+	$("input#lease_time").textbox({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.LEASETIME,
+		tips: $.su.CHAR.DHCP_SERVER.LEASENOTE,
+		inputCls: 's',
+		tipsCls: "l",
+		allowBlank: false,
+		textFormat: $.su.format.number,
+        vtype: {
+            vtype: "number",
+            max: 2880,
+            min: 1
+        }
+	});
+
+	$("input#gateway").textbox({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.GATEWAY,
+		tips: $.su.CHAR.DHCP_SERVER.OPTIONAL,
+		textFormat: $.su.format.ip,
+		vtype: {
+			vtype: 'ip',
+			allowAllZeroFlag: true
+		}
+	});
+
+	$("input#domain").textbox({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.DOMAIN,
+		tips: $.su.CHAR.DHCP_SERVER.OPTIONAL,
+		maxLength: 31,
+		vtype: 'domain'
+	});
+
+	$("input#dns1").textbox({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.PRIMARYDNS,
+		tips: $.su.CHAR.DHCP_SERVER.OPTIONAL,
+		textFormat: $.su.format.ip,
+		vtype: {
+			vtype: 'ip',
+			allowAllZeroFlag: true
+		}
+	});
+
+	$("input#dns2").textbox({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.SECONDARYDNS,
+		tips: $.su.CHAR.DHCP_SERVER.OPTIONAL,
+		textFormat: $.su.format.ip,
+		vtype: {
+			vtype: 'ip',
+			allowAllZeroFlag: true
+		}
+	});
+
+	//这里多个表格调用一个proxy，proxy需要单独定义！
+	var ipv4Proxy = new $.su.Proxy({
+		url: "./data/dhcpServer.settings.json"
+	});
+
+
+
+
+	$("form#lan-ipv4-setting").form({
+		proxy: ipv4Proxy,
+		fields: [
+			{name: "enable", mapping: "enable"},
+			{name: "ipaddr_start", mapping: "ipaddr_start"},
+			{name: "ipaddr_end", mapping: "ipaddr_end"},
+			{name: "leasetime", mapping: "leasetime"},
+			{name: "gateway", mapping: "gateway"},
+			{name: "domain", mapping: "domain"},
+			{name: "pri_dns", mapping: "pri_dns"},
+			{name: "snd_dns", mapping: "snd_dns"}
+		],
+		submitBtn: "default",
+		validator: function(){
+			var ipStart = $("input#start_ip_address").textbox('getValue');
+			var ipEnd = $("input#end_ip_address").textbox('getValue');
+			var gateway = $("input#gateway").textbox('getValue');
+			var priDns = $("input#dns1").textbox('getValue');
+			var sndDns = $("input#dns2").textbox('getValue');
+
+			if( $("input#dhcpServer").radio('getValue')=='auto' ){
+				return true;
+			}else{
+				if( $.su.func.ipToInt(ipStart) > $.su.func.ipToInt( ipEnd )  ){
+					$("form#lan-ipv4-setting").form('setError',  $.su.CHAR.ERROR['00000053']);
+					$('input#end_ip_address').textbox('setError');
+					return false;
+				}
+				 
+				if( !$.su.func.isSameNet( ipStart, lanIP, lanMask) ){
+					$('input#start_ip_address').textbox('setError', $.su.CHAR.ERROR['00000054']);
+					return false;
+				}
+
+				if( !$.su.func.isSameNet( ipEnd, lanIP, lanMask)  ){
+					$('input#end_ip_address').textbox('setError',  $.su.CHAR.ERROR['00000054']);
+					return false;
+				}
+
+				if( gateway!='' && gateway!='0.0.0.0' && !$.su.func.isSameNet( gateway, lanIP, lanMask)  ){
+					$('input#gateway').textbox('setError',   $.su.CHAR.ERROR['00000102']);
+					return false;
+				}
+
+				if( gateway!='' && gateway!='0.0.0.0' && $.su.func.isBroadCastIp( gateway, lanMask)  ){
+					$('input#gateway').textbox('setError',   $.su.CHAR.ERROR['00000103']);
+					return false;
+				}
+	////////////
+				if( gateway!='' && gateway!='0.0.0.0' && $.su.func.isHostIp( gateway, lanIP, lanMask)  ){
+					$('input#gateway').textbox('setError',   $.su.CHAR.ERROR['00000105']);
+					return false;
+				}
+
+				if( priDns!='' && priDns!='0.0.0.0' && $.su.func.isBroadCastIp( priDns, lanMask)  ){
+					$('input#dns1').textbox('setError',   $.su.CHAR.ERROR['00000104']);
+					return false;
+				}
+				if( sndDns!='' && sndDns!='0.0.0.0' && $.su.func.isBroadCastIp( sndDns, lanMask)  ){
+					$('input#dns2').textbox('setError',   $.su.CHAR.ERROR['00000104']);
+					return false;
+				}
+
+				if( $.su.func.isNetIp(ipStart, lanMask) ||  $.su.func.isBroadCastIp(ipStart, lanMask)  ){
+					$('input#start_ip_address').textbox('setError',  $.su.CHAR.ERROR['00000059']);
+					return false;
+				}
+				if( $.su.func.isNetIp(ipEnd, lanMask) ||  $.su.func.isBroadCastIp(ipEnd, lanMask)  ){
+					$('input#end_ip_address').textbox('setError',  $.su.CHAR.ERROR['00000059']);
+					return false;
+				}
+			}
+
+			return true;
+		}
+	})
+
+
+	$("div#checkList").panel({
+		title: $.su.CHAR.DHCP_SERVER.CLIENTSLIST
+	});
+
+
+	$("div#addrReverse").panel({
+		title: $.su.CHAR.DHCP_SERVER.RESERVATION
+	});
+
+
+	$("div#checkListGrid").grid({
+		operation: [{
+			xtype: "totalCount",
+			fieldLabel: $.su.CHAR.DHCP_SERVER.CLIENT_NUMBER,
+			cls: "left"
+		},"refresh"],
+		store:{
+			proxy: {
+				url: "./data/dhcpServer.client.json"
+			},
+			fields: [
+				{name: "name"},
+				{name: "macaddr"},
+				{name: "ipaddr"},
+				{name: "leasetime"}
+			],
+			autoLoad: true
+		},
+		minLines: 0,
+		columns: [
+			{
+				text: $.su.CHAR.DHCP_SERVER.ID, 
+				xtype: "rownumberer",
+				width: 40
+			},
+			{
+				text: $.su.CHAR.DHCP_SERVER.CLIENT_NAME, 
+				dataIndex: "name",
+				width: 160
+			},
+			{
+				text: $.su.CHAR.DHCP_SERVER.MAC_ADDR, 
+				width: 152,
+				dataIndex: "macaddr"
+			},
+			{
+				text: $.su.CHAR.DHCP_SERVER.ASSIGNED_IP, 
+				width: 150,
+				dataIndex: "ipaddr"
+			},
+			{
+				text: $.su.CHAR.DHCP_SERVER.LEASE_TIME, 
+				dataIndex: "leasetime"
+			}
+		]
+
+	});
+
+
+	$("input#addr_macaddr").textbox({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.MAC_ADDR,
+		vtype: 'mac',
+		allowBlank: false,
+		validator: function(param){
+		/*	var editingIndex = dhcpServerGrid[0].editor.editingIndex;
+			var gridData = $("div#addrReverseGrid").grid('getStore').data;
+
+			for(var i=0; i<gridData.length; i++){
+				if(editingIndex!=i && param==gridData[i].mac){
+					$($("div#checkListGrid").grid("getEditor")).form('setError',  $.su.CHAR.ERROR['00000051']);
+					return false;
+				}
+			}*/
+			return true;
+		}
+	});
+
+	$("input#addr_ipaddr").textbox({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.IP_ADDRESS,
+		textFormat: $.su.format.ip,
+		allowBlank: false,
+		vtype: 'ip',
+		validator: function(param){
+
+/*			var editingIndex = dhcpServerGrid[0].editor.editingIndex;
+			var gridData = $("div#addrReverseGrid").grid('getStore').data;
+			
+			for(var i=0; i<gridData.length; i++){
+				if(editingIndex!=i && param == gridData[i].ip){
+					$($("div#checkListGrid").grid("getEditor")).form('setError',  $.su.CHAR.ERROR['00000052']);
+					return false;
+				}
+			};
+			//console.log(param, lanIP, lanMask, $.su.func.isSameNet( param, lanIP, lanMask))
+			if( !$.su.func.isSameNet( param, lanIP, lanMask) ){
+				$($("div#checkListGrid").grid("getEditor")).form('setError',  $.su.CHAR.ERROR['00000054']);
+				return false;
+			};
+
+			if( $.su.func.isNetIp(param, lanMask) ||  $.su.func.isBroadCastIp(param, lanMask)  ){
+				$($("div#checkListGrid").grid("getEditor")).form('setError',  $.su.CHAR.ERROR['00000059']);
+				return false;
+			}
+		
+			if($.su.func.ipToInt(param) == $.su.func.ipToInt(lanIP)){
+				// $("input#addr_ipaddr").textbox('setError',  $.su.CHAR.ERROR['00000106']);
+				return $.su.CHAR.ERROR['00000106'];
+			}*/
+			return true;
+		}
+	});
+
+	$("input#addr_description").textbox({
+		fieldLabel: $.su.CHAR.DHCP_SERVER.DESCRIPTION,
+		maxLength: 32,
+        vtype: {
+            vtype: "string_visible_allow_blank"
+        }
+	});
+
+	$("input#enable_addr_reverse").checkbox({
+		fieldLabel: '',
+		items: [
+			{boxlabel: $.su.CHAR.DHCP_SERVER.ENABLE, inputValue:'on', uncheckedValue:'off'}
+		]
+	});
+
+
+
+
+	var dhcpServerGrid = $("div#addrReverseGrid").grid({
+		store:{
+			proxy: {
+				url: "./data/dhcpServer.addrReverse.json"
+			//	url: $.su.url('/admin/dhcps?form=reservation')
+			},
+			fields: [
+				{name: "mac"},
+				{name: "ip"},
+				{name: "name"},
+				{name: "enable"}
+			],
+			autoLoad: true
+		},
+		minLines: 0,
+		paging: {},
+		editor: {
+			content: "#addrReverse_cnt",
+			fields: [
+				{name: "mac"},
+				{name: "ip"},
+				{name: "name"},
+				{name: "enable"}
+			],
+			validator:function(){
+
+				var editor = $(dhcpServerGrid.grid("getEditor"));
+				var editingIndex = dhcpServerGrid[0].editor.editingIndex;
+				var gridData = $("div#addrReverseGrid").grid('getStore').data;
+
+				var macValue = $("input#addr_macaddr").textbox('getValue');
+				var ipValue = $("input#addr_ipaddr").textbox('getValue');
+
+				for(var i=0; i<gridData.length; i++){
+					if(editingIndex!=i && macValue==gridData[i].mac){
+						$("input#addr_macaddr").textbox('setError');
+						editor.form("setError", $.su.CHAR.ERROR['00000051']);
+						return false;
+					}
+				}
+
+
+				for(var i=0; i<gridData.length; i++){
+					if(editingIndex!=i && ipValue == gridData[i].ip){
+						editor.form("setError", $.su.CHAR.ERROR['00000052']);
+						return false;
+					}
+				};
+
+				if( !$.su.func.isSameNet( ipValue, lanIP, lanMask) ){
+					editor.form("setError", $.su.CHAR.ERROR['00000054']);
+					return false;
+				};
+
+				if( $.su.func.isNetIp(ipValue, lanMask) ||  $.su.func.isBroadCastIp(ipValue, lanMask)  ){
+					editor.form("setError", $.su.CHAR.ERROR['00000059']);
+					return false;
+				}
+			
+				if($.su.func.ipToInt(ipValue) == $.su.func.ipToInt(lanIP)){
+					editor.form("setError", $.su.CHAR.ERROR['00000106']);
+					return false;
+				}
+
+
+
+				return true;
+			}
+		},
+		columns: [
+			{
+				xtype: "checkcolumn",
+				width: 40
+			},
+			{
+				text: $.su.CHAR.DHCP_SERVER.ID, 
+				xtype: "rownumberer",
+				width: 50
+			},
+			{
+				text: $.su.CHAR.DHCP_SERVER.MAC_ADDR, 
+				width: 160,
+				dataIndex: "mac"
+			},
+			{
+				text: $.su.CHAR.DHCP_SERVER.RESERVED_IP, 
+				width: 120,
+				dataIndex: "ip"
+			},
+			{
+				text: $.su.CHAR.DHCP_SERVER.DESCRIPTION, 
+				width: 100,
+				dataIndex: "name"
+			},
+			{
+				text: $.su.CHAR.DHCP_SERVER.STATUS, 
+				width: 100,
+				dataIndex: "enable",
+				xtype: "statuscolumn"
+			},
+			{
+				xtype: "settings"
+			}
+		],
+		operation: "prompt|add|delete"
+	});
+
+	var helpDhcpServer = new $.su.Help({
+		container: "div#dhcp_server_help",
+		content: ['DHCP_SERVER_SETTINGS', 'DHCP_SERVER_CLIENT']
+	});
+
+
+});
+</script>
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>LED</title>
+<style>
+#operation-mode_content .note{
+	margin-left:32px;
+}
+#operation-mode_content .radio-label .text{
+	font-size:14px;
+	font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="func-container">
+	<div id="operation-mode">
+        <form id="operation-mode_content">
+            <input id="operation_mode_choose_input" name="mode" type="text" class=""/>
+            <p class="note" id="universal_note">
+				<span class="title note-title"></span>
+				<span id="universal_mode" class="mode-slt-p"></span>
+			</p>
+            <p class="note" id="proxy_note">
+				<span class="title note-title"></span>
+				<span id="proxy_mode" class="mode-slt-p"></span>
+			</p>
+        </form>
+		
+		<div id="operation_comfirm_msg" class="hidden warning">
+			<div id="operation_comfirm-qa">
+				<h4 class="title">
+					<span class="icon"></span>
+					<span class="text" id="operation_comfirm_note"></span>
+				</h4>
+			</div>
+			<div id="operation_comfirm_loading_msg" class="hidden">
+				<p id="operation_reboot_progressbar_text" class="reboot-progressbar-text"></p>
+				<input id="operation_reboot_loading_progressbar" />
+			</div>
+		</div>
+	</div>
+	<div id="opm_help"></div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+
+	$("div#operation-mode").panel({
+		title: $.su.CHAR.OPERATION_MODE.TITLE,
+		collapsible: false
+	});
+	
+	
+	var modeProxy = new $.su.Proxy({
+		url: './data/extenderOperationMode.json'
+	});
+	$("#operation-mode_content").form({
+        proxy: modeProxy,
+        autoLoad: true,
+        fields: [
+            {name: "mode", mapping: "mode"}
+        ],
+        submitBtn: "default",
+        validator: function(){
+			if($('input#operation_mode_choose_input').radio("getValue")==""){
+				return false;
+			}else{
+				$("#operation_comfirm_msg").msg("show");
+			}
+        }
+    });
+	$("span.note-title").html($.su.CHAR.OPERATION.NOTE);
+	$("#universal_mode").text($.su.CHAR.OPERATION_MODE.UNIVERSAL_NOTE);
+	$("#proxy_mode").text($.su.CHAR.OPERATION_MODE.PROXY_MODE);
+	$('input#operation_mode_choose_input').radio({
+		fieldLabel: null,
+		items:[
+			{boxlabel: $.su.CHAR.OPERATION_MODE.UNIVERSAL, inputValue:'universal', name:'mode', content:'#universal_note'},
+			{boxlabel: $.su.CHAR.OPERATION_MODE.PROXY, inputValue: 'proxy', name:'mode', content:'#proxy_note'}
+		]
+	});
+	
+	
+	$("#operation_comfirm_note").text($.su.CHAR.OPERATION_MODE.CHANGE);
+	$("#operation_reboot_progressbar_text").html($.su.CHAR.OPERATION_MODE.NOTE1+"<br />"+$.su.CHAR.OPERATION_MODE.NOTE2);
+
+	var rebootConfirmMsg=$("#operation_comfirm_msg").msg({
+		type: "confirm",
+		global: true,
+		closeBtn: false,
+		cls: "l",
+		okHandler: function(e){
+			modeProxy.write({mode: $('input#operation_mode_choose_input').radio('getValue')}, function(data){
+				$('#operation_comfirm-qa').hide();
+				$('#operation_comfirm_loading_msg').show();
+				reboot_operation_bar.progressbar('animate', 0, 1, 65000,function(){
+					location.href="/";
+				});
+				rebootConfirmMsg.msg('hideButtons');
+			}, function(){
+			}, function(){
+			});
+			return false;
+		},
+		noHandler:function(e){
+			
+		}
+	});
+
+	var reboot_operation_bar = $('input#operation_reboot_loading_progressbar').progressbar({
+		fieldLabel: null,
+		cls: 'inline-block',
+		width: 400,
+		height: 6,
+		value: 0
+	});
+});
+//]]>
+</script>	
+</body>
+</html>

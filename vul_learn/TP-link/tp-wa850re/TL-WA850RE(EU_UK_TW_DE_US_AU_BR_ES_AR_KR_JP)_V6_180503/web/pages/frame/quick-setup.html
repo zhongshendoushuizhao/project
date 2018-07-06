@@ -1,0 +1,3464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Quick Setup</title>
+<style type="text/css">
+    div.top-bg div.top-bg-l{
+        background-color: #ffffff;
+    }
+	div.r-button-container{
+		text-align: right;
+		/*margin-bottom: 30px;*/
+		padding-bottom: 30px;
+	}
+
+	div.grid-panel div.editor-buttons-container div.button-container.submit{
+		display: none;
+	}
+	div.grid-panel .form-panel span.form-error-tips{
+		margin: 0;
+	}
+	div.grid-panel div.container.editor-buttons-container{
+		margin-top: 0px;
+	}
+</style>
+</head>
+
+<body>
+<div class="content-container quicksetup-container">
+	<div id="quicksetup-form">
+    	<div id="quick_setup_wizard" class="quick-setup-wizard">
+        	<!-- page 1 -->
+        	<div id="quicksetup_region_setting" class="hidden">
+        		<form id="region_request">
+	            	<input id="combo_region" name="region_country"/>
+					<input id="combo_time_zone" name="time_zone" />
+	            	<input id="region_status" />
+	            </form>
+            </div>
+            
+            <!-- page 2 -->
+            <div id="quicksetup_2g_connect" class="hidden">
+            	<div id="2g_connect_step1">
+                    <p id="scanning_text_2g" class="margin-left-75"></p>
+                	<input id="2g_connect_progressbar" />
+                </div>
+            	
+                <div id="2g_connect_step2">
+                    <p id="grid_ap_2g_text" class="grid-ap-text"></p>
+                	<div id="grid_ap_2g_list" class="quicksetup-grid"></div>
+                	<div id="grid_ap_2g_editor">
+                        <input id="editor_2g_ssid" name="ssid"/>
+                		<input id="editor_2g_password" name="password"/>
+                        <button type="button" id="2g_connect_next"></button>
+                	</div>
+	                <div id="2g_connect_step_error" class="hidden">
+	                	<p id="2g_connect_error_tip" class="connection-error-p"></p>
+	                </div>
+                    <div class="r-button-container">
+                    	<button type="button" id="2g_connect_back"></button>
+                        <button type="button" id="2g_connect_manual"></button>
+                        <button type="button" id="2g_connect_rescan"></button>
+                        <button type="button" id="2g_connect_skip"></button>
+                    </div>
+                </div>
+                
+                <div id="2g_connect_step3">
+                	<input id="2g_connect_ap_ssid" />
+                    <input id="2g_connect_ap_security" />
+                    <input id="2g_connect_ap_password" />
+                    <input id="2g_connect_ap_index" />
+                </div>
+
+            </div>
+            
+            <!-- page 3 -->
+            <div id="quicksetup_5g_connect" class="hidden">
+            	<div id="5g_connect_step1">
+                    <p id="scanning_text_5g" class="margin-left-75"></p>
+                	<input id="5g_connect_progressbar"/>
+                </div>
+            	
+                <div id="5g_connect_step2">
+                    <p id="grid_ap_5g_text" class="grid-ap-text"></p>
+                	<div id="grid_ap_5g_list" class="quicksetup-grid"></div>
+                	<div id="grid_ap_5g_editor">
+                        <input id="editor_5g_ssid" name="ssid"/>
+                		<input id="editor_5g_password" name="password"/>
+                        <button type="button" id="5g_connect_next"></button>
+                	</div>
+	                <div id="5g_connect_step_error" class="hidden">
+	                	<p id="5g_connect_error_tip" class="connection-error-p"></p>
+	                </div>
+                    <div class="r-button-container">
+                    	<button type="button" id="5g_connect_back"></button>
+                        <button type="button" id="5g_connect_manual"></button>
+                        <button type="button" id="5g_connect_rescan"></button>
+                        <button type="button" id="5g_connect_skip"></button>
+                    </div>
+                </div>
+					
+                <div id="5g_connect_step3">
+                	<input id="5g_connect_ap_ssid" />
+                    <input id="5g_connect_ap_security" />
+                    <input id="5g_connect_ap_password" />
+                    <input id="5g_connect_ap_index" />
+                </div>
+            </div>
+            
+            <!-- page 4 -->
+            <div id="quicksetup_wireless" class="hidden">
+            	<p id="wireless_info"></p>
+                <div id="wireless_2g" class="">
+                    <input id="wireless_2g_ssid" />
+                    <button type="button" id="btn_wireless_2g_same"></button>
+                    <input id="wireless_2g_hide_ssid"/>
+                    <input id="wireless_2g_password" />
+                    <!-- <p id="wireless_2g_password_tip"></p> -->
+                    <p class="note" id="note_2g">
+                        <span class="title note-title"></span>
+                        <span class="text" id="wireless_2g_password_tip"></span>
+                    </p>
+                </div>
+                <div id="wireless_5g" class="margin-top-50">
+                    <input id="wireless_5g_ssid" />
+                    <button type="button" id="btn_wireless_5g_same"></button>
+                    <input id="wireless_5g_hide_ssid"/>
+                    <input id="wireless_5g_password" />
+                    <!-- <p id="wireless_5g_password_tip"></p> -->
+                    <p class="note" id="note_5g">
+                        <span class="title note-title"></span>
+                        <span class="text" id="wireless_5g_password_tip"></span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- page 5 -->
+            <div id="quicksetup_summary" class="hidden">
+            	<form id="summary_form">
+
+                    <div id="" class="summary-map">
+
+                        <div id="map_router" class="map-router">
+                            <div id="map_icon_router" class="map-icon-router"></div>
+                            <p id="map_router_p"></p>
+                            <div id="map_router_tip" class="map-router-tip">
+                                <div id="map_router_24g" class="map-router-wrap">
+                                    <div id="map_router_24g_img" class="map-router-security-icon"></div>  <!-- style L1126 -->
+                                    <p id="map_router_24g_text"></p>
+                                </div>
+                                <div id="map_router_bar" class="map-router-bar"></div>
+                                <div id="map_router_5g" class="map-router-wrap map-router-wrap-right">
+                                    <div id="map_router_5g_img" class="map-router-security-icon"></div>
+                                    <p id="map_router_5g_text"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="summary-map-horizontal"></div>
+
+                        <div id="map_repeater" class="basic-router">
+                            <div id="repeater_icon" class="icon"></div>
+                            <span id="repeater_text" class="text repeater-text"></span>
+                            <div id="map_wireless_tip" class="map-router-tip">
+                                <div id="map_wireless_24g" class="map-router-wrap">
+                                    <div id="map_wireless_24g_img" class="map-router-security-icon"></div>  <!-- style L1126 -->
+                                    <p id="map_wireless_24g_text"></p>
+                                </div>
+                                <div id="map_repeater_bar" class="map-router-bar"></div>
+                                <div id="map_wireless_5g" class="map-router-wrap map-router-wrap-right">
+                                    <div id="map_wireless_5g_img" class="map-router-security-icon"></div>
+                                    <p id="map_wireless_5g_text"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+	            	<div id="ap_info" class="quicksetup-info-summary quicksetup-info-summary-ap">
+	            		<h4 id="ap_router_title" class="ap-router-title">
+                            <span class="ap-router-title-icon"></span>
+                            <span id="ap_router_title_text"></span>
+                        </h4>
+
+	            		<div id="ap_router_2g_part" class="ap-router-part-2g">
+                            <h5 id="ap_2g_title" class="map-form-title"></h5>
+		                	<p id="ap_2g_ssid_summary_p" class="quickset-textarea-p">
+					    		<label id="ap_2g_ssid_summary_label" class="xs"></label>
+					    		<span id="ap_2g_ssid_summary_span" class="input-readonly-m"></span>
+					    	</p>
+		                    <input id="ap_2g_ssid_summary" name="ap_connect_ssid_2g" class="hidden"/>
+		                    <input id="ap_2g_security_value" name="ap_connect_security_2g" class="hidden"/>
+		                    <input id="ap_2g_password_summary"  name="ap_connect_password_2g"/>
+                            <p id="ap_2g_password_summary_p" class="quickset-textarea-p">
+                                <label id="ap_2g_password_summary_label" class="xs"></label>
+                                <span id="ap_2g_password_summary_span" class="input-readonly-m"></span>
+                            </p>
+		                    <input id="ap_2g_index_summary" name="ap_connect_index_2g" class="hidden"/>
+		                    <input id="ap_2g_skip_value" name="ap_connect_skip_2g" class="hidden"/>
+		                </div>
+	                    
+	                    <div id="ap_router_5g_part" class="ap-router-part-5g">
+                            <h5 id="ap_5g_title" class="map-form-title"></h5>
+		                	<p id="ap_5g_ssid_summary_p" class="quickset-textarea-p">
+					    		<label id="ap_5g_ssid_summary_label" class="xs"></label>
+					    		<span id="ap_5g_ssid_summary_span" class="input-readonly-m"></span>
+					    	</p>
+		                    <input id="ap_5g_ssid_summary"  name="ap_connect_ssid_5g"/>
+		                    <input id="ap_5g_security_value" name="ap_connect_security_5g" class="hidden"/>
+		                    <input id="ap_5g_password_summary"  name="ap_connect_password_5g"/>
+                            <p id="ap_5g_password_summary_p" class="quickset-textarea-p">
+                                <label id="ap_5g_password_summary_label" class="xs"></label>
+                                <span id="ap_5g_password_summary_span" class="input-readonly-m"></span>
+                            </p>
+		                    <input id="ap_5g_index_summary"  name="ap_connect_index_5g" class="hidden"/>
+		                    <input id="ap_5g_skip_value" name="ap_connect_skip_5g" class="hidden"/>
+		                </div>
+	                </div>
+	                
+	                <div id="wireless_info" class="quicksetup-info-summary">
+                        <h4 id="wirelress_router_title" class="wireless-router-title">
+                            <span class="wireless-router-title-icon" id="wireless_router_title_icon"></span>
+                            <span id="wireless_router_title_text"></span>
+                        </h4>
+
+	                	<div class="wireless-info-2g">
+                            <h5 id="wireless_2g_title" class="map-form-title"></h5>
+		                	<p id="wireless_2g_ssid_summary_p" class="quickset-textarea-p">
+					    		<label id="wireless_2g_ssid_summary_label" class="xs"></label>
+					    		<span id="wireless_2g_ssid_summary_span" class="input-readonly-m"></span>
+					    	</p>
+		                    <input id="wireless_2g_ssid_summary" name="wireless_ssid_2g"/>
+                            <input id="wireless_2g_hide_summary" />
+                            <input id="wireless_2g_hide_summary_hidden" class="hidden" name="wireless_hide_ssid_2g"/>
+		                    <!-- <input id="wireless_2g_security_value" name="wireless_security_2g" class="hidden"/> -->
+		                    <input id="wireless_2g_password_summary"   name="wireless_password_2g"/>
+                            <p id="wireless_2g_password_summary_p" class="quickset-textarea-p">
+                                <label id="wireless_2g_password_summary_label" class="xs"></label>
+                                <span id="wireless_2g_password_summary_span" class="input-readonly-m"></span>
+                            </p>
+		                </div>
+						
+						<div class="wireless-info-5g">
+                            <h5 id="wireless_5g_title" class="map-form-title"></h5>
+		                	<p id="wireless_5g_ssid_summary_p" class="quickset-textarea-p">
+					    		<label id="wireless_5g_ssid_summary_label" class="xs"></label>
+					    		<span id="wireless_5g_ssid_summary_span" class="input-readonly-m"></span>
+					    	</p>
+		                    <input id="wireless_5g_ssid_summary" name="wireless_ssid_5g"/>
+                            <input id="wireless_5g_hide_summary" name=""/>
+                            <input id="wireless_5g_hide_summary_hidden" class="hidden" name="wireless_hide_ssid_5g"/>
+		                    <!-- <input id="wireless_5g_security_value" name="wireless_security_5g" class="hidden"/> -->
+		                    <input id="wireless_5g_password_summary" name="wireless_password_5g"/>
+                            <p id="wireless_5g_password_summary_p" class="quickset-textarea-p">
+                                <label id="wireless_5g_password_summary_label" class="xs"></label>
+                                <span id="wireless_5g_password_summary_span" class="input-readonly-m"></span>
+                            </p>
+						</div>
+
+	                </div>
+				</form>
+				
+                <div id="summary_finish" class="summary-finish-step hidden">
+                    <p id="summary_reboot_p" class="summary-reboot-p"></p>
+                    <p id="summary_restarting_p" class="summary-restarting-p"></p>
+
+                    <input id="summary_finish_progressbar"/>
+
+                    <p id="summary_step_p" class="summary-step-p hidden"></p>
+                    <ol id="" class="summary-step-ol hidden">
+                        <li id="summary_step_1"></li>
+                        <li id="summary_step_2"></li>
+                        <li id="summary_step_3"></li>
+                    </ol>
+                </div>
+				
+				<div id="summary_success" class="summary-finish-step hidden">
+					<p id="congratulation" class=""></p>
+					<p id="surf" class=""></p>
+					
+					<div id="success_2g" class="inline-block success_block">
+						<h5 id="wireless_2g_success_title" class="map-form-title"></h5>
+						<p id="wireless_2g_ssid_success_p" class="quickset-textarea-p">
+							<label id="wireless_2g_ssid_success_label" class="xs"></label>
+							<span id="wireless_2g_ssid_success_span" class="input-readonly-m"></span>
+						</p>
+						<p id="wireless_2g_ssid_success_p" class="quickset-textarea-p">
+							<label id="wireless_2g_password_success_label" class="xs"></label>
+							<span id="wireless_2g_password_success_span" class="input-readonly-m"></span>
+						</p>
+					</div>
+					
+					<div id="success_5g" class="inline-block success_block">
+						<h5 id="wireless_5g_success_title" class="map-form-title"></h5>
+						<p id="wireless_5g_ssid_success_p" class="quickset-textarea-p">
+							<label id="wireless_5g_ssid_success_label" class="xs"></label>
+							<span id="wireless_5g_ssid_success_span" class="input-readonly-m"></span>
+						</p>
+						<p id="wireless_5g_ssid_success_p" class="quickset-textarea-p">
+							<label id="wireless_5g_password_success_label" class="xs"></label>
+							<span id="wireless_5g_password_success_span" class="input-readonly-m"></span>
+						</p>
+					</div>
+					<input id="connect" />
+					<button id="success_save"></button>
+				</div>
+				
+			</div>
+
+            <!-- ap page wireless -->   
+            <div id="access_wireless_setting_ap" name="wireless_setting_ap" class="function-setting-div hidden">
+                <form id="access_wireless_form">
+                    <div id="access_wireless_setting_2g" name="wireless_setting_2g">
+                        <input id="access_wireless_2g_radio" name="enable_2g" />
+                        <input id="access_wireless_2g_ssid" name="ssid_2g" />
+                        <input id="access_wireless_2g_hide_ssid" name="hide_2g" />
+                        <input id="access_wireless_2g_password" name="password_2g" />
+                        <input id="access_wireless_2g_security" name="security_2g" class="hidden" />
+                    </div>
+                    <div id="access_wireless_setting_5g" name="wireless_setting_5g" class="margin-top-50">
+                        <input id="access_wireless_5g_radio" name="enable_5g" />
+                        <input id="access_wireless_5g_ssid" name="ssid_5g" />
+                        <input id="access_wireless_5g_hide_ssid" name="hide_5g" />
+                        <input id="access_wireless_5g_password" name="password_5g" />
+                        <input id="access_wireless_5g_security" name="security_5g" class="hidden" />
+                    </div>
+                </form>
+            </div>
+
+            <!-- ap page summary -->
+            <div id="access_quicksetup_summary" class="hidden">
+                <form id="access_summary_form">
+                    <div id="access_wireless_2g" class="quicksetup-info-summary quicksetup-info-summary-router">
+                        <h4 id="access_wireless_2g_summary_title" class="ap-router-title">
+                            <span class="ap-router-title-icon"></span>
+                            <span id="ap_router_title_text_2g"></span>
+                        </h4>
+
+                        <div id="access_summary_2g_part" class="router-part">
+                            <input id="access_wireless_2g_radio_summary" name="" />
+                            <input id="access_wireless_2g_radio_summary_hidden" name="wireless_radio_2g" class="hidden" />
+                            <p id="access_wireless_2g_ssid_summary_p" class="quickset-textarea-p">
+                                <label id="access_wireless_2g_ssid_summary_label" class="m"></label>    
+                                <span id="access_wireless_2g_ssid_summary_span" class="input-readonly-xs"></span>
+                            </p>
+                            <input id="access_wireless_2g_ssid_summary" name="wireless_ssid_2g" class="hidden" />
+                            <input id="access_wireless_2g_hide_summary" name="" />
+                            <input id="access_wireless_2g_hide_summary_hidden" name="wireless_hide_ssid_2g" class="hidden" />
+                            <input id="access_wireless_2g_security_summary" name="wireless_security_2g"  class="hidden"/>
+                            <input id="access_wireless_2g_password_summary" name="wireless_password_2g" />
+                            <p id="access_wireless_2g_password_summary_p" class="quickset-textarea-p hidden">
+                                <label id="access_wireless_2g_password_summary_label" class="m"></label>    
+                                <span id="access_wireless_2g_password_summary_span" class="input-readonly-xs"></span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="access_wireless_5g"  class="quicksetup-info-summary">
+                        <h4 id="access_wireless_5g_summary_title" class="ap-router-title">
+                            <span class="ap-router-title-icon"></span>
+                            <span id="ap_router_title_text_5g"></span>
+                        </h4>
+
+                        <div id="access_summary_5g_part" class="router-part">
+                            <input id="access_wireless_5g_radio_summary" name="" />
+                            <input id="access_wireless_5g_radio_summary_hidden" name="wireless_radio_5g" class="hidden" />
+                            <p id="access_wireless_5g_ssid_summary_p" class="quickset-textarea-p">
+                                <label id="access_wireless_5g_ssid_summary_label" class="m"></label>    
+                                <span id="access_wireless_5g_ssid_summary_span" class="input-readonly-xs"></span>
+                            </p>
+                            <input id="access_wireless_5g_ssid_summary" name="wireless_ssid_5g"  class="hidden"/>
+                            <input id="access_wireless_5g_hide_summary" name="" />
+                            <input id="access_wireless_5g_hide_summary_hidden" name="wireless_hide_ssid_5g" class="hidden" />
+                            <input id="access_wireless_5g_security_summary" name="wireless_security_5g"  class="hidden"/>
+                            <input id="access_wireless_5g_password_summary" name="wireless_password_5g" />
+                            <p id="access_wireless_5g_password_summary_p" class="quickset-textarea-p hidden">
+                                <label id="access_wireless_5g_password_summary_label" class="m"></label>    
+                                <span id="access_wireless_5g_password_summary_span" class="input-readonly-xs"></span>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div id="wireless_confirm_notice" class="warning hidden">
+                 <h4 class="title">
+                    <span class="icon" ></span>
+                    <span class="text text1" id="encryption_notice_1"></span>
+                    <div><span class="text text1" id="encryption_notice_2"></span></div>
+                    <div><span class="text text2" id="encryption_notice_3"></span></div>
+                </h4>
+
+            </div>
+
+			<div id="password_error_msg" class="warning hidden">
+				<div id="pw_error_wrap">
+                    <span class="icon"></span>
+                    <span id="password_error_tip" class="text"></span>
+					<div class="pw-error-btn-wrap">
+						<!-- <button id="jump_to_basic" type="button"></button>
+						<button id="jump_to_wireless" type="button"></button> -->
+                        <button id="jump_to_ok" type="button"></button>
+                        <button id="jump_to_exit" type="button"></button>
+					</div>
+				</div>
+				<div id="submit_pro_wrap" class="submit-progress-wrap">
+					<p id="submit_waiting_tip"></p>
+					<p id="submit_waiting_time"></p>
+					<input id="submit_progressbar"/>
+				</div>
+			</div>
+        </div>
+    </div>
+</div><!-- content-container -->
+
+
+<script type="text/javascript">
+//<![CDATA[
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+var ssid2gRouterAp = '';
+var ssid5gRouterAp = '';
+
+var ssid2gPassword = '';
+var ssid5gPassword = '';
+
+var ssid2gSecurity = '';
+var ssid5gSecurity = '';
+
+var ssid2gIndex = 0;
+var ssid5gIndex = 0;
+
+var skip2gFlag = false;
+var skip5gFlag = false;
+
+var password2gWrap;
+var password5gWrap;
+
+var readInterval;
+var readRequest;
+var scanTimeout;
+
+var show2gFlag = true;
+var show5gFlag = true;
+
+var scan2GData = [];
+var scan5GData = [];
+
+var apWirelessData;
+
+var repeaterMode;
+
+var ssidExt ;
+
+function transSecurity(value){
+    switch(value){
+        case 'none':
+            return $.su.CHAR.QUICK_SETUP.NO_SECURITY;
+        case 'wpa': 
+            return $.su.CHAR.QUICK_SETUP.WPA;
+        case 'wpa2': 
+            return $.su.CHAR.QUICK_SETUP.WPA2;
+        case 'wpa/wpa2':
+            return $.su.CHAR.QUICK_SETUP.WPA_WPA2;
+        case 'wep':
+            return $.su.CHAR.QUICK_SETUP.WEP;
+    }
+}
+
+function transApSecurity(value) {
+    switch (value) {
+    case 'none':
+        return $.su.CHAR.QUICK_SETUP.NO_SECURITY;
+    case 'wpa-psk':
+        return $.su.CHAR.QUICK_SETUP.WPA_WPA2_PERSONAL;
+    case 'wep':
+        return $.su.CHAR.QUICK_SETUP.WEP;
+    case 'wpa-ent':
+        return $.su.CHAR.QUICK_SETUP.WPA_WPA2_ENTERPRISE;
+    }
+}
+
+function transSecurityIcon( status, item ){
+    switch(status.toUpperCase()){
+        case 'NONE':
+            item.addClass('not-secure');
+            break;
+        default:
+            item.removeClass('not-secure');
+    }
+}
+
+
+function checkHideText(value){
+    if(value.length==1){
+        return $.su.CHAR.OPERATION.ON;
+    }else{
+        return $.su.CHAR.OPERATION.OFF;
+    }
+}
+
+function checkHideValue(value){
+    if(value.length==1){
+        return "On";
+    }else{
+        return "Off";
+    }
+}
+
+
+var extendProxy = new $.su.Proxy({
+	timeout: 15000,
+	url: "./data/extend.settings.json"
+});
+
+$('h5#ap_2g_title').html($.su.CHAR.QUICK_SETUP.WIRELESS_24GHZ);
+$('h5#ap_5g_title').html($.su.CHAR.QUICK_SETUP.WIRELESS_5GHZ);
+$('h5#wireless_2g_title').html($.su.CHAR.QUICK_SETUP.WIRELESS_24GHZ);
+$('h5#wireless_5g_title').html($.su.CHAR.QUICK_SETUP.WIRELESS_5GHZ);
+$('h5#wireless_2g_success_title').html($.su.CHAR.QUICK_SETUP.WIRELESS_24GHZ);
+$('h5#wireless_5g_success_title').html($.su.CHAR.QUICK_SETUP.WIRELESS_5GHZ);
+
+$('p#2g_connect_error_tip').html($.su.CHAR.QUICK_SETUP.CONNECT_ERROR);
+$('p#5g_connect_error_tip').html($.su.CHAR.QUICK_SETUP.CONNECT_ERROR);
+
+$('p#submit_waiting_tip').html($.su.CHAR.QUICK_SETUP.SUBMIT_WAIT_TIP);
+$('p#submit_waiting_time').html($.su.CHAR.QUICK_SETUP.SUBMIT_WAIT_TIME);
+
+$('span#ap_router_title_text').html($.su.CHAR.QUICK_SETUP.ROUTER);
+$('span#wireless_router_title_text').html($.su.CHAR.QUICK_SETUP.REPEATER);
+
+$('p#map_router_p').html($.su.CHAR.QUICK_SETUP.ROUTER);
+$('p#map_router_24g_text').html($.su.CHAR.QUICK_SETUP.GHZ24);
+$('p#map_router_5g_text').html($.su.CHAR.QUICK_SETUP.GHZ5);
+$('span#repeater_text').html($.su.CHAR.QUICK_SETUP.REPEATER);
+$('p#map_wireless_24g_text').html($.su.CHAR.QUICK_SETUP.GHZ24);
+$('p#map_wireless_5g_text').html($.su.CHAR.QUICK_SETUP.GHZ5);
+
+$('p#summary_reboot_p').html($.su.CHAR.QUICK_SETUP.FINISH_REBOOT_P);
+$('p#summary_restarting_p').html($.su.CHAR.QUICK_SETUP.FINISH_RESTARTING_P);
+$('p#summary_step_p').html($.su.CHAR.QUICK_SETUP.FINISH_SETPS);
+$('li#summary_step_1').html($.su.CHAR.QUICK_SETUP.FINISH_STEP_1);
+$('li#summary_step_2').html($.su.CHAR.QUICK_SETUP.FINISH_STEP_2);
+$('li#summary_step_3').html($.su.CHAR.QUICK_SETUP.FINISH_STEP_3);
+
+$('p#congratulation').html($.su.CHAR.QUICK_SETUP.CONGRATULATION);
+$('p#surf').html($.su.CHAR.QUICK_SETUP.SURF);
+$('p#surf').html($.su.CHAR.QUICK_SETUP.SURF);
+
+
+function checkPassword(securityValue, passwordValue, passwordObj){
+
+    var pattern = /^[A-Fa-f0-9]+$/;
+    var pattern_ascii = /^[A-Za-z0-9\`\~\!\@\#\$\%\^\&\*\(\)\-\=\_\+\[\]\{\}\;\:\'\"\\\|\/\?\.\,\<\>\s]+$/;
+    var patten_wpa = /^[A-Za-z0-9\`\~\!\@\#\$\&\*\(\)\-\=\_\+\[\]\{\}\;\:\'\"\\\|\/\?\.\,\<\>\%\^\ ]+$/;
+
+    if(securityValue=='wep'){
+        if( passwordValue.length==5 ){
+            if(!pattern_ascii.test(passwordValue)){
+                passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000092'].replace("%num", 5) );
+                return false;
+            }
+        }else if( passwordValue.length==13 ){
+            if(!pattern_ascii.test(passwordValue)){
+                passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000092'].replace("%num", 13) );
+                return false;
+            }
+        }else if( passwordValue.length==10 ){
+            if(!pattern.test(passwordValue)){
+                passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000093'].replace("%num", 10) );
+                return false;
+            }
+        }else if( passwordValue.length==26 ){
+            if(!pattern.test(passwordValue)){
+                passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000093'].replace("%num", 26) );
+                return false;
+            }
+        }else{
+            passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000090']);
+            return false;
+        }
+    }else if(securityValue=='wpa' || securityValue=='wpa2' || securityValue=='wpa/wpa2'){
+        if( passwordValue.length<8 || passwordValue.length>64 ){
+            passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000091']);
+            return false;
+        }else{
+            if( passwordValue.length==64 && !pattern.test(passwordValue)){
+                passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000091']);
+                return false;
+            }else if(!patten_wpa.test(passwordValue)){
+                passwordObj.textbox('setError',  $.su.CHAR.ERROR['00000091']);
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function checkApPassword(securityValue, passwordObj) {
+    var pattern = /^[A-Fa-f0-9]+$/;
+    var pattern_psk = /^([A-Za-z0-9\`\~\!\@\#\$\&\*\(\)\-\=\_\+\[\]\{\}\;\:\'\"\\\|\/\?\.\,\<\>\%\^\ ]{8,63}|[0-9A-Fa-f]{8,64})$/;
+    var pattern_ascii = /^[A-Za-z0-9\`\~\!\@\#\$\%\^\&\*\(\)\-\=\_\+\[\]\{\}\;\:\'\"\\\|\/\?\.\,\<\>\s]+$/;
+    var pattern_ent = /^[A-Za-z0-9\`\~\!\@\#\$\&\*\(\)\-\=\_\+\[\]\{\}\;\:\'\"\\\|\/\?\.\,\<\>\%\^\ ]{1,64}$/;
+
+    passwordValue = passwordObj.textbox('getValue');
+
+    if (securityValue == 'wep') {
+        if (passwordValue.length == 5 || passwordValue.length == 13 || passwordValue.length == 16) {
+            if (!pattern_ascii.test(passwordValue)) {
+                passwordObj.textbox('setError', $.su.CHAR.ERROR['00000109']);
+                return false;
+            }
+        } else if (passwordValue.length == 10 || passwordValue.length == 26 || passwordValue.length == 32) {
+            if (!pattern.test(passwordValue)) {
+                passwordObj.textbox('setError', $.su.CHAR.ERROR['00000109']);
+                return false;
+            }
+        } else {
+            passwordObj.textbox('setError', $.su.CHAR.ERROR['00000108']);
+            return false;
+        }
+    } else if (securityValue == 'wpa-psk') {
+
+        if (passwordValue.length < 8 || passwordValue.length > 64) {
+            passwordObj.textbox('setError', $.su.CHAR.ERROR['00000108']);
+            return false;
+        } else {
+            if (!pattern_psk.test(passwordValue)) {
+                passwordObj.textbox('setError', $.su.CHAR.ERROR['00000109']);
+                return false;
+            }
+        }
+
+
+    } else if (securityValue == 'wpa-ent') {
+
+        if (passwordValue.length > 64) {
+            passwordObj.textbox('setError', $.su.CHAR.ERROR['00000108']);
+            return false;
+        } else {
+            if (!pattern_ent.test(passwordValue)) {
+                passwordObj.textbox('setError', $.su.CHAR.ERROR['00000109']);
+                return false;
+            }
+        }
+    }
+
+
+    return true;
+}
+
+var quickSetupProxy = new $.su.Proxy({
+	timeout: 15000,
+	url: "./data/quickSetup.json"
+});
+
+$("form#summary_form").form({
+	proxy: quickSetupProxy,
+	showPrompt: false,
+	fields: [
+		{name: "ap_connect_ssid_2g"},
+		{name: "ap_connect_security_2g"},
+		{name: "ap_connect_password_2g"},
+		{name: "ap_connect_ssid_5g"},
+		{name: "ap_connect_security_5g"},
+		{name: "ap_connect_password_5g"},
+		{name: "wireless_radio_2g"},
+		{name: "wireless_hide_ssid_2g"},
+		{name: "wireless_ssid_2g"},
+		{name: "wireless_security_2g"},
+		{name: "wireless_password_2g"},
+		{name: "wireless_radio_5g"},
+		{name: "wireless_hide_ssid_5g"},
+		{name: "wireless_ssid_5g"},
+		{name: "wireless_security_5g"},
+		{name: "wireless_password_5g"}
+	],
+	submitBtn: false,
+	autoLoad: false
+});
+
+
+$("form#access_summary_form").form({
+    proxy: quickSetupProxy,
+    showPrompt: false,
+    fields: [
+        {name: "wireless_radio_2g"},
+        {name: "wireless_ssid_2g"},
+        {name: "wireless_hide_ssid_2g"},
+        {name: "wireless_security_2g"},
+        {name: "wireless_password_2g"},
+        {name: "wireless_radio_5g"},
+        {name: "wireless_ssid_5g"},
+        {name: "wireless_hide_ssid_5g"},
+        {name: "wireless_security_5g"},
+        {name: "wireless_password_5g"}
+    ],
+    submitBtn: false,
+    autoLoad: false
+});
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var quickRegionPart = {
+			name: "quicksetup-region",
+			label: $.su.CHAR.QUICK_SETUP.REGION,
+            labelCls: "quicksetup-region-setting",
+            content: "#quicksetup_region_setting",
+            prevButtonText: $.su.CHAR.QUICK_SETUP.EXIT,
+            prevHandler: function(e){
+                $.su.nav.goTo("setting");
+            },
+            nextHandler: function(e){
+
+            	quickSetupWizard.find("button.button-next[data-name=quicksetup-region]").button("disable");
+            	//$('input#region_status').status("setLoading");
+
+				var firstFlag = true;
+	
+				var regionInterval = setInterval(function(){
+
+					regionProxy.write({flag: firstFlag, region: $('input#combo_region').combobox('getValue')[0]} , function(){
+					
+						timeProxy.write({flag: firstFlag,time_zone: $('input#combo_time_zone').combobox('getValue')[0] });
+						
+						firstFlag = false;
+
+						$('input#region_status').status("setNormal");
+            			quickSetupWizard.find("button.button-next[data-name=quicksetup-region]").button("enable");
+
+            		// MODE
+                        if(sysMode.toUpperCase()=='REPEATER'){
+
+                            if(show2gFlag){
+
+                                quickSetupWizard.wizard('goTo','quicksetup_2g_connect');
+
+                                quickSetupWizard.wizard("hideButtons");
+                                
+                                
+                                $("div#2g_connect_step1").css("display", "block");
+                                $("div#2g_connect_step2").css("display", "none");
+                                $("div#2g_connect_step3").css("display", "none");
+                                $("div#2g_connect_step_error").css("display", "none");
+								
+
+                                if(show5gFlag){
+                                    $('p#grid_ap_2g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_2G_NETWORK);
+                                }else{
+                                    $('p#grid_ap_2g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_2G_NETWORK_ONLY);
+                                }
+                                
+                            }else{
+
+                                quickSetupWizard.wizard('goTo','quicksetup_5g_connect');
+
+                                quickSetupWizard.wizard("hideButtons");
+
+                                $("div#5g_connect_step1").css("display", "block");
+                                $("div#5g_connect_step2").css("display", "none");
+                                $("div#5g_connect_step3").css("display", "none");
+                                $("div#5g_connect_step_error").css("display", "none");
+
+                                $('p#grid_ap_5g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_5G_WITHOUT_2G);
+                                
+                                
+                            }
+
+                        //// grid data
+
+							$("input#2g_connect_progressbar").progressbar("reset");
+							$("input#5g_connect_progressbar").progressbar("reset");
+							
+                            var totalProxy = new $.su.Proxy({
+                                url: './data/quickset.scan.json',
+                                timeout: 15000
+                            });
+
+							$("input#2g_connect_progressbar").progressbar("reset");
+							$("input#5g_connect_progressbar").progressbar("reset");
+							
+                            totalProxy.read({scan:'true'},function(data){
+								var delayTime;
+								if(show2gFlag){
+									delayTime=((data&&data.scanTime)||15)*1000;
+									$("input#2g_connect_progressbar").progressbar("reset");
+									$("input#2g_connect_progressbar").progressbar("animate", 0, 1, delayTime);
+								}else{
+									delayTime=((data&&data.scanTime)||15)*1000;
+									$("input#5g_connect_progressbar").progressbar("reset");
+									$("input#5g_connect_progressbar").progressbar("animate", 0, 1, delayTime);
+								}
+								readRequest = setTimeout(function(){
+
+									readInterval = setInterval(function(){
+
+										totalProxy.read({}, function(data){
+											clearInterval(readInterval);
+
+											quickSetupWizard.wizard("hideButtons");
+
+											if(data.ap2g.length==0){
+												$('p#grid_ap_2g_text').hide();
+												$('div#grid_ap_2g_list').hide();
+												$('div#2g_connect_step_error').show();
+											}else{
+												apList2gStore.loadData(data.ap2g);
+												scan2GData = data.ap2g;
+												$('div#grid_ap_2g_list').show();
+												$('p#grid_ap_2g_text').show();
+											}   
+
+
+											if(data.ap5g.length==0){
+												$('p#grid_ap_5g_text').hide();
+												$('div#grid_ap_5g_list').hide();
+												$('div#5g_connect_step_error').show();
+											}else{
+												$('p#grid_ap_5g_text').show();
+												$('div#grid_ap_5g_list').show();
+												apList5gStore.loadData(data.ap5g);
+												scan5GData = data.ap5g;
+											}   
+
+											$.su.layout.doLayout();             
+
+										}, function(){
+											$('p#grid_ap_2g_text').hide();
+											$('div#grid_ap_2g_list').hide();
+											$('div#2g_connect_step_error').show();
+
+											$('p#grid_ap_5g_text').hide();
+											$('div#grid_ap_5g_list').hide();
+											$('div#5g_connect_step_error').show();
+										}, function(){
+											$('p#grid_ap_2g_text').hide();
+											$('div#grid_ap_2g_list').hide();
+											$('div#2g_connect_step_error').show();
+
+											$('p#grid_ap_5g_text').hide();
+											$('div#grid_ap_5g_list').hide();
+											$('div#5g_connect_step_error').show();
+										});
+									}, 1000);
+
+									scanTimeout = setTimeout(function(){
+										clearInterval(readInterval);
+
+										$("div#2g_connect_step1").hide();
+										$("div#2g_connect_step3").hide();
+
+										$("div#5g_connect_step1").hide();
+										$("div#5g_connect_step3").hide();
+
+										$("div#2g_connect_step2").show();
+										$("div#5g_connect_step2").show();
+
+										$("#grid_ap_2g_list .grid-content-container").scrollTop(0);
+										$("#grid_ap_5g_list .grid-content-container").scrollTop(0);
+										
+										$.su.layout.doLayout(); 
+
+									}, 5000);
+
+								},delayTime-5000);
+							});
+
+                        }else if(sysMode=='ap'){
+                            quickSetupWizard.wizard('goTo','access_quicksetup_wireless');
+                        }
+
+
+                        clearInterval(regionInterval);
+                        $.su.layout.doLayout(); 
+					},function(){
+						firstFlag = false;
+					}, function(){
+						firstFlag = false;
+						// console.log('region error');
+					});
+
+
+
+				}, 1000);
+
+				return false;
+				
+            }
+		};
+
+
+var quick2gPart = {
+			name: "quicksetup_2g_connect",
+			label: $.su.CHAR.QUICK_SETUP.CONNECT_2G,
+			labelCls: "quicksetup_2g_connect",
+			content: "#quicksetup_2g_connect",
+			prevHandler: function(e){
+				quickSetupWizard.wizard("hideButtons");
+
+				$("div#2g_connect_step1").css("display", "none");
+                $("div#2g_connect_step2").css("display", "block");
+				$("div#2g_connect_step3").css("display", "none");
+				$("div#2g_connect_step_error").css("display", "none");
+
+                $.su.layout.doLayout(); 
+
+				return false;
+
+			},
+			nextHandler: function(e){
+                $('p#grid_ap_5g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_5G_NETWORK);
+
+				if( !$('input#2g_connect_ap_ssid').textbox('validate') || ($('input#2g_connect_ap_security').combobox('getValue')[0]!='none' && !$('input#2g_connect_ap_password').textbox('validate') ) ){
+					return false;
+				}
+
+				if( $('input#2g_connect_ap_security').combobox('getValue')[0]!='none' && !checkPassword( $('input#2g_connect_ap_security').combobox('getValue')[0], $("input#2g_connect_ap_password").textbox('getValue'), $("input#2g_connect_ap_password") ) ){
+					return false;
+				}
+
+				ssid2gRouterAp = $('input#2g_connect_ap_ssid').textbox('getValue');
+				ssid2gPassword = $('input#2g_connect_ap_password').textbox('getValue');
+				ssid2gSecurity = $('input#2g_connect_ap_security').combobox('getValue')[0];
+				ssid2gIndex = $('input#2g_connect_ap_index').combobox('getValue')[0];
+				if(ssidExt){
+					$('button#btn_wireless_2g_same').button('enable');
+					$("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp.slice(0, 28)+"_EXT");
+				}else{
+					$("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp);					
+				}
+
+				if(show5gFlag){
+
+					$('button#5g_connect_skip').button('enable');
+
+					skip2gFlag = false;
+					// $('button#btn_wireless_2g_same').button('enable');
+
+					quickSetupWizard.wizard("hideButtons");
+					
+					$("input#5g_connect_progressbar").progressbar("reset");
+
+
+                    // $('p#grid_ap_5g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_2G_NETWORK_ONLY);
+				}else{
+					if(ssidExt){
+						$("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp.slice(0, 28)+"_EXT");
+					}else{
+						$("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp);					
+					}
+					
+					ssid2gSecurity=='none'?$("input#wireless_2g_password").textbox('setValue', ''):$("input#wireless_2g_password").textbox('setValue', ssid2gPassword);
+				}
+
+				$.su.layout.doLayout();	
+
+			}
+		};
+
+var quick5gPart = {
+			name: "quicksetup_5g_connect",
+			label: $.su.CHAR.QUICK_SETUP.CONNECT_5G,
+			labelCls: "quicksetup_5g_connect",
+			content: "#quicksetup_5g_connect",
+			prevHandler: function(e){
+				//$("input#2g_connect_ap_security").combobox('setValue', 'none');
+
+				quickSetupWizard.wizard("hideButtons");
+
+				$("div#5g_connect_step1").css("display", "none");
+        		$("div#5g_connect_step2").css("display", "block");
+				$("div#5g_connect_step3").css("display", "none");
+				$("div#5g_connect_step_error").css("display", "none");
+
+                $.su.layout.doLayout(); 
+
+				return false;
+			},
+			nextHandler: function(e){
+				if( !$('input#5g_connect_ap_ssid').textbox('validate') || ($('input#5g_connect_ap_security').combobox('getValue')[0]!='none' && !$('input#5g_connect_ap_password').textbox('validate')) ){
+					return false;
+				}
+
+				if( $('input#5g_connect_ap_security').combobox('getValue')[0]!='none' && !checkPassword( $('input#5g_connect_ap_security').combobox('getValue')[0], $("input#5g_connect_ap_password").textbox('getValue'), $("input#5g_connect_ap_password") ) ){
+					return false;
+				}
+
+				skip5gFlag = false;
+
+				ssid5gRouterAp = $('input#5g_connect_ap_ssid').textbox('getValue');
+				ssid5gPassword = $('input#5g_connect_ap_password').textbox('getValue');
+				ssid5gSecurity = $('input#5g_connect_ap_security').combobox('getValue')[0];
+				ssid5gIndex = $('input#5g_connect_ap_index').combobox('getValue')[0];
+
+				// $("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp);
+				if(ssidExt){
+					$("input#wireless_5g_ssid").textbox('setValue', ssid5gRouterAp.slice(0,26)+"_5GEXT");
+					$('button#btn_wireless_5g_same').button('enable');
+				}else{
+					$("input#wireless_5g_ssid").textbox('setValue', ssid5gRouterAp);
+					$('button#btn_wireless_5g_same').button('disable');
+				}
+				
+                ssid5gSecurity=='none'?$("input#wireless_5g_password").textbox('setValue', ''):$("input#wireless_5g_password").textbox('setValue', ssid5gPassword);
+
+                $('div#ap_router_5g_part').show();
+				if( show2gFlag && skip2gFlag){
+                    $('div#ap_router_2g_part').hide();
+                    ssid2gRouterAp = ssid5gRouterAp;
+                    ssid2gPassword = ssid5gPassword;
+					if(ssidExt){
+						$("input#wireless_2g_ssid").textbox('setValue', ssid5gRouterAp.slice(0, 28)+"_EXT");
+					}else{
+						$("input#wireless_2g_ssid").textbox('setValue', ssid5gRouterAp.slice(0, 27)+"_2.4G");					
+					}
+                    ssid2gPassword==''?$('input#wireless_2g_password').textbox('setValue', ''):$('input#wireless_2g_password').textbox('setValue', ssid2gPassword);
+                    $('button#btn_wireless_2g_same').button('enable');
+				}else if( show2gFlag ){
+                    $('div#ap_router_2g_part').show();
+                    ssid2gSecurity=='none'?$("input#wireless_2g_password").textbox('setValue', ''):$("input#wireless_2g_password").textbox('setValue', ssid2gPassword);
+                }
+			}
+		};
+
+var quickWirelessPart = {
+			name: "quicksetup_wireless",
+			label: $.su.CHAR.QUICK_SETUP.WIRELESS_SETTINGS,
+			labelCls: "quicksetup_wireless",
+			content: "#quicksetup_wireless",
+			prevHandler: function(e){
+				if( show5gFlag ){
+					// $("input#5g_connect_ap_security").combobox('setValue', 'none');
+
+					skip5gFlag = false;
+
+					quickSetupWizard.wizard("hideButtons");
+				
+                    $('div#ap_router_5g_part').show();
+
+					$("div#5g_connect_step1").css("display", "none");
+	        		$("div#5g_connect_step2").css("display", "block");
+					$("div#5g_connect_step3").css("display", "none");
+
+					quickSetupWizard.wizard("hideButtons");					
+				}else{
+
+					$('div#ap_router_2g_part').show();
+
+					quickSetupWizard.wizard("showButtons").wizard("goTo", 'quicksetup_2g_connect');
+
+					$("div#2g_connect_step1").css("display", "none");
+					$("div#2g_connect_step2").css("display", "block");
+					$("div#2g_connect_step3").css("display", "none");
+					
+					quickSetupWizard.wizard("hideButtons");
+						
+					$.su.layout.doLayout();	
+
+					return false;
+
+				}
+				$.su.layout.doLayout();	
+
+			},
+			nextHandler: function(e){
+				if( (show2gFlag && !$('input#wireless_2g_ssid').textbox('validate') ) ||  (  show5gFlag && !$('input#wireless_5g_ssid').textbox('validate') ) ){
+					return false;
+				}
+
+				if(show2gFlag){
+					$('span#ap_2g_ssid_summary_span').html($.su.func.escapeHtml(ssid2gRouterAp));
+					$("input#ap_2g_ssid_summary").textbox('setValue', ssid2gRouterAp);
+					$("input#ap_2g_security_value").val(ssid2gSecurity);
+                    transSecurityIcon(ssid2gSecurity, $('div#map_router_24g_img'));
+					$("input#ap_2g_index_summary").val(ssid2gIndex);
+					$('input#ap_2g_skip_value').val(skip2gFlag);
+					if( skip2gFlag || ssid2gSecurity=='none' ){
+						$("input#ap_2g_password_summary").textbox('setValue', '');
+                        $("span#ap_2g_password_summary_span").html('');
+					}else{
+						$("input#ap_2g_password_summary").textbox('setValue', ssid2gPassword);
+                        $("span#ap_2g_password_summary_span").text(ssid2gPassword);
+					}
+                    if( skip2gFlag ){
+                        $('div#map_router_24g_img').addClass('not-open');
+                        $('div#map_router_24g_img').removeClass('not-secure');
+                        transSecurityIcon(ssid5gSecurity, $('div#map_wireless_24g_img'));
+                    }else{
+                        $('div#map_router_24g_img').removeClass('not-open');
+                        transSecurityIcon(ssid2gSecurity, $('div#map_wireless_24g_img'));
+                    }
+
+					$("input#wireless_2g_hide_summary").textbox('setValue', checkHideText($('input#wireless_2g_hide_ssid').checkbox('getValue')));
+					$("input#wireless_2g_hide_summary_hidden").textbox('setValue', checkHideValue($('input#wireless_2g_hide_ssid').checkbox('getValue')));
+					$('span#wireless_2g_ssid_summary_span').html($.su.func.escapeHtml($('input#wireless_2g_ssid').textbox('getValue')));
+					$('span#wireless_2g_ssid_success_span').html($.su.func.escapeHtml($('input#wireless_2g_ssid').textbox('getValue')));
+					$("input#wireless_2g_ssid_summary").textbox('setValue', $('input#wireless_2g_ssid').textbox('getValue'));
+
+                    $("span#wireless_2g_password_summary_span").text($("input#wireless_2g_password").textbox('getValue'));
+					$("span#wireless_2g_password_success_span").text($("input#wireless_2g_password").textbox('getValue'));
+                    $("input#wireless_2g_password_summary").textbox('setValue', $("input#wireless_2g_password").textbox('getValue'));
+				}else{
+                    $('div#map_router_24g').addClass('hidden');
+                    $('div#map_router_bar').addClass('hidden');
+                    $('div#map_wireless_24g').addClass('hidden');
+                    $('div#map_repeater_bar').addClass('hidden');
+
+                }
+
+				if(show5gFlag){
+					$('span#ap_5g_ssid_summary_span').html($.su.func.escapeHtml(ssid5gRouterAp));
+					$("input#ap_5g_ssid_summary").textbox('setValue', ssid5gRouterAp);
+					$("input#ap_5g_security_value").val(ssid5gSecurity);
+
+					$("input#ap_5g_index_summary").val(ssid5gIndex);
+                    transSecurityIcon(ssid5gSecurity, $('div#map_router_5g_img'));
+					$('input#ap_5g_skip_value').val(skip5gFlag);
+                    if( skip5gFlag || ssid5gSecurity=='none' ){
+                        $("input#ap_5g_password_summary").textbox('setValue', '');
+                        $("span#ap_5g_password_summary_span").html('');
+                    }else{
+                        $("input#ap_5g_password_summary").textbox('setValue', ssid5gPassword);
+                        $("span#ap_5g_password_summary_span").text(ssid5gPassword);
+                    }
+                    if( skip5gFlag ){
+                        $('div#map_router_5g_img').addClass('not-open');
+                        $('div#map_router_5g_img').removeClass('not-secure');
+                        transSecurityIcon(ssid2gSecurity, $('div#map_wireless_5g_img'));
+                    }else{
+                        $('div#map_router_5g_img').removeClass('not-open');
+                        transSecurityIcon(ssid5gSecurity, $('div#map_wireless_5g_img'));
+                    }
+
+					$("input#wireless_5g_hide_summary").textbox('setValue', checkHideText($('input#wireless_5g_hide_ssid').checkbox('getValue')) );
+					$("input#wireless_5g_hide_summary_hidden").textbox('setValue', checkHideValue($('input#wireless_5g_hide_ssid').checkbox('getValue')) );
+					$('span#wireless_5g_ssid_summary_span').html($.su.func.escapeHtml($('input#wireless_5g_ssid').textbox('getValue')));
+					$('span#wireless_5g_ssid_success_span').html($.su.func.escapeHtml($('input#wireless_5g_ssid').textbox('getValue')));
+					$("input#wireless_5g_ssid_summary").textbox('setValue', $('input#wireless_5g_ssid').textbox('getValue'));
+
+                    $("span#wireless_5g_password_summary_span").text($("input#wireless_5g_password").textbox('getValue'));
+                    $("span#wireless_5g_password_success_span").text($("input#wireless_5g_password").textbox('getValue'));
+                    $("input#wireless_5g_password_summary").textbox('setValue', $("input#wireless_5g_password").textbox('getValue'));
+				}else{
+                    $('div#map_router_5g').addClass('hidden');
+                    $('div#map_router_bar').addClass('hidden');
+                    $('div#map_wireless_5g').addClass('hidden');
+                    $('div#map_repeater_bar').addClass('hidden');
+                }
+
+				$.su.layout.doLayout();	
+
+				$('div#quicksetup_summary').show();
+			}
+		};
+var checkformSubmitDelay = 0;
+var checkformSubmitInterval = 0;
+var checkformSubmitTimeout = 0;
+
+var quickSummaryPart = {
+			name: "quicksetup_summary",
+            label: $.su.CHAR.QUICK_SETUP.SUMMARY,
+            labelCls: "quicksetup_summary",
+            content: "#quicksetup_summary",
+            nextButtonText: $.su.CHAR.QUICK_SETUP.SAVE,
+            prevHandler: function(e){
+                
+            },
+            nextHandler: function(e){
+                $('div.top-main').scrollTop(0);
+                quickSetupWizard.wizard("hideButtons");
+                $('form#summary_form').addClass('hidden');
+                $('div#summary_finish').removeClass('hidden');
+                $('input#summary_finish_progressbar').progressbar("reset").progressbar("animate", 0, 1, finishProTime*1000); 
+
+
+				/* //reserve
+                submitConfirmMsg.msg("show");
+		    	$('div#pw_error_wrap').hide();
+		    	$('div#submit_pro_wrap').show();*/
+
+				$("form#summary_form").form('submit');
+		    	var resultFlag;
+				var checkFormProxy = new $.su.Proxy({
+					url: "./data/quickSetup.check.json"
+				});
+				
+				checkformSubmitDelay = setTimeout(function(){
+					checkformSubmitInterval = setInterval(function(){
+						checkFormProxy.read({},function(){
+							resultFlag =  true;
+							clearInterval(checkformSubmitInterval);
+						},function(){
+							resultFlag=false;
+						},function(){
+							resultFlag =  true;
+							clearInterval(checkformSubmitInterval);
+							// no response go on
+						})
+					},1000);
+					checkformSubmitTimeout = setTimeout(function(){
+						if(resultFlag===false){
+							submitConfirmMsg.msg("show");
+							$('div#submit_pro_wrap').hide();
+							$('div#pw_error_wrap').show();
+							$('input#summary_finish_progressbar').progressbar("stop");
+						}
+						else{
+                            /*$('a#summary_refresh').removeClass("text");
+							$('a#summary_refresh').click(function(){
+								$.su.nav.goTo("setting");
+							});*/
+							$("#summary_finish").addClass("hidden");
+							$("#summary_success").removeClass("hidden");
+						}
+						clearInterval(checkformSubmitInterval);
+					}, finishProTime*500+1000);
+				},finishProTime*500);
+				/*// reserve
+		    	$("input#submit_progressbar").progressbar("reset").progressbar("animate", 0, 1, finishProTime*1000, function(){
+		    		if(resultFlag){
+		    			location.href = "http://tplinkrepeater.net/";
+		    		}
+		    	});*/	
+			}
+		};
+
+
+var accessQuickWirelessPart = {
+        name: "access_quicksetup_wireless",
+        label: $.su.CHAR.QUICK_SETUP.WIRELESS_SETTINGS,
+        labelCls: "quicksetup_wireless",
+        content: "#access_wireless_setting_ap",
+        prevHandler: function(e){
+        },
+        nextHandler: function(e){
+
+            if( (show2gFlag && $('input#access_wireless_2g_radio').checkbox('getValue')[0]=='enable_2g' && !$('input#access_wireless_2g_ssid').textbox('validate') ) ||  ( show5gFlag && $('input#access_wireless_5g_radio').checkbox('getValue')[0]=='enable_5g' && !$('input#access_wireless_5g_ssid').textbox('validate')  ) ){
+                return false;
+            }
+                 
+            if(show2gFlag){
+                $("input#access_wireless_2g_radio_summary").textbox('setValue', checkHideText($('input#access_wireless_2g_radio').checkbox('getValue')) );
+				$("input#access_wireless_2g_radio_summary_hidden").textbox('setValue', checkHideValue($('input#access_wireless_2g_radio').checkbox('getValue')) );
+				
+                if( $('input#access_wireless_2g_radio').checkbox('getValue')[0]=='enable_2g' ){
+                // check security
+                    if($('input#access_wireless_2g_password').textbox('getValue')==''){
+                        $('input#access_wireless_2g_security').combobox('setValue', 'none');
+                    }else{
+                        if(apWirelessData.security_2g=='none'){
+                            $('input#access_wireless_2g_security').combobox('setValue', 'wpa-psk');
+                        }else{
+                            $('input#access_wireless_2g_security').combobox('setValue', apWirelessData.security_2g);
+                        }
+                    }
+                // check password
+                    if( !checkApPassword( $('input#access_wireless_2g_security').combobox('getValue')[0], $('input#access_wireless_2g_password')) ){
+                        return false;
+                    }
+
+                //check and hint
+                    if($('input#access_wireless_2g_security').combobox('getValue')[0] == 'wpa-psk'){
+                        $("#encryption_notice_1").css("display", "none");
+                    }else{
+                        $("#encryption_notice_1").css("display", "block");
+                        $("#encryption_notice_1").html($.su.CHAR.QUICK_SETUP.ENCRPT_2G_NOTICE.replace("%s", transApSecurity( $('input#access_wireless_2g_security').combobox('getValue')[0] )));
+                    }
+
+                // trans string
+                    $("input#access_wireless_2g_hide_summary").textbox('show');
+                    // $("input#access_wireless_2g_password_summary").textbox('show');
+                    $('p#access_wireless_2g_password_summary_p').removeClass('hidden');
+                    $('p#access_wireless_2g_ssid_summary_p').show();
+
+                    $("input#access_wireless_2g_hide_summary").textbox('setValue', checkHideText($('input#access_wireless_2g_hide_ssid').checkbox('getValue')));
+					$("input#access_wireless_2g_hide_summary_hidden").textbox('setValue', checkHideValue($('input#access_wireless_2g_hide_ssid').checkbox('getValue')));
+                    $('span#access_wireless_2g_ssid_summary_span').text($('input#access_wireless_2g_ssid').textbox('getValue'));
+                    $("input#access_wireless_2g_ssid_summary").textbox('setValue', $('input#access_wireless_2g_ssid').textbox('getValue'));
+                    $("input#access_wireless_2g_security_summary").textbox('setValue', $('input#access_wireless_2g_security').combobox('getValue')[0]);
+                    $("input#access_wireless_2g_password_summary").textbox('setValue', $('input#access_wireless_2g_password').textbox('getValue'));
+                    $('span#access_wireless_2g_password_summary_span').text($('input#access_wireless_2g_password').textbox('getValue'));
+
+                }else{
+                    $("input#access_wireless_2g_hide_summary").textbox('hide');
+                    // $("input#access_wireless_2g_password_summary").textbox('hide');
+                    $("#encryption_notice_2").css("display", "none");
+                    $('p#access_wireless_2g_password_summary_p').addClass('hidden');
+                    $('p#access_wireless_2g_ssid_summary_p').hide();
+                }
+
+            }else{
+                $('div#access_wireless_info').addClass('wireless-5g-only');
+            }
+   
+            if(show5gFlag){
+                $("input#access_wireless_5g_radio_summary").textbox('setValue', checkHideText($('input#access_wireless_5g_radio').checkbox('getValue')) );
+                $("input#access_wireless_5g_radio_summary_hidden").textbox('setValue', checkHideValue($('input#access_wireless_5g_radio').checkbox('getValue')) );
+
+                if( $('input#access_wireless_5g_radio').checkbox('getValue')[0]=='enable_5g' ){
+                // check security
+                    if($('input#access_wireless_5g_password').textbox('getValue')==''){
+                        $('input#access_wireless_5g_security').combobox('setValue', 'none');
+                    }else{
+                        if(apWirelessData.security_5g=='none'){
+                            $('input#access_wireless_5g_security').combobox('setValue', 'wpa-psk');
+                        }else{
+                            $('input#access_wireless_5g_security').combobox('setValue', apWirelessData.security_5g);
+                        }
+                    }
+
+                // check password
+                    if( !checkApPassword( $('input#access_wireless_5g_security').combobox('getValue')[0], $('input#access_wireless_5g_password')) ){
+                        return false;
+                    }
+
+                //check and hint
+                    if($('input#access_wireless_5g_security').combobox('getValue')[0] == 'wpa-psk'){
+                        $("#encryption_notice_2").css("display", "none");
+                    }else{
+                        $("#encryption_notice_2").css("display", "block");
+                        $("#encryption_notice_2").html($.su.CHAR.QUICK_SETUP.ENCRPT_5G_NOTICE.replace("%s", transApSecurity( $('input#access_wireless_5g_security').combobox('getValue')[0])));
+                    }   
+
+                // trans string
+                    $("input#access_wireless_5g_hide_summary").textbox('show');
+                    // $("input#access_wireless_5g_password_summary").textbox('show');
+                    $('p#access_wireless_5g_password_summary_p').removeClass('hidden');
+                    $('p#access_wireless_5g_ssid_summary_p').show();
+
+                    $("input#access_wireless_5g_hide_summary").textbox('setValue', checkHideText($('input#access_wireless_5g_hide_ssid').checkbox('getValue')));
+                    $("input#access_wireless_5g_hide_summary_hidden").textbox('setValue', checkHideValue($('input#access_wireless_5g_hide_ssid').checkbox('getValue')));
+                    $('span#access_wireless_5g_ssid_summary_span').text($('input#access_wireless_5g_ssid').textbox('getValue'));
+                    $("input#access_wireless_5g_ssid_summary").textbox('setValue', $('input#access_wireless_5g_ssid').textbox('getValue'));
+                    $("input#access_wireless_5g_security_summary").textbox('setValue', $('input#access_wireless_5g_security').combobox('getValue')[0]);
+                    $("input#access_wireless_5g_password_summary").textbox('setValue', $('input#access_wireless_5g_password').textbox('getValue'));
+                    $('span#access_wireless_5g_password_summary_span').text($('input#access_wireless_5g_password').textbox('getValue'));
+
+                }else{
+                    $("input#access_wireless_5g_hide_summary").textbox('hide');
+                    // $("input#access_wireless_5g_password_summary").textbox('hide');
+					
+                    $("#encryption_notice_2").css("display", "none");
+                    $('p#access_wireless_5g_password_summary_p').addClass('hidden');
+                    $('p#access_wireless_5g_ssid_summary_p').hide();
+                }   
+            }else{
+                $('div#access_wireless_info').addClass('wireless-2g-only');
+            }
+
+            if( (show2gFlag&&$('input#access_wireless_2g_security').combobox('getValue')[0]!='wpa-psk') ||   (show5gFlag&&$('input#access_wireless_5g_security').combobox('getValue')[0]!='wpa-psk') ){                 
+                $("#encryption_notice_3").html($.su.CHAR.QUICK_SETUP.ENCRPT_CHANGE_NOTICE.replace("%s", $.su.CHAR.QUICK_SETUP.WPA_WPA2_PERSONAL));
+                $("div#wireless_confirm_notice").msg("show");
+                return false;
+            }
+
+        }
+    };
+
+
+var accessQuickSummaryPart = {
+        name: "access_quicksetup_summary",
+        label: $.su.CHAR.QUICK_SETUP.SUMMARY,
+        labelCls: "quicksetup_summary",
+        content: "#access_quicksetup_summary",
+        nextButtonText: $.su.CHAR.QUICK_SETUP.SAVE_EXIT,
+        prevHandler: function(e){
+
+        },
+        nextHandler: function(e){
+            submitConfirmMsg.msg("show");
+            $('div#pw_error_wrap').hide();
+            $('div#submit_pro_wrap').show();
+            $('div.top-main').scrollTop(0);
+			$("form#access_summary_form").form('submit');
+            $("input#submit_progressbar").progressbar("reset").progressbar("animate", 0, 1, finishProTime*1000,function(){
+					location.href = "/";
+			}); 
+        }
+    };
+
+
+var quickSetupWizard;
+
+
+var regionProxy = new $.su.Proxy({
+    timeout: 15000,
+    async: false,
+    url: './data/regionRequest.json'
+});
+
+var timeProxy = new $.su.Proxy({
+    timeout: 15000,
+    async: false,
+    url: './data/time.set.json'
+});
+
+var modeProxy = new $.su.Proxy({
+    timeout: 15000,
+    async: false,
+    url: "./data/sysmode.json"
+});
+
+$('form#region_request').form({
+	proxy: regionProxy,
+	fields: [
+		{name:'region_country'}
+	],
+    autoLoad: false,
+    submitBtn: null,
+    showPrompt: false
+});
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var setButtonStatus = {
+    step1: function(){
+        var region = regionCombo.combobox("getValue");
+        if (region.length == 0 ){
+            quickSetupWizard.find("button.button-next[data-name=quicksetup-region]").button("disable");
+        }else{
+            quickSetupWizard.find("button.button-next[data-name=quicksetup-region]").button("enable");
+			if($("#combo_time_zone").combobox("getValue").length==0){
+				quickSetupWizard.find("button.button-next[data-name=quicksetup-region]").button("disable");
+				return;
+			}else if(region[0]=="US"){
+				$("#combo_time_zone").combobox("setValue",240);
+			}else if(region[0]=="FR"||region[0]=="DE"||region[0]=="IT"||region[0]=="HL"||region[0]=="BZ"||region[0]=="LU"||region[0]=="IE"||region[0]=="GB"||region[0]=="DK"||region[0]=="GR"||region[0]=="ES"||region[0]=="PT"||region[0]=="FI"||region[0]=="AT"||region[0]=="SE"||region[0]=="LT"||region[0]=="EE"||region[0]=="LV"||region[0]=="PL"||region[0]=="SZ"||region[0]=="HU"||region[0]=="SK"||region[0]=="SI"||region[0]=="MT"||region[0]=="CY"||region[0]=="RO"||region[0]=="BG"){
+				$("#combo_time_zone").combobox("setValue",720);
+			}
+        };
+    },
+    step2: function(){
+        var conntype = $("input#rdo-internet-connection-type").radio("getValue");
+        if (!conntype){
+            quickSetupWizard.find("button.button-next[data-name=wan-connection]").button("disable");
+        }else{
+            quickSetupWizard.find("button.button-next[data-name=wan-connection]").button("enable");
+        };
+    },
+};
+
+
+//page1
+
+var regionItem = $.su.loadComboData("./data/region.json", {}, [
+    {
+        srcKey:"name", 
+        dstKey:"name", 
+        func:function(src, para){
+            return para[src];
+        }, 
+        para:$.su.CHAR.REGION
+    },
+    {srcKey:"value", dstKey:"value"},
+], 'GET');
+
+var regionCombo = $("input#combo_region").combobox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.REGION,
+    noneSelectedRemind: true,
+    noneSelectedText: $.su.CHAR.BASIC.NONE_REGION_TIP,
+    labelCls: "s",
+    inputCls:"xxxl",
+    items: []
+}).on("ev_change",function(e,oldValue,newValue){
+	setButtonStatus.step1();
+});
+var timeZoneItem = $.su.loadComboData("./data/timezone.json", {}, [{
+        srcKey:"name", 
+        dstKey:"name", 
+        func:function(src, para){
+            return para[src];
+        }, 
+        para:$.su.CHAR.TIME_ZONE
+    },
+    {srcKey:"value", dstKey:"value"},
+]);
+
+var timezoneCombo = $("input#combo_time_zone").combobox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.TIME_ZONE,
+    noneSelectedRemind: true,
+    noneSelectedText: $.su.CHAR.BASIC.NONE_TIMEZONE_TIP,
+    labelCls: "s",
+    inputCls: "xxxl",
+    items: [],
+	cls: "inline-block"
+}).on("ev_change",function(e,oldValue,newValue){
+	if(newValue.length>0&&regionCombo.combobox("getValue").length>0){
+		quickSetupWizard.find("button.button-next[data-name=quicksetup-region]").button("enable");
+	}
+});
+
+timezoneCombo.combobox("loadData", timeZoneItem);
+regionCombo.combobox("loadData",regionItem);
+
+$("input#region_status").status({
+	proxy: null,
+	cls: "inline-block"
+});
+
+//page2
+
+$("button#2g_connect_back").button({
+	text: $.su.CHAR.QUICK_SETUP.BACK,
+	cls: "inline-block submit",
+	handler: function(){
+		quickSetupWizard.wizard("showButtons").wizard("goTo", 'quicksetup-region');
+	}
+});
+
+$("button#2g_connect_manual").button({
+	text: $.su.CHAR.QUICK_SETUP.MANUAL,
+	cls: "inline-block submit",
+	handler: function(){
+
+        quickSetupWizard.wizard("showButtons");
+
+		$("input#2g_connect_ap_index").combobox('hide');
+		$("input#2g_connect_ap_index").combobox('disable');
+		if(apSec2g.combobox("getValue")[0]=="wep"){
+			$("input#2g_connect_ap_index").combobox('show');
+			$("input#2g_connect_ap_index").combobox('enable');
+		}
+		$("div#2g_connect_step1").css("display", "none");
+        $("div#2g_connect_step2").css("display", "none");
+		$("div#2g_connect_step3").css("display", "block");
+
+        // $('div#grid_ap_2g_list').grid('load', scan2GData);
+        var editor = grid2gAp.grid('getEditor');
+        
+        if( $(editor).editor('isEditing') ){
+            $(editor).editor('cancelEdit');
+        }
+		
+		// quickSetupWizard.wizard("showButtons");
+	}
+});
+
+$("button#2g_connect_rescan").button({
+	text: $.su.CHAR.QUICK_SETUP.RESCAN,
+	cls: "inline-block submit",
+	handler: function(){
+        var editor = grid2gAp.grid('getEditor');
+        if( $(editor).editor('isEditing') ){
+            $(editor).editor('cancelEdit');
+        }
+
+		$("input#2g_connect_progressbar").progressbar("reset");
+		
+		$("div#2g_connect_step1").css("display", "block");
+        $("div#2g_connect_step2").css("display", "none");
+		$("div#2g_connect_step3").css("display", "none");
+
+		quickSetupWizard.wizard("hideButtons");
+		
+		apList2gProxy.read({scan:'true',operation:"load"})
+			var delayTime=15*1000;
+			$("input#2g_connect_progressbar").progressbar("reset").progressbar("animate", 0, 1, delayTime);
+
+
+			readRequest = setTimeout(function(){
+
+				readInterval = setInterval(function(){
+
+
+					grid2gAp.grid('getStore').load({}, function(data){
+						clearInterval(readInterval);
+						if(data.length==0){
+							$('p#grid_ap_2g_text').hide();
+							$('div#grid_ap_2g_list').hide();
+							$('div#2g_connect_step_error').show();
+
+							quickSetupWizard.wizard("hideButtons");
+						}else{
+							$('div#2g_connect_step_error').hide();
+
+							$('p#grid_ap_2g_text').show();
+							$('div#grid_ap_2g_list').show();
+							//$('div#grid_ap_2g_list').grid('load', data);
+							scan2GData = data;
+						}	
+
+						$.su.layout.doLayout();	
+
+					},function(){
+						$('p#grid_ap_2g_text').hide();
+						$('div#grid_ap_2g_list').hide();
+						$('div#2g_connect_step_error').show();		
+					},function(){
+						$('p#grid_ap_2g_text').hide();
+						$('div#grid_ap_2g_list').hide();
+						$('div#2g_connect_step_error').show();
+					});
+				}, 1000);
+
+				scanTimeout = setTimeout( function(){ 
+					clearInterval(readInterval);
+
+					$("div#2g_connect_step1").hide();
+					$("div#2g_connect_step2").show();
+					$("div#2g_connect_step3").hide();
+
+					$("#grid_ap_2g_list .grid-content-container").scrollTop(0);
+					$.su.layout.doLayout();	
+
+				}, 5000);
+				
+			}, delayTime-5000);
+				
+		$.su.layout.doLayout();	
+		
+	}
+});
+
+$("button#2g_connect_skip").button({
+	text: $.su.CHAR.QUICK_SETUP.SKIP,
+	cls: "inline-block submit",
+	handler: function(){
+        var editor = grid2gAp.grid('getEditor');
+        if( $(editor).editor('isEditing') ){
+            $(editor).editor('cancelEdit');
+        }
+		$('div#ap_router_2g_part').hide();
+		// $("input#ap_2g_ssid_summary").textbox('disable');
+		// $("input#ap_2g_password_summary").textbox('disable');
+
+		$('input#wireless_2g_ssid').textbox('setValue', '');
+		$('input#wireless_2g_password').textbox('setValue', '');
+
+		skip2gFlag = true;
+		if(ssidExt)
+			$('button#btn_wireless_2g_same').button('enable');
+		else
+			$('button#btn_wireless_2g_same').button('disable');
+
+		$('button#5g_connect_skip').button('disable');
+
+		quickSetupWizard.wizard('goTo','quicksetup_5g_connect');
+
+		$("div#5g_connect_step1").hide();
+		$("div#5g_connect_step2").show();
+		$("div#5g_connect_step3").hide();
+
+        $('p#grid_ap_5g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_5G_WITHOUT_2G);
+
+		quickSetupWizard.wizard("hideButtons");
+		
+		$("input#5g_connect_progressbar").progressbar("reset");
+	}
+});
+
+$("button#2g_connect_next").button({
+  /*  fieldLabel: '',
+    labelCls: 'l',*/
+	text: $.su.CHAR.QUICK_SETUP.NEXT,
+	cls: "submit submit-label-l",
+	handler: function(){
+		if( editor2GSsid.textbox('getValue')=='' ){
+			editor2GSsid.textbox('setError', $.su.CHAR.VTYPETEXT.BLANKTEXT);
+			return false;
+		}
+		if(show5gFlag){
+			if( ssid2gSecurity!='none' && !checkPassword( ssid2gSecurity, $("input#editor_2g_password").textbox('getValue'), $("input#editor_2g_password") ) ){
+				return false;
+			}
+			$("button#5g_connect_skip").button('enable');
+
+			skip2gFlag = false;
+            ssid2gRouterAp = editor2GSsid.textbox('getValue');
+			if(ssidExt){
+				$("input#wireless_2g_ssid").textbox('setValue', editor2GSsid.textbox('getValue').slice(0, 28)+"_EXT" );
+				$('button#btn_wireless_2g_same').button('enable');
+			}else{
+				$("input#wireless_2g_ssid").textbox('setValue', editor2GSsid.textbox('getValue') );
+				$('button#btn_wireless_2g_same').button('disable');
+			}
+             $('div#ap_router_2g_part').show();
+
+            if(ssid2gSecurity=='none'){
+                ssid2gPassword = '';
+            }else{
+               ssid2gPassword = $("input#editor_2g_password").textbox('getValue');
+            }
+
+			var editor = grid2gAp.grid('getEditor');
+			
+            if( $(editor).editor('isEditing') ){
+                $(editor).editor('cancelEdit');
+            }
+
+			quickSetupWizard.wizard('goTo','quicksetup_5g_connect');
+
+			$("div#5g_connect_step1").hide();
+			$("div#5g_connect_step2").show();
+			$("div#5g_connect_step3").hide();
+
+            $('p#grid_ap_5g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_5G_NETWORK);
+
+			quickSetupWizard.wizard("hideButtons");
+			
+			$("input#5g_connect_progressbar").progressbar("reset");
+		}else{
+			if( ssid2gSecurity!='none' && !checkPassword( ssid2gSecurity, $("input#editor_2g_password").textbox('getValue'), $("input#editor_2g_password") ) ){
+				return false;
+			}
+			skip2gFlag = false;
+			ssid2gRouterAp = editor2GSsid.textbox('getValue');
+			ssid2gPassword = $("input#editor_2g_password").textbox('getValue');
+
+			var editor = grid2gAp.grid('getEditor');
+			
+            if( $(editor).editor('isEditing') ){
+                $(editor).editor('cancelEdit');
+            }
+
+			quickSetupWizard.wizard('goTo','quicksetup_wireless');
+			quickSetupWizard.wizard("showButtons");
+
+            if(ssidExt){
+				$('button#wireless_2g_ssid').button('enable');
+				$("input#wireless_2g_ssid").textbox('setValue', editor2GSsid.textbox('getValue').slice(0,28)+"_EXT" );
+			}else{
+				$('button#wireless_2g_ssid').button('disable');
+				$("input#wireless_2g_ssid").textbox('setValue', editor2GSsid.textbox('getValue'));
+			}
+
+			if( ssid2gSecurity!='none' ){
+				$("input#wireless_2g_password").textbox('setValue', ssid2gPassword );
+			}
+			
+			$.su.layout.doLayout();	
+		}
+		$.su.layout.doLayout();	
+	}
+});
+
+var apSsid2g = $("input#2g_connect_ap_ssid").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_2G_SSID,
+	labelCls: "xl",
+    vtype:{
+        vtype:"utf8_lan",
+        maxLength:32
+    },
+	autoTrim: false,
+	allowBlank: false
+});
+
+var apSec2g = $("input#2g_connect_ap_security").combobox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_SECURITY_24G,
+	labelCls: "xl",
+	items: [
+		{"value": "none", "name": $.su.CHAR.QUICK_SETUP.NO_SECURITY, selected:true},
+		{"value": "wpa", "name": $.su.CHAR.QUICK_SETUP.WPA},
+		{"value": "wpa2", "name": $.su.CHAR.QUICK_SETUP.WPA2},
+		{"value": "wpa/wpa2", "name": $.su.CHAR.QUICK_SETUP.WPA_WPA2},
+		{"value": "wep", "name": $.su.CHAR.QUICK_SETUP.WEP}
+	]
+}).on('ev_change', function(event, oldValue, newValue){
+	$("input#2g_connect_ap_password").textbox('setNormal');
+	if(newValue[0] == 'none'){
+		$("input#2g_connect_ap_password").textbox('disable');
+        $("input#2g_connect_ap_password").textbox('setValue',"");
+		$("input#2g_connect_ap_index").combobox('hide');
+		$("input#2g_connect_ap_index").combobox('disable');
+	}else{
+		$("input#2g_connect_ap_password").textbox('enable');
+		if(newValue[0] == 'wep'){
+			$("input#2g_connect_ap_index").combobox('show');
+			$("input#2g_connect_ap_index").combobox('enable');
+		}else{
+			$("input#2g_connect_ap_index").combobox('hide');
+			$("input#2g_connect_ap_index").combobox('disable');
+		}
+	}
+});
+
+var apPwd2g = $("input#2g_connect_ap_password").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_PASSWORD_24G,
+	labelCls: "xl",
+	disabled: true,
+	allowBlank: false,
+    autoTrim: false, 
+    vtype: "password",
+    maxLength: 64
+});
+
+$("input#2g_connect_ap_index").combobox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.INDEX,
+	labelCls: "xl",
+	items: [
+		{"value": "1", "name": '1', selected:true},
+		{"value": "2", "name": '2'},
+		{"value": "3", "name": '3'},
+		{"value": "4", "name": '4'}
+	]
+});
+
+
+var apList2gProxy = new $.su.Proxy({
+	timeout: 15000,
+	url: "./data/ap2g.json"
+});
+var apList2gStore = new $.su.Store({
+	proxy: apList2gProxy,
+	autoLoad: false,
+	fields: [
+		{
+			name: "ssid"
+		},{
+			name: "signal"
+		},{
+			name: "mac"
+		},{
+			name: "security"
+		},{
+			name: "channel"
+		},{
+			name: "security"
+		}
+	]
+});
+
+$('p#scanning_text_2g').html($.su.CHAR.QUICK_SETUP.SCANNING);
+$('p#scanning_text_5g').html($.su.CHAR.QUICK_SETUP.SCANNING);
+
+$("input#2g_connect_progressbar").progressbar({
+	cls: "connect-progressbar",
+    showPercentage: true,
+	height: 6,
+	width: 520
+});
+
+var editor2GSsid = $("input#editor_2g_ssid").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_2G_SSID,
+    labelCls: "l",
+    // cls: 'inline-block',
+    autoTrim: false
+});
+
+var editor2GPassword = $("input#editor_2g_password").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_PASSWORD_24G,
+	labelCls: "l",
+	// cls: 'inline-block',
+    autoTrim: false, 
+    // vtype: "password",
+    maxLength: 64
+}).on('keydown', function(data){
+    if (data.key == "Enter" || data.keyCode == 13){
+        data.preventDefault();
+    };
+});
+
+var grid2gAp = $("div#grid_ap_2g_list").grid({
+	store: apList2gStore,
+	maxLines: 10,
+	editor:{
+		content: '#grid_ap_2g_editor',
+		fields: {
+            "name": "ssid",
+			"name": "password"
+		}
+	},
+	columns: [        
+        {
+            text: '',
+            xtype: 'html',
+            dataIndex: "name",
+            width: 50,
+            renderer: function(value, dd){
+                return '<div class="radio-icon"></div>';
+            }
+        },
+        {
+            text: $.su.CHAR.GRID.ID, 
+            xtype: "rownumberer",
+            width:40
+        },
+        {
+            text: $.su.CHAR.QUICK_SETUP.SSID,
+            dataIndex: "ssid",
+            width: 180,
+            renderer: function(value, index ,data){
+                return $.su.func.escapeHtml(data.ssid);
+            }
+        },
+        {
+			text: $.su.CHAR.QUICK_SETUP.SIGNAL,
+			dataIndex: "signal",
+			width: 100,
+			renderer: function(data, index){
+				switch(data){
+					case '1':
+						return '<span class="singal-1"></span>';
+                    case '2':
+                        return '<span class="singal-2"></span>';
+					case '3':
+						return '<span class="singal-3"></span>';
+                    case '4':
+                        return '<span class="singal-4"></span>';
+					case '5':
+						return '<span class="singal-5"></span>';
+				}
+			}
+		},{
+			text: $.su.CHAR.QUICK_SETUP.MAC,
+			dataIndex: "mac",
+			width: 200
+		},{
+			text: $.su.CHAR.QUICK_SETUP.SECURITY,
+			dataIndex: "security",
+            renderer: function(value, index, data){
+                if(value == 'none'){
+                    return '<span class="ssid-unsecured"></span>';
+                }else{
+                    return '<span class="ssid-secured"></span>';
+                }
+            }
+		}		
+	]
+}).on("ev_load", function(e, arr){
+    var me = $(this);
+    $(arr).each(function(index,data){
+        if(data.security.toLowerCase() == "wpa/wpa2-enterprise")
+        {
+            me.grid("disableRow", index);
+        }
+    })
+    
+});
+
+
+grid2gAp.delegate("tr.grid-content-tr", "click", function(e){
+	var key = $(this).attr('data-key');
+	var data = apList2gStore.getData(key);
+
+    if(data.security.toLowerCase() == "wpa/wpa2-enterprise"){
+        return;
+    }
+
+	ssid2gRouterAp = data.ssid;
+	ssid2gSecurity =  data.security;
+	ssid2gIndex = '1';
+
+    // ssid is blank
+    if(ssid2gRouterAp==''){
+        editor2GSsid.textbox('setValue', '');
+        editor2GSsid.textbox('show');
+    }else{
+        editor2GSsid.textbox('setValue', ssid2gRouterAp);
+        editor2GSsid.textbox('hide');
+    }
+
+    $('div#grid_ap_2g_list div.radio-icon').removeClass('selected');
+    $(this).find('div.radio-icon').addClass('selected');
+	
+	$('button#5g_connect_skip').button('enable');
+	$('input#ap_2g_index_summary').textbox('setValue', '1');
+
+	skip2gFlag = false;
+	if(ssidExt)
+		$('button#btn_wireless_2g_same').button('enable');
+	else
+		$('button#btn_wireless_2g_same').button('disable');
+    editor2GPassword.textbox('setValue', '');
+
+	var editor = grid2gAp.grid('getEditor');
+	if( $(editor).editor('isEditing') ){
+		$(editor).editor('cancelEdit');
+	}
+	if(ssid2gSecurity!='none'){
+        editor2GPassword.textbox('show');
+		$(editor).editor('startEdit', key);
+		$.su.layout.doLayout();
+	}else if(ssid2gSecurity=='none' && ssid2gRouterAp==''){
+        editor2GPassword.textbox('hide');
+        $(editor).editor('startEdit', key);
+        $.su.layout.doLayout();
+    }else{
+        ssid2gPassword = '';
+		if(ssidExt){
+			$("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp.slice(0, 28)+"_EXT");
+		}else{
+			$("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp);					
+		}
+		if(show5gFlag){
+			quickSetupWizard.wizard('goTo','quicksetup_5g_connect');
+
+			$("div#5g_connect_step1").hide();
+			$("div#5g_connect_step2").show();
+			$("div#5g_connect_step3").hide();
+
+            $('p#grid_ap_5g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_5G_NETWORK);
+			// quickSetupWizard.wizard("hideButtons");
+			
+			$("input#5g_connect_progressbar").progressbar("reset");			
+		}else{
+
+			quickSetupWizard.wizard('goTo','quicksetup_wireless');
+			quickSetupWizard.wizard("showButtons");
+
+			// $("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp );
+			// $("input#wireless_5g_ssid").textbox('setValue', ssid5gRouterAp );
+			
+			$("input#wireless_2g_password").textbox('setValue', ssid2gPassword );
+			// $("input#wireless_5g_password").textbox('setValue', ssid5gPassword );
+				
+			$.su.layout.doLayout();	
+
+		}
+	}
+
+});
+
+//page3
+$("button#5g_connect_back").button({
+	text: $.su.CHAR.QUICK_SETUP.BACK,
+	cls: "inline-block submit",
+	handler: function(){
+        var editor = grid5gAp.grid('getEditor');
+        if( $(editor).editor('isEditing') ){
+            $(editor).editor('cancelEdit');
+        }
+
+		if(show2gFlag){
+			$('p#ap_2g_ssid_summary_p').show();
+			// $("input#ap_2g_ssid_summary").textbox('show');
+			//$("input#ap_2g_password_summary").textbox('show');
+            $("p#ap_2g_password_summary_p").show();
+			$("input#ap_2g_ssid_summary").textbox('enable');
+			$("input#ap_2g_password_summary").textbox('enable');
+
+			quickSetupWizard.wizard("showButtons").wizard("goTo", 'quicksetup_2g_connect');
+
+			$("div#2g_connect_step1").css("display", "none");
+			$("div#2g_connect_step2").css("display", "block");
+			$("div#2g_connect_step3").css("display", "none");
+			
+			quickSetupWizard.wizard("hideButtons");
+				
+			$.su.layout.doLayout();	
+
+			return false;
+
+		}else{
+			quickSetupWizard.wizard("showButtons").wizard("goTo", 'quicksetup-region');
+		}
+
+	}
+});
+
+$("button#5g_connect_manual").button({
+	text: $.su.CHAR.QUICK_SETUP.MANUAL,
+	cls: "inline-block submit",
+	handler: function(){
+		$("input#5g_connect_ap_index").combobox('hide');
+		$("input#5g_connect_ap_index").combobox('disable');
+
+		if(apSec5g.combobox("getValue")[0]=="wep"){
+			$("input#5g_connect_ap_index").combobox('show');
+			$("input#5g_connect_ap_index").combobox('enable');
+		}
+		$("div#5g_connect_step1").css("display", "none");
+        $("div#5g_connect_step2").css("display", "none");
+		$("div#5g_connect_step3").css("display", "block");
+		
+		quickSetupWizard.wizard("showButtons");
+        
+        var editor = grid5gAp.grid('getEditor');
+        if( $(editor).editor('isEditing') ){
+            $(editor).editor('cancelEdit');
+        }
+	}
+});
+
+$("button#5g_connect_rescan").button({
+	text: $.su.CHAR.QUICK_SETUP.RESCAN,
+	cls: "inline-block submit",
+	handler: function(){
+        var editor = grid5gAp.grid('getEditor');
+        if( $(editor).editor('isEditing') ){
+            $(editor).editor('cancelEdit');
+        }
+
+		$("input#5g_connect_progressbar").progressbar("reset");
+		
+		$("div#5g_connect_step1").css("display", "block");
+        $("div#5g_connect_step2").css("display", "none");
+		$("div#5g_connect_step3").css("display", "none");
+
+		quickSetupWizard.wizard("hideButtons");
+
+		apList5gProxy.read({scan:'true',operation:"load"});
+			var delayTime=15*1000;
+			$("input#5g_connect_progressbar").progressbar("reset").progressbar("animate", 0, 1, delayTime);
+
+			readRequest = setTimeout(function(){
+
+				readInterval = setInterval(function(){
+
+					grid5gAp.grid('getStore').load({}, function(data){
+						clearInterval(readInterval);
+						if(data.length==0){
+							$('p#grid_ap_5g_text').hide();
+							$('div#grid_ap_5g_list').hide();
+							$('div#5g_connect_step_error').show();
+
+							quickSetupWizard.wizard("hideButtons");
+						}else{
+							$('div#5g_connect_step_error').hide();
+
+							$('p#grid_ap_5g_text').show();
+							$('div#grid_ap_5g_list').show();
+							//$('div#grid_ap_5g_list').grid('load', data);
+							scan5GData = data;                        
+						}	
+
+						$.su.layout.doLayout();	
+
+					},function(){
+						$('p#grid_ap_5g_text').hide();
+						$('div#grid_ap_5g_list').hide();
+						$('div#5g_connect_step_error').show();		
+					},function(){
+						$('p#grid_ap_5g_text').hide();
+						$('div#grid_ap_5g_list').hide();
+						$('div#5g_connect_step_error').show();
+					});
+				}, 1000);
+
+				scanTimeout = setTimeout( function(){ 
+					clearInterval(readInterval);
+
+					$("div#5g_connect_step1").hide();
+					$("div#5g_connect_step2").show();
+					$("div#2g_connect_step3").hide();
+					$("#grid_ap_5g_list .grid-content-container").scrollTop(0);
+					$.su.layout.doLayout();	
+				}, 5000);
+				
+			}, delayTime-5000);
+        $.su.layout.doLayout(); 
+	}
+});
+
+
+$("button#5g_connect_skip").button({
+	text: $.su.CHAR.QUICK_SETUP.SKIP,
+	cls: "inline-block submit",
+	handler: function(){
+		skip5gFlag = true;
+		$('div#ap_router_5g_part').hide();
+
+		$('input#wireless_5g_ssid').textbox('setValue', '');
+		$('input#wireless_5g_password').textbox('setValue', '');
+
+
+		var editor = grid5gAp.grid('getEditor');
+		if( $(editor).editor('isEditing') ){
+            $(editor).editor('cancelEdit');
+        }
+
+		quickSetupWizard.wizard('goTo','quicksetup_wireless');
+		quickSetupWizard.wizard("showButtons");
+
+		if(ssidExt){
+			$("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp.slice(0, 28)+"_EXT");
+		}else{
+			$("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp);					
+		}
+        ssid2gSecurity=='none'?$("input#wireless_2g_password").textbox('setValue', ''):$("input#wireless_2g_password").textbox('setValue', ssid2gPassword);
+
+
+        $('div#ap_router_2g_part').show();
+        $('div#ap_router_5g_part').hide();
+        ssid5gRouterAp = ssid2gRouterAp;
+        ssid5gPassword = ssid2gPassword;
+		if(ssidExt){
+			$("input#wireless_5g_ssid").textbox('setValue', ssid5gRouterAp.slice(0, 26)+"_5GEXT");
+		}else{
+			$("input#wireless_5g_ssid").textbox('setValue', ssid5gRouterAp.slice(0, 29)+"_5G");					
+		}
+        ssid5gPassword==''?$('input#wireless_5g_password').textbox('setValue', ''):$('input#wireless_5g_password').textbox('setValue', ssid5gPassword);
+        
+        $('button#btn_wireless_5g_same').button('enable');
+	}
+});
+
+$("button#5g_connect_next").button({
+	text: $.su.CHAR.QUICK_SETUP.NEXT,
+	cls: "submit submit-label-l",
+	handler: function(){
+        if( editor5GSsid.textbox('getValue')=='' ){
+            editor5GSsid.textbox('setError', $.su.CHAR.VTYPETEXT.BLANKTEXT);
+            return false;
+        }
+		if( ssid5gSecurity!='none' && !checkPassword( ssid5gSecurity, $("input#editor_5g_password").textbox('getValue'), $("input#editor_5g_password") ) ){
+			return false;
+		}
+        
+        ssid5gRouterAp = editor5GSsid.textbox('getValue');
+		// ssid5gPassword = $("input#editor_5g_password").textbox('getValue');
+        if(ssid5gSecurity=='none'){
+            ssid5gPassword = '';
+        }else{
+           ssid5gPassword = $("input#editor_5g_password").textbox('getValue');
+        }
+
+		var editor = grid5gAp.grid('getEditor');
+        if( $(editor).editor('isEditing') ){
+            $(editor).editor('cancelEdit');
+        }
+
+		skip5gFlag = false;
+
+		quickSetupWizard.wizard('goTo','quicksetup_wireless');
+		quickSetupWizard.wizard("showButtons");
+
+		// $("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp );
+       
+        ssid5gSecurity=='none'?$("input#wireless_5g_password").textbox('setValue', ''):$("input#wireless_5g_password").textbox('setValue', ssid5gPassword);
+
+		$.su.layout.doLayout();	
+		if(ssidExt){
+			$('button#btn_wireless_5g_same').button('enable');
+			$("input#wireless_5g_ssid").textbox('setValue', editor5GSsid.textbox('getValue').slice(0,26)+"_5GEXT");
+		}else{
+			$('button#btn_wireless_5g_same').button('disable');
+			$("input#wireless_5g_ssid").textbox('setValue', editor5GSsid.textbox('getValue'));
+		}
+        $('div#ap_router_5g_part').show();
+
+		if( show2gFlag && skip2gFlag){
+
+            $('div#ap_router_2g_part').hide();
+            ssid2gRouterAp = editor5GSsid.textbox('getValue');
+            ssid2gPassword = ssid5gPassword;
+			if(ssidExt){
+				$("input#wireless_2g_ssid").textbox('setValue', editor5GSsid.textbox('getValue').slice(0, 28)+"_EXT");
+			}else{
+				$("input#wireless_2g_ssid").textbox('setValue', editor5GSsid.textbox('getValue').slice(0, 27)+"_2.4G");					
+			}
+            ssid2gPassword==''?$('input#wireless_2g_password').textbox('setValue', ''):$('input#wireless_2g_password').textbox('setValue', ssid2gPassword);
+            $('button#btn_wireless_2g_same').button('enable');
+        }else if( show2gFlag ){
+            $('div#ap_router_2g_part').show();
+            ssid2gSecurity=='none'?$("input#wireless_2g_password").textbox('setValue', ''):$("input#wireless_2g_password").textbox('setValue', ssid2gPassword);
+        }
+	}
+});
+
+var apSsid5g = $("input#5g_connect_ap_ssid").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_5G_SSID,
+	labelCls: "xl",
+	autoTrim: false,
+    vtype:{
+        vtype:"utf8_lan",
+        maxLength:32
+    },
+	allowBlank: false
+});
+
+var apSec5g = $("input#5g_connect_ap_security").combobox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_SECURITY_5G,
+	labelCls: "xl",
+	defaultValue: ['none'],
+	items: [
+		{"value": "none", "name": $.su.CHAR.QUICK_SETUP.NO_SECURITY, selected:true},
+		{"value": "wpa", "name": $.su.CHAR.QUICK_SETUP.WPA},
+		{"value": "wpa2", "name": $.su.CHAR.QUICK_SETUP.WPA2},
+		{"value": "wpa/wpa2", "name": $.su.CHAR.QUICK_SETUP.WPA_WPA2},
+		{"value": "wep", "name": $.su.CHAR.QUICK_SETUP.WEP},
+	]
+}).on('ev_change', function(event, oldValue, newValue){
+	$("input#5g_connect_ap_password").textbox('setNormal');
+	if(newValue[0] == 'none'){
+		$("input#5g_connect_ap_password").textbox('disable');
+        $("input#5g_connect_ap_password").textbox('setValue',"");
+		$("input#5g_connect_ap_index").combobox('hide');
+		$("input#5g_connect_ap_index").combobox('disable');
+	}else{
+		$("input#5g_connect_ap_password").textbox('enable');
+		if(newValue[0] == 'wep'){
+			$("input#5g_connect_ap_index").combobox('show');
+			$("input#5g_connect_ap_index").combobox('enable');
+		}else{
+			$("input#5g_connect_ap_index").combobox('hide');
+			$("input#5g_connect_ap_index").combobox('disable');
+		}
+	}
+});
+
+var apPwd5g = $("input#5g_connect_ap_password").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_PASSWORD_5G,
+	labelCls: "xl",
+	disabled: true,
+	allowBlank: false,
+    autoTrim: false,
+    vtype: "password",
+    maxLength: 64
+});
+
+$("input#5g_connect_ap_index").combobox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.INDEX,
+	labelCls: "xl",
+	items: [
+		{"value": "1", "name": '1', selected:true},
+		{"value": "2", "name": '2'},
+		{"value": "3", "name": '3'},
+		{"value": "4", "name": '4'}
+	]
+});
+
+var apList5gProxy = new $.su.Proxy({
+	timeout: 15000,
+	url: "./data/ap5g.json"
+});
+var apList5gStore = new $.su.Store({
+	proxy: apList5gProxy,
+	autoLoad: false,
+	fields: [
+		{
+			name: "ssid"
+		},{
+			name: "signal"
+		},{
+			name: "mac"
+		},{
+			name: "security"
+		},{
+			name: "channel"
+		},{
+			name: "security"
+		}
+	]
+});
+
+$("input#5g_connect_progressbar").progressbar({
+	cls: "connect-progressbar",
+    showPercentage: true,
+	height: 6,
+	width: 520
+});
+
+var editor5GSsid = $("input#editor_5g_ssid").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_5G_SSID,
+    labelCls: "l",
+    // cls: 'inline-block',
+    autoTrim: false
+});
+
+var editor5GPassword = $("input#editor_5g_password").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.ROUTER_AP_PASSWORD_5G,
+	labelCls: "l",
+	// cls: 'inline-block',
+    autoTrim: false,
+    // vtype: "password",
+    maxLength: 64
+}).on('keydown', function(data){
+    if (data.key == "Enter" || data.keyCode == 13){
+        data.preventDefault();
+    };
+});
+
+$('p#grid_ap_5g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_5G_NETWORK);
+
+var grid5gAp = $("div#grid_ap_5g_list").grid({
+	store: apList5gStore,
+	maxLines: 10,
+	editor:{
+		content: '#grid_ap_5g_editor',
+		fields: {
+			"name": "password"
+		}
+	},
+	columns: [        
+        {
+            text: '',
+            xtype: 'html',
+            dataIndex: "name",
+            width: 50,
+            renderer: function(value, dd){
+                return '<div class="radio-icon"></div>';
+            }
+        },
+        {
+            text: $.su.CHAR.GRID.ID, 
+            xtype: "rownumberer",
+            width:40
+        },
+        {
+            text: $.su.CHAR.QUICK_SETUP.SSID,
+            dataIndex: "ssid",
+            width: 180,
+            renderer: function(value, index ,data){
+                return $.su.func.escapeHtml(data.ssid);
+            }
+        },
+        {
+            text: $.su.CHAR.QUICK_SETUP.SIGNAL,
+            dataIndex: "signal",
+            width: 100,
+            renderer: function(data, index){
+                switch(data){
+                    case '1':
+                        return '<span class="singal-1"></span>';
+                    case '2':
+                        return '<span class="singal-2"></span>';
+                    case '3':
+                        return '<span class="singal-3"></span>';
+                    case '4':
+                        return '<span class="singal-4"></span>';
+                    case '5':
+                        return '<span class="singal-5"></span>';
+                }
+            }
+        },{
+            text: $.su.CHAR.QUICK_SETUP.MAC,
+            dataIndex: "mac",
+            width: 200
+        },{
+            text: $.su.CHAR.QUICK_SETUP.SECURITY,
+            dataIndex: "security",
+            renderer: function(value, index, data){
+                if(value == 'none'){
+                    return '<span class="ssid-unsecured"></span>';
+                }else{
+                    return '<span class="ssid-secured"></span>';
+                }
+            }
+        }
+	]
+}).on("ev_load", function(e, arr){
+    var me = $(this);
+    $(arr).each(function(index,data){
+        if(data.security.toLowerCase() == "wpa/wpa2-enterprise")
+        {
+            me.grid("disableRow", index);
+        }
+    })
+    
+});
+
+grid5gAp.delegate("tr.grid-content-tr", "click", function(e){
+
+	var key = $(this).attr("data-key");
+	var data = apList5gStore.getData(key);
+
+    if(data.security.toLowerCase() == "wpa/wpa2-enterprise"){
+        return;
+    }
+
+	ssid5gRouterAp = data.ssid;
+	ssid5gSecurity =  data.security;
+	ssid5gIndex = '1';
+
+    // ssid is blank
+    if(ssid5gRouterAp==''){
+        editor5GSsid.textbox('setValue', '');
+        editor5GSsid.textbox('show');
+    }else{
+        editor5GSsid.textbox('setValue', ssid5gRouterAp);
+        editor5GSsid.textbox('hide');
+    }
+
+    $('div#grid_ap_5g_list div.radio-icon').removeClass('selected');
+    $(this).find('div.radio-icon').addClass('selected');
+
+	skip5gFlag = false;
+
+	$('input#ap_5g_index_summary').textbox('setValue', '1');
+
+   editor5GPassword.textbox('setValue', '');
+
+	var editor = grid5gAp.grid('getEditor');
+	if( $(editor).editor('isEditing') ){
+		$(editor).editor('cancelEdit');
+	}
+
+    if(ssid5gSecurity!='none'){
+        editor5GPassword.textbox('show');
+        $(editor).editor('startEdit', key);
+        $.su.layout.doLayout();
+    }else if(ssid5gSecurity=='none' && ssid5gRouterAp==''){
+        editor5GPassword.textbox('hide');
+        $(editor).editor('startEdit', key);
+        $.su.layout.doLayout();
+    }else{
+        ssid5gPassword = '';
+		var editor = grid5gAp.grid('getEditor');
+		if( $(editor).editor('isEditing') ){
+            $(editor).editor('cancelEdit');
+        }
+
+		quickSetupWizard.wizard('goTo','quicksetup_wireless');
+		quickSetupWizard.wizard("showButtons");
+
+		// $("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp );
+		$("input#wireless_5g_ssid").textbox('setValue', ssid5gRouterAp+(ssidExt?"_5GEXT":"") );
+		
+        ssid5gSecurity=='none'?$("input#wireless_5g_password").textbox('setValue', ''):$("input#wireless_5g_password").textbox('setValue', ssid5gPassword);
+			
+		$.su.layout.doLayout();	
+		if(ssidExt)
+			$('button#btn_wireless_5g_same').button('enable');
+		else
+			$('button#btn_wireless_5g_same').button('disable');
+        $('div#ap_router_5g_part').show();
+		if(  show2gFlag && skip2gFlag){
+            $('div#ap_router_2g_part').hide();
+            ssid2gRouterAp = ssid5gRouterAp;
+            ssid2gPassword = ssid5gPassword;
+			if(ssidExt){
+				$("input#wireless_2g_ssid").textbox('setValue', ssid5gRouterAp.slice(0, 28)+"_EXT");
+			}else{
+				$("input#wireless_2g_ssid").textbox('setValue', ssid5gRouterAp.slice(0, 27)+"_2.4G");					
+			}
+            ssid2gPassword==''?$('input#wireless_2g_password').textbox('setValue', ''):$('input#wireless_2g_password').textbox('setValue', ssid2gPassword);
+            $('button#btn_wireless_2g_same').button('enable');
+        }else if( show2gFlag ){
+            $('div#ap_router_2g_part').show();
+            ssid2gSecurity=='none'?$("input#wireless_2g_password").textbox('setValue', ''):$("input#wireless_2g_password").textbox('setValue', ssid2gPassword);
+        }
+	}
+});
+
+
+//page 4
+$("span.note-title").html($.su.CHAR.OPERATION.NOTE);
+$("p#wireless_info").html($.su.CHAR.QUICK_SETUP.WIRELESS_INFO_2G);
+//2g
+$('input#wireless_2g_hide_ssid').checkbox({
+	fieldLabel: '',
+	items:[
+		{boxlabel: $.su.CHAR.QUICK_SETUP.HIDE_SSID_BROADCAST, inputValue: 'on', uncheckedValue:'off', name:'hide2g'}
+	]
+});
+
+$("input#wireless_2g_ssid").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.SSID_2G,
+	cls: "inline-block",
+	inputCls: 'xl',
+	vtype:{
+        vtype:"utf8_lan",
+        maxLength:32
+    },
+	autoTrim: false,
+	allowBlank: false
+}).on('ev_change blur', function(){
+    if( $("input#wireless_2g_ssid").textbox('getValue')!=ssid2gRouterAp ){
+        //if(!skip2gFlag){
+            $('button#btn_wireless_2g_same').button('enable');
+        //}
+    }else{
+        $('button#btn_wireless_2g_same').button('disable');
+    }        
+});
+
+$("button#btn_wireless_2g_same").button({
+	text: $.su.CHAR.QUICK_SETUP.KEEP_SAME,
+	cls: "inline-block",
+	handler: function(){
+        $("input#wireless_2g_ssid").textbox('setNormal');
+        $("input#wireless_2g_ssid").textbox('setValue', ssid2gRouterAp);
+        $("button#btn_wireless_2g_same").button('disable');
+	}
+});
+$("button#btn_wireless_2g_same").button('disable');
+
+$("input#wireless_2g_password").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD_2G,
+	cls: "hidden",
+    readOnly: true
+});
+
+$('span#wireless_2g_password_tip').html($.su.CHAR.QUICK_SETUP.PASSWORD_2G_TIP);
+
+//5g
+
+$("input#wireless_5g_ssid").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.SSID_5G,
+	cls: "inline-block",
+	inputCls: 'xl',
+	vtype:{
+        vtype:"utf8_lan",
+        maxLength:32
+    },
+	autoTrim: false,
+	allowBlank: false
+}).on('ev_change blur', function(){
+    if( $("input#wireless_5g_ssid").textbox('getValue')!=ssid5gRouterAp ){
+        //if(!skip5gFlag){
+            $('button#btn_wireless_5g_same').button('enable');
+        //}
+    }else{
+        $('button#btn_wireless_5g_same').button('disable');
+    }
+});
+
+
+$('input#wireless_5g_hide_ssid').checkbox({
+	fieldLabel: '',
+	items:[
+		{boxlabel: $.su.CHAR.QUICK_SETUP.HIDE_SSID_BROADCAST, inputValue:'on', uncheckedValue:'off', name:'hide5g'}
+	]
+});
+
+$("button#btn_wireless_5g_same").button({
+	text: $.su.CHAR.QUICK_SETUP.KEEP_SAME,
+	cls: "inline-block",
+	handler: function(){
+        $("input#wireless_5g_ssid").textbox('setValue', ssid5gRouterAp);
+        $("input#wireless_5g_ssid").textbox('setNormal');
+        $("button#btn_wireless_5g_same").button('disable');
+	}
+});
+$("button#btn_wireless_5g_same").button('disable');
+
+$("input#wireless_5g_password").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD_5G,
+	cls: "hidden",
+    readOnly: true
+});
+
+$('span#wireless_5g_password_tip').html($.su.CHAR.QUICK_SETUP.PASSWORD_5G_TIP);
+
+//page5
+
+$('label#ap_2g_ssid_summary_label').html($.su.CHAR.QUICK_SETUP.SSID+':');
+
+$("input#ap_2g_ssid_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.SSID,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xs",
+	cls: 'hidden'
+});
+
+$('label#ap_2g_password_summary_label').html($.su.CHAR.QUICK_SETUP.PASSWORD+':');
+
+$("input#ap_2g_password_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xxs",
+	autoTrim: false,
+    cls:'hidden'
+});
+
+$("input#ap_2g_index_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.INDEX,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xs",
+    cls: 'hidden'
+});
+
+$('label#ap_5g_ssid_summary_label').html($.su.CHAR.QUICK_SETUP.SSID+':');
+
+$("input#ap_5g_ssid_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.SSID,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xs",
+	cls: 'hidden'
+});
+
+$('label#ap_5g_password_summary_label').html($.su.CHAR.QUICK_SETUP.PASSWORD+':');
+
+$("input#ap_5g_password_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xxs",
+	autoTrim: false,
+    cls:'hidden'
+});
+
+$("input#ap_5g_index_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.INDEX,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xs",
+    cls: 'hidden'
+});
+
+$("input#wireless_2g_hide_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.HIDE_SSID,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xxs",
+	inputCls: 's'
+});
+
+$('label#wireless_2g_ssid_summary_label').html($.su.CHAR.QUICK_SETUP.SSID+':');
+$('label#wireless_2g_ssid_success_label').html($.su.CHAR.QUICK_SETUP.SSID+':');
+
+$("input#wireless_2g_ssid_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.SSID,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xxs",
+	inputCls: 's',
+	cls: 'hidden'
+});
+
+$('label#wireless_2g_password_summary_label').html($.su.CHAR.QUICK_SETUP.PASSWORD+':');
+$('label#wireless_2g_password_success_label').html($.su.CHAR.QUICK_SETUP.PASSWORD+':');
+
+$("input#wireless_2g_password_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "m",
+	autoTrim: false,
+	inputCls: 's',
+    cls: 'hidden'
+});
+
+$("input#wireless_5g_hide_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.HIDE_SSID,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xxs",
+	inputCls: 's'
+});
+
+$('label#wireless_5g_ssid_summary_label').html($.su.CHAR.QUICK_SETUP.SSID+':');
+$('label#wireless_5g_ssid_success_label').html($.su.CHAR.QUICK_SETUP.SSID+':');
+
+$("input#wireless_5g_ssid_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.SSID,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "xxs",
+	inputCls: 's',
+	cls: 'hidden'
+});
+
+$('label#wireless_5g_password_summary_label').html($.su.CHAR.QUICK_SETUP.PASSWORD+':');
+$('label#wireless_5g_password_success_label').html($.su.CHAR.QUICK_SETUP.PASSWORD+':');
+
+$("input#wireless_5g_password_summary").textbox({
+	fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD,
+	readOnly: true,
+	isdisabled: false,
+	labelCls: "m",
+	autoTrim: false,
+	inputCls: 's',
+    cls: 'hidden'
+});
+
+//////////////////////////// submit
+$('span#password_error_tip').html($.su.CHAR.QUICK_SETUP.PASSWORD_ERROR);
+
+$('input#connect').checkbox({
+	fieldLabel: null,
+	cls:"margin-right-10",
+	items:[
+		{boxlabel: $.su.CHAR.QUICK_SETUP.CONNECT, inputValue:'on', uncheckedValue:'off', name:'enable'}
+	]
+}).on('ev_change', function(event, oldValue, newValue){
+	if(newValue.length==0){
+		$("#success_save").button("disable");
+	}else{
+		$("#success_save").button("enable");
+	}
+});
+$("#success_save").button({
+	text: $.su.CHAR.QUICK_SETUP.SAVE_EXIT,
+	handler: function(){
+		//$.su.nav.goTo("setting");
+        location.href = "http://tplinkrepeater.net/";
+	},
+	cls: "submit"
+});
+$("#success_save").button("disable");
+	
+var submitConfirmMsg = $("div#password_error_msg").msg({
+    type: "confirm",
+    //global: true,
+    closeBtn: false,
+    cls: 'xl'
+});
+
+$('button#jump_to_exit').button({
+    text: $.su.CHAR.OPERATION.YES,
+    cls: "submit inline-block go-basic-btn",
+    handler: function(){
+        $.su.app.jumpPage = 'connect';
+        submitConfirmMsg.msg("close");
+        $('a#settings_link').click();
+    }
+});
+$('button#jump_to_ok').button({
+    text: $.su.CHAR.OPERATION.NO,
+    cls: "submit inline-block",
+    handler: function(){
+        submitConfirmMsg.msg("close");
+        $.su.app.jumpPage = 'basic';
+        $('a#settings_link').click();
+    }
+});
+
+submitConfirmMsg.msg('hideButtons');
+
+
+$("input#submit_progressbar").progressbar({
+	// cls: "connect-progressbar",
+	showPercentage: true,
+	height: 6,
+	width: 590
+});
+
+$("input#summary_finish_progressbar").progressbar({
+    cls: "summary-finish-progressbar",
+    showPercentage: true,
+    height: 6,
+    width: 626
+});
+
+//////////////////////////////////////////////////// ap page 
+
+
+$("div#wireless_confirm_notice").msg({
+    closeBtn: false,
+    type: "alert",
+    cls: "xl warning",
+    okHandler: function () {
+        quickSetupWizard.wizard('goTo', 'access_quicksetup_summary');
+
+        $('div#access_summary_2g_part').height()>$('div#access_summary_5g_part').height()?$('div#access_summary_5g_part').height($('div#access_summary_2g_part').height()):$('div#access_summary_2g_part').height($('div#access_summary_5g_part').height());
+
+    }
+});
+
+
+// 2g
+$('input#access_wireless_2g_hide_ssid').checkbox({
+    fieldLabel: null,
+    labelCls: 'l',
+    cls: 'inline-block',
+    items:[
+        {boxlabel: $.su.CHAR.QUICK_SETUP.HIDE_SSID_BROADCAST, inputValue: 'on', uncheckedValue:'off', name:'hide_2g'}
+    ]
+});
+
+$("input#access_wireless_2g_ssid").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.SSID_2G,
+    cls: "inline-block",
+    labelCls: 'l',
+    inputCls: 'xl',
+    maxLength: 32,
+    autoTrim: false,
+    allowBlank: false
+});
+
+
+$("input#access_wireless_2g_security").combobox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.SECURITY,
+    labelCls: 'l',
+    allowBlank: false,
+    items: [
+        { "value": "none", "name": $.su.CHAR.QUICK_SETUP.NONE }, 
+        { "value": "wep", "name": $.su.CHAR.QUICK_SETUP.WEP }, 
+        { "value": "wpa-psk", "name": $.su.CHAR.QUICK_SETUP.WPA_WPA2_PERSONAL }, 
+        { "value": "wpa-ent", "name": $.su.CHAR.QUICK_SETUP.WPA_WPA2_ENTERPRISE }
+    ]
+});   
+
+$("input#access_wireless_2g_password").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD_2G,
+    // cls: "inline-block",
+    labelCls: 'l',
+    inputCls: 'xl',
+    autoTrim: false
+});
+
+$("input#access_wireless_2g_radio").checkbox({
+    proxy: null,
+    fieldLabel: $.su.CHAR.QUICK_SETUP.AP_WIRELESS_24G,
+    labelCls: 'l',
+    items:[
+        {boxlabel: $.su.CHAR.QUICK_SETUP.RADIO_2G, inputValue:'on', uncheckedValue:'off', name:'enable_2g', checked:true}
+    ]
+}).on('ev_change', function(event, oldValue, newValue){
+	if(!show5gFlag) $("input#access_wireless_2g_radio").checkbox("hide");
+    if(newValue[0]=='on' || newValue[0]=='enable_2g'){
+        $('input#access_wireless_2g_ssid').textbox('enable');
+        $('input#access_wireless_2g_password').textbox('enable');
+        $('input#access_wireless_2g_hide_ssid').checkbox('enable');
+    }else{    
+        $('input#access_wireless_2g_ssid').textbox('disable');
+        $('input#access_wireless_2g_password').textbox('disable');
+        $('input#access_wireless_2g_ssid').textbox('setNormal');
+        $('input#access_wireless_2g_password').textbox('setNormal');
+        $('input#access_wireless_2g_hide_ssid').checkbox('disable');
+    }
+});
+
+// 5g
+$("input#access_wireless_5g_ssid").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.SSID_5G,
+    cls: "inline-block",
+    labelCls: 'l',
+    inputCls: 'xl',
+    maxLength: 32,
+    autoTrim: false,
+    allowBlank: false
+});
+
+$('input#access_wireless_5g_hide_ssid').checkbox({
+    fieldLabel: null,
+    labelCls: 'l',
+    cls: 'inline-block',
+    items:[
+        {boxlabel: $.su.CHAR.QUICK_SETUP.HIDE_SSID_BROADCAST, inputValue:'on', uncheckedValue:'off', name:'hide_5g'}
+    ]
+});
+
+$("input#access_wireless_5g_security").combobox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.SECURITY,
+    labelCls: 'l',
+    allowBlank: false,
+    items: [
+        { "value": "none", "name": $.su.CHAR.QUICK_SETUP.NONE }, 
+        { "value": "wep", "name": $.su.CHAR.QUICK_SETUP.WEP }, 
+        { "value": "wpa-psk", "name": $.su.CHAR.QUICK_SETUP.WPA_WPA2_PERSONAL }, 
+        { "value": "wpa-ent", "name": $.su.CHAR.QUICK_SETUP.WPA_WPA2_ENTERPRISE }
+    ]
+});  
+
+$("input#access_wireless_5g_password").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD_5G,
+    // cls: "inline-block",
+    labelCls: 'l',
+    inputCls: 'xl',
+    autoTrim: false
+});
+
+$("input#access_wireless_5g_radio").checkbox({
+    proxy: null,
+    fieldLabel: $.su.CHAR.QUICK_SETUP.AP_WIRELESS_5G,
+    cls: "part-seperate",
+    labelCls: 'l',
+    items:[
+        {boxlabel: $.su.CHAR.QUICK_SETUP.RADIO_5G, inputValue:'on', uncheckedValue:'off', name:'enable_5g', checked:true}
+    ]
+}).on('ev_change', function(event, oldValue, newValue){
+    if(newValue[0]=='on' || newValue[0]=='enable_5g'){
+        $('input#access_wireless_5g_ssid').textbox('enable');
+        $('input#access_wireless_5g_password').textbox('enable');
+        $('input#access_wireless_5g_hide_ssid').checkbox('enable');
+    }else{
+        $('input#access_wireless_5g_ssid').textbox('disable');
+        $('input#access_wireless_5g_password').textbox('disable');
+        $('input#access_wireless_5g_ssid').textbox('setNormal');
+        $('input#access_wireless_5g_password').textbox('setNormal');
+        $('input#access_wireless_5g_hide_ssid').checkbox('disable');
+    }
+});
+
+
+var accessWirelessProxy = new $.su.Proxy({
+    url: './data/quicksetup.ap.json'
+});
+
+$("form#access_wireless_form").form({
+    proxy: accessWirelessProxy,
+    showPrompt: false,
+    fields: [
+        {name: "enable_2g"},
+        {name: "ssid_2g"},
+        {name: "hide_2g"},
+        {name: "security_2g"},
+        {name: "password_2g"},
+        {name: "enable_5g"},
+        {name: "ssid_5g"},
+        {name: "hide_5g"},
+        {name: "security_5g"},
+        {name: "password_5g"}
+    ],
+    submitBtn: false,
+    autoLoad: true
+}).on('ev_loadData', function(event, data){
+    apWirelessData = data;
+});
+
+// summary
+$('label#access_wireless_2g_ssid_summary_label').html($.su.CHAR.QUICK_SETUP.SSID_2G+':');
+$('label#access_wireless_5g_ssid_summary_label').html($.su.CHAR.QUICK_SETUP.SSID_5G+':');
+
+$("span#ap_router_title_text_2g").html($.su.CHAR.QUICK_SETUP.WIRELESS_TITLE_SUMMARY_2G);
+$("span#ap_router_title_text_5g").html($.su.CHAR.QUICK_SETUP.WIRELESS_TITLE_SUMMARY_5G);
+
+
+$("input#access_wireless_2g_radio_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.RADIO_2G,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    inputCls: 's'
+});
+
+$("input#access_wireless_2g_hide_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.HIDE_SSID,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    inputCls: 's'
+});
+
+$("input#access_wireless_2g_ssid_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.SSID_2G,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    inputCls: 's',
+    cls: 'hidden'
+});
+
+$("input#access_wireless_2g_security_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.SECURITY_2G,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    cls: 'hidden',
+    inputCls: 's'
+});
+
+$("label#access_wireless_2g_password_summary_label").html($.su.CHAR.QUICK_SETUP.PASSWORD_2G+':');
+
+$("input#access_wireless_2g_password_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD_2G,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    autoTrim: false,
+    inputCls: 's',
+    cls: 'hidden'
+});
+
+
+$("input#access_wireless_5g_radio_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.RADIO_5G,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    inputCls: 's'
+});
+
+$("input#access_wireless_5g_hide_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.HIDE_SSID,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    inputCls: 's'
+});
+
+$("input#access_wireless_5g_ssid_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.SSID_5G,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    inputCls: 's',
+    cls: 'hidden'
+});
+
+$("input#access_wireless_5g_security_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.SECURITY_5G,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    cls: 'hidden',
+    inputCls: 's'
+});
+
+
+$("label#access_wireless_5g_password_summary_label").html($.su.CHAR.QUICK_SETUP.PASSWORD_5G+':');
+
+$("input#access_wireless_5g_password_summary").textbox({
+    fieldLabel: $.su.CHAR.QUICK_SETUP.PASSWORD_5G,
+    readOnly: true,
+    isdisabled: false,
+    labelCls: "m",
+    autoTrim: false,
+    inputCls: 's',
+    cls: 'hidden'
+});
+
+////////////////////////////////////
+//wizard 
+var finishProTime = 0;
+
+modeProxy.read({}, function(data){
+    sysMode = data.mode;
+    ssidExt = data.default_ext_ssid==1 ? true:false;
+    finishProTime = data.pro_quicksetup_time;
+
+    // repeaterMode = data.repeater_type;
+
+    if(data.repeater_type=='1'){
+        $('div#repeater_icon').removeClass('desk-repeater-icon');
+        $('div#repeater_icon').addClass('icon');
+        $('span#wireless_router_title_icon').removeClass('desk-wireless-router-title-icon');
+        $('span#wireless_router_title_icon').addClass('wireless-router-title-icon');
+        $('div#map_wireless_tip').css({left: '70px'});
+    }else if(data.repeater_type=='0'){
+        $('div#repeater_icon').removeClass('icon');
+        $('div#repeater_icon').addClass('desk-repeater-icon');
+        $('span#wireless_router_title_icon').addClass('desk-wireless-router-title-icon');
+        $('span#wireless_router_title_icon').removeClass('wireless-router-title-icon');
+        $('div#map_wireless_tip').css({left: '80px'});
+    }else if(data.repeater_type=='2'){
+        $('div#repeater_icon').removeClass('icon');
+		$('div#repeater_icon').addClass('desk-repeater2-icon');
+        $('span#wireless_router_title_icon').removeClass('wireless-router-title-icon');
+		$('span#wireless_router_title_icon').addClass('desk-map-panel-icon-repeater2');
+		$('div#map_wireless_tip').css({left: '80px'});
+	}else if(data.repeater_type=='3'){
+        $('div#repeater_icon').removeClass('icon');
+		$('div#repeater_icon').addClass('desk-repeater-usb-icon');
+        $('span#wireless_router_title_icon').removeClass('wireless-router-title-icon');
+		$('span#wireless_router_title_icon').addClass('desk-map-panel-icon-repeater-usb');
+		$('div#map_wireless_tip').css({left: '80px'});
+	}
+
+    regionProxy.read({}, function(data){
+
+        if(data.country_lock==true){
+            regionCombo.combobox('disable');
+        }
+		if(data.show_region == false){
+			setTimeout(function(){
+				$("[name=access_quicksetup_wireless] .btn-prev").hide();
+				if(show2gFlag)
+					$("#2g_connect_step2 .r-button-container").prepend($("<button id=\"re_exit_button\"></button>"));
+				else if(!show2gFlag && show5gFlag)
+					$("#5g_connect_step2 .r-button-container").prepend($("<button id=\"re_exit_button\"></button>"));
+				$("[name=access_quicksetup_wireless] .form-buttons-container").prepend($("<button id=\"ap_exit_button\"></button>"));
+				$("#re_exit_button").button({
+					text: $.su.CHAR.QUICK_SETUP.EXIT,
+					cls: "inline-block submit",
+					handler:function(){
+						$.su.nav.goTo("setting");
+					}
+				});
+				$("#ap_exit_button").button({
+					text: $.su.CHAR.QUICK_SETUP.EXIT,
+					cls: "inline-block submit",
+					handler:function(){
+						$.su.nav.goTo("setting");
+					}
+				});
+				if($("#reset-user-msg-container").css("display")=="block"){
+					$("#reset-user-msg-container").on("ev_close",autoScan);
+				}else{
+					autoScan();
+				}				
+			},50)
+		}else{
+			$('div#quicksetup_region_setting').removeClass('hidden');
+		}
+        data.show2gFlag.toUpperCase()== 'TRUE' ? show2gFlag=true : show2gFlag=false;
+        data.show5gFlag.toUpperCase()== 'TRUE' ? show5gFlag=true : show5gFlag=false;
+
+
+       if(sysMode.toUpperCase() == 'REPEATER'){
+            $('div#quicksetup_2g_connect').removeClass('hidden');
+            $('div#quicksetup_5g_connect').removeClass('hidden');
+            $('div#quicksetup_wireless').removeClass('hidden');
+            $('div#quicksetup_summary').removeClass('hidden');
+
+            if(show2gFlag && show5gFlag){
+                $('div#ap_info').removeClass('ap-2g-only');
+                $('div#wireless_info').removeClass('wireless-2g-only');
+
+                $('div#ap_info').removeClass('ap-5g-only');
+                $('div#wireless_info').removeClass('wireless-5g-only');
+				if(data.show_region == false){
+					quickSetupWizard = $("div#quick_setup_wizard").wizard({
+						items: [
+							quick2gPart, quick5gPart, quickWirelessPart, quickSummaryPart
+						]
+					});
+				}else{
+					quickSetupWizard = $("div#quick_setup_wizard").wizard({
+						items: [
+							quickRegionPart, quick2gPart, quick5gPart, quickWirelessPart, quickSummaryPart
+						]
+					});
+				}
+            }else if(show2gFlag && !show5gFlag){
+				$('div#success_2g').addClass('full_success_block');
+				$('div#success_5g').hide();
+                $('div#quick_setup_wizard').remove('div#quicksetup_5g_connect');
+                $('div#quicksetup_5g_connect').addClass('hidden');
+                $('div#wireless_5g').addClass('hidden');
+                $('div#quick_setup_wizard').addClass('single-version');
+                $('button#2g_connect_skip').button('hide');
+
+                $('div#ap_info').addClass('ap-2g-only');
+                $('div#wireless_info').addClass('wireless-2g-only');
+				if(data.show_region == false){
+					quickSetupWizard = $("div#quick_setup_wizard").wizard({
+						items: [
+							quick2gPart, quickWirelessPart, quickSummaryPart
+						]
+					});
+				}else{
+					quickSetupWizard = $("div#quick_setup_wizard").wizard({
+						items: [
+							quickRegionPart, quick2gPart, quickWirelessPart, quickSummaryPart
+						]
+					});
+				}
+            }else if(!show2gFlag && show5gFlag){
+				$('div#success_2g').hide();
+				$('div#success_5g').addClass('full_success_block');
+                $('div#quick_setup_wizard').remove('div#quicksetup_2g_connect');
+                $('div#quicksetup_2g_connect').addClass('hidden');
+                $('div#wireless_2g').addClass('hidden');
+                $('div#quick_setup_wizard').addClass('single-version');
+                $('button#5g_connect_skip').button('hide');
+
+                $('div#ap_info').addClass('ap-5g-only');
+                $('div#wireless_info').addClass('wireless-5g-only');
+
+                
+				if(data.show_region == false){
+					quickSetupWizard = $("div#quick_setup_wizard").wizard({
+						items: [
+							quick5gPart, quickWirelessPart, quickSummaryPart
+						]
+					});
+				}else{
+					quickSetupWizard = $("div#quick_setup_wizard").wizard({
+						items: [
+							quickRegionPart, quick5gPart, quickWirelessPart, quickSummaryPart
+						]
+					});
+				}
+            }
+			if(show2gFlag && data.show_region == false){
+				$("#2g_connect_back").hide();
+				quickSetupWizard.wizard('goTo','quicksetup_2g_connect');
+
+				quickSetupWizard.wizard("hideButtons");
+				
+				
+				$("div#2g_connect_step1").css("display", "block");
+				$("div#2g_connect_step2").css("display", "none");
+				$("div#2g_connect_step3").css("display", "none");
+				$("div#2g_connect_step_error").css("display", "none");
+				
+
+				if(show5gFlag){
+					$('p#grid_ap_2g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_2G_NETWORK);
+				}else{
+					$('p#grid_ap_2g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_2G_NETWORK_ONLY);
+				}
+				
+			}else if(data.show_region == false){
+				$("#5g_connect_back").hide();
+				quickSetupWizard.wizard('goTo','quicksetup_5g_connect');
+
+				quickSetupWizard.wizard("hideButtons");
+
+				$("div#5g_connect_step1").css("display", "block");
+				$("div#5g_connect_step2").css("display", "none");
+				$("div#5g_connect_step3").css("display", "none");
+				$("div#5g_connect_step_error").css("display", "none");
+
+				$('p#grid_ap_5g_text').html($.su.CHAR.QUICK_SETUP.CHOOSE_5G_WITHOUT_2G);
+						
+			}
+        }else if(sysMode == 'ap'){
+            $('div#access_wireless_setting_ap').removeClass('hidden');
+            $('div#access_quicksetup_summary').removeClass('hidden');
+            $('div#quick_setup_wizard').addClass('ap-version');
+
+			if(data.show_region == false){
+				quickSetupWizard = $("div#quick_setup_wizard").wizard({
+					items: [
+						accessQuickWirelessPart, accessQuickSummaryPart
+					]
+				});
+			}else{
+				quickSetupWizard = $("div#quick_setup_wizard").wizard({
+					items: [
+						quickRegionPart, accessQuickWirelessPart, accessQuickSummaryPart
+					]
+				});
+			}
+
+            if(!show2gFlag){
+                $('div#access_wireless_setting_2g').remove();
+				$("div#access_wireless_2g").remove();
+				$("div#access_wireless_setting_5g").removeClass("margin-top-50");
+				$("div.part-seperate").css("margin-top","5px");
+				$("#access_wireless_5g").addClass("ap-quicksetup-info-summary");
+				$("div#access_summary_5g_part div.widget-fieldlabel-wrap.m").css("width","220px");
+				$("#access_wireless_5g_ssid_summary_label").css("width","220px");
+				$("#access_wireless_5g_ssid_summary_span").css("width","300px");
+				$("#access_wireless_5g_password_summary_label").css("width","220px");
+				$("#access_wireless_5g_password_summary_span").css("width","300px");
+            }
+
+            if(!show5gFlag){
+                $('div#access_wireless_setting_5g').remove();
+				$("div#access_wireless_5g").remove();
+				$("input#access_wireless_2g_radio").checkbox("hide");
+				$("#access_wireless_2g").addClass("ap-quicksetup-info-summary");
+				$("div#access_summary_2g_part div.widget-fieldlabel-wrap.m").css("width","220px");
+				$("#access_wireless_2g_ssid_summary_label").css("width","220px");
+				$("#access_wireless_2g_ssid_summary_span").css("width","300px");
+				$("#access_wireless_2g_password_summary_label").css("width","220px");
+				$("#access_wireless_2g_password_summary_span").css("width","300px");
+            }
+        }
+    }); 
+	timeProxy.read({},function(data){
+		setButtonStatus.step1();
+		$('input#combo_time_zone').combobox('setValue',data.time_zone);
+	});
+});
+
+
+function autoScan(){
+	if(sysMode.toUpperCase()=='REPEATER'){
+
+	//// grid data
+
+		var totalProxy = new $.su.Proxy({
+			url: './data/quickset.scan.json',
+			timeout: 15000
+		});
+
+		$("input#2g_connect_progressbar").progressbar("reset");
+		$("input#5g_connect_progressbar").progressbar("reset");
+		
+		totalProxy.read({scan:'true'});
+			var delayTime = 15*1000;
+			if(show2gFlag){
+				//delayTime=((data&&data.scanTime)||15)*1000;
+				$("input#2g_connect_progressbar").progressbar("reset");
+				$("input#2g_connect_progressbar").progressbar("animate", 0, 1, delayTime);
+			}else{
+				//delayTime=((data&&data.scanTime)||15)*1000;
+				$("input#5g_connect_progressbar").progressbar("reset");
+				$("input#5g_connect_progressbar").progressbar("animate", 0, 1, delayTime);
+			}
+			readRequest = setTimeout(function(){
+
+				readInterval = setInterval(function(){
+
+					totalProxy.read({}, function(data){
+						clearInterval(readInterval);
+
+						quickSetupWizard.wizard("hideButtons");
+
+						if(data.ap2g.length==0){
+							$('p#grid_ap_2g_text').hide();
+							$('div#grid_ap_2g_list').hide();
+							$('div#2g_connect_step_error').show();
+						}else{
+							apList2gStore.loadData(data.ap2g);
+							scan2GData = data.ap2g;
+							$('div#grid_ap_2g_list').show();
+							$('p#grid_ap_2g_text').show();
+							$('div#2g_connect_step_error').hide();
+						}   
+
+
+						if(data.ap5g.length==0){
+							$('p#grid_ap_5g_text').hide();
+							$('div#grid_ap_5g_list').hide();
+							$('div#5g_connect_step_error').show();
+						}else{
+							$('p#grid_ap_5g_text').show();
+							$('div#grid_ap_5g_list').show();
+							apList5gStore.loadData(data.ap5g);
+							scan5GData = data.ap5g;
+							$('div#5g_connect_step_error').hide();
+						}   
+
+						$.su.layout.doLayout();             
+
+					}, function(){
+						$('p#grid_ap_2g_text').hide();
+						$('div#grid_ap_2g_list').hide();
+						$('div#2g_connect_step_error').show();
+
+						$('p#grid_ap_5g_text').hide();
+						$('div#grid_ap_5g_list').hide();
+						$('div#5g_connect_step_error').show();
+					}, function(){
+						$('p#grid_ap_2g_text').hide();
+						$('div#grid_ap_2g_list').hide();
+						$('div#2g_connect_step_error').show();
+
+						$('p#grid_ap_5g_text').hide();
+						$('div#grid_ap_5g_list').hide();
+						$('div#5g_connect_step_error').show();
+					});
+				}, 1000);
+
+				scanTimeout = setTimeout(function(){
+					clearInterval(readInterval);
+
+					$("div#2g_connect_step1").hide();
+					$("div#2g_connect_step3").hide();
+
+					$("div#5g_connect_step1").hide();
+					$("div#5g_connect_step3").hide();
+
+					$("div#2g_connect_step2").show();
+					$("div#5g_connect_step2").show();
+					if(scan2GData.length>0){
+						$('div#2g_connect_step_error').hide();
+					}
+					if(scan5GData.length>0){
+						$('div#5g_connect_step_error').hide();
+					}
+					$.su.layout.doLayout(); 
+
+				}, 5800);
+
+			},delayTime-5800);
+		//});
+
+	}else if(sysMode=='ap'){
+		quickSetupWizard.wizard('goTo','access_quicksetup_wireless');
+	}
+}
+//////////////////////////////////////
+$.su.loading.hide();
+
+	$.su.app.runningModule.addUnloadHandler(function(){
+		clearInterval(readInterval);
+		clearTimeout(readRequest);
+		clearTimeout(scanTimeout);
+		clearTimeout(checkformSubmitDelay);
+		clearInterval(checkformSubmitInterval);
+		clearTimeout(checkformSubmitTimeout);
+	});
+});
+//]]>
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

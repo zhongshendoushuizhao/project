@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* CSS Document */
+div.switch-button-container span.switch-button-btn-wrap{
+	width: 85px;
+}
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap span.switch-button-text-wrap span.switch-button-text {
+	width:63px;
+}
+div#log_list th.grid-header-3, div#log_list td.grid-content-td-3 {
+    width: 115px !important;
+}
+div.margin-top-20 input.combobox-text{
+	width:100px !important;
+}
+div.fixed-width {
+    width: 135px !important;
+}
+#weekday_cnt,
+#white_list_weekday_cnt, 
+#black_list_weekday_cnt {
+   margin-right:-400px;
+}
+#time_dst .combobox-text.s,
+#time_dst .xs{
+	width:60px;
+}
+div.combobox-container div.combobox-wrap input.combobox-text.xxxl{
+    width: 380px;
+}
+#wireless-2g div.combobox-container div.combobox-wrap input.combobox-text.l {
+    width: 162px;
+}
+div.top-header div.top-header-wrap div.top-control{
+	bottom:7px;
+}

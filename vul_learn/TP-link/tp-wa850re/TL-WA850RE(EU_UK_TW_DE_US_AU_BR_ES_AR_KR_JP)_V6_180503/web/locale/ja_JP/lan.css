@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* CSS Document */
+div.top-header div.top-control a.top-control-btn{
+	width:auto;
+}
+li.combobox-list{
+	width:999px;
+}
+#time_dst .xs{
+	width:40px;
+}
+#access_wireless_setting_ap .checkbox-group-container.inline-block{
+	margin-right:-100px;
+}

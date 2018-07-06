@@ -1,0 +1,442 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MAC Filtering</title>
+
+</head>
+
+<body>
+<div class="func-container">
+	<div id="set"> 
+		<form id="mac-filtering-form">
+			<input id="mac-filtering-enable" name="enable" type="text"/>
+			<!-- <input id="mac-filtering-access" name="access" type="text"/>
+			<p class="no-label-l" id="router-des"></p> -->
+		</form>
+
+	</div>
+	<div id="rule"> 
+		<form id="rule-form">
+			<input id="action" name="action" type="text"/>
+			<!-- <input id="mac-filtering-access" name="access" type="text"/>
+			<p class="no-label-l" id="router-des"></p> -->
+		</form>
+	</div>
+	<div id="mac-filtering">
+	 	<div id="mac-filtering-black-grid"></div>
+	 	
+
+		<!-- <input id="timepicker" />
+			
+	 	<input id="foldertree" />
+
+			<input id="keyword"/>
+
+			<input id="tips"/>
+			<input id="content"/>
+	 	<input id="region" /> -->
+	</div>
+	<div id="own_editor">
+		<input id="mac" name="mac">
+		<button id="view" type="button"></button>
+		<input id="note" name="note">
+		<input id="enable" name="enable">
+	</div>
+
+
+	 <div id="adv_mac_filter_survey">
+	 	<!-- <p id="title"></p> -->
+	
+	 	<div id="result">
+	     		
+		</div>
+		<!-- <button id="ok"></button>
+		<button id="cancle"></button> -->
+	 </div>
+
+	<!-- <div id="test">额外部分的grid</div> -->
+
+	<div id="help-mac-filtering"></div>
+</div>
+
+<script type="text/javascript">
+
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+
+// 	var folderStore = new $.su.TreeStore({
+// 		proxy: {
+// 			url: "./data/foldertree.json"
+// 		},
+// 		autoLoad: true
+// 	});
+
+
+
+// 	$("input#foldertree").foldertree({
+// 		store: folderStore
+// 	});
+
+// 	$("input#timepicker").timepicker({
+
+// 	}).timepicker("getValue");
+		
+// 	$("input#keyword").keyword({
+
+// 	});
+
+// 	$("input#content").textbox({
+
+// 	});
+
+// 	$("input#tips").tip({
+// 		title: "Title",
+// 		content: "input#content",
+// 		showEvent: "click",
+// 		position: {
+// 			pageX: 20,
+// 			pageY: 60
+// 		},
+// 		positionRelative: "body"
+// 	});
+
+// 	$("input#region").region({
+// 		fieldLabel: "Region"
+// 	});
+
+/////////////////////////////////////////////////////////////////////////////
+
+	var MACFILTER_URL = "./data/macFiltering.json";
+	var MACFILTER_RULE_URL = "./data/macFiltering.rule.json";
+	var MACFILTER_RESULT_URL = "./data/macFiltering.result.json"
+
+	var MACFILTER_URL_NEW = $.su.url("/admin/wireless?form=maclist");
+	var MACFILTER_RULE_URL_NEW = $.su.url("/admin/wireless?form=macfilter");
+	var MACFILTER_RESULT_URL_NEW = $.su.url("/admin/wireless?form=devlist");
+	$('div.func-container').page({
+		title: $.su.CHAR.MAC_FITLERING.TITLE,
+		help: ""	//可能是个调用的id 也可能是个url
+	});
+	
+	$('div#set').panel({
+		title: $.su.CHAR.MAC_FITLERING.SET,
+		collapsible: false
+	});
+
+	$('div#rule').panel({
+		title: $.su.CHAR.MAC_FITLERING.RULE,
+		collapsible: false
+	});
+	
+	$('div#mac-filtering').panel({
+		title: $.su.CHAR.MAC_FITLERING.BLACK_LIST,
+		collapsible: false
+	});
+
+	var proxy =  new $.su.Proxy({
+		url: './data/macFiltering.rule.json'
+	});
+	
+	$('input#mac-filtering-enable').switchbutton({
+		fieldLabel: $.su.CHAR.MAC_FITLERING.STATUS,
+		proxy: proxy,
+		cls: "form-inner",
+		autoLoad: false,
+		field: {
+			"name": "enable"
+		}
+	});
+
+	// $("input#wps_label").buttongroup({
+	// 	fieldLabel: $.su.CHAR.WPS.ENABLE_ROUTE_PIN,
+	// 	proxy: wps_pin_proxy,
+	// 	autoLoad:false,
+	// 	field: {
+	// 		"name": "wps_label"
+	// 	}
+	// });
+
+
+	$('#rule-form').form({
+		proxy:proxy,
+		fields: [
+			{name: "action", mapping: "action"}
+		],
+		autoLoad: true,
+		submitBtn: "default"
+	}).on("ev_loadData", function(e, data){
+		// //console.log(data.action);
+		if(data.action == "deny")
+		{
+			$('div#mac-filtering').panel("setTitle", $.su.CHAR.MAC_FITLERING.BLACK_LIST);
+		}
+		else
+		{
+			$('div#mac-filtering').panel("setTitle", $.su.CHAR.MAC_FITLERING.WHITE_LIST);
+		}
+	});
+
+	$('input#action').radio({
+		fieldLabel: $.su.CHAR.MAC_FITLERING.SELECT,
+		items:[
+			{boxlabel: $.su.CHAR.MAC_FITLERING.BLACK_VAL, inputValue: 'deny', id: 'black-list',name:'action'},
+			{boxlabel: $.su.CHAR.MAC_FITLERING.WHITE_VAL, inputValue: 'allow', id: 'white-list',name:'action'}
+		]
+	});
+
+
+	$("input#mac").textbox({
+		fieldLabel: $.su.CHAR.MAC_FITLERING.MAC_ADDRESS,
+		vtype:"mac",
+		maxLength:17,
+		tipsCls:"after-button s",
+		allowBlank:false,
+	//	tips:$.su.CHAR.BANDWIDTHCTR.UNIT,
+	//	labelCls: "l",
+		cls: 'inline-block'
+	});
+	
+	$("input#note").textbox({
+		fieldLabel: $.su.CHAR.MAC_FITLERING.DESCRIPTION,
+	//	tips:$.su.CHAR.BANDWIDTHCTR.UNIT,
+	//	labelCls: "l",
+		allowBlank:true,
+		 maxLength:32,
+	    vtype:"note"
+	});
+
+	$("input#enable").checkbox({
+		fieldLabel:"",
+		defaultValue:["on"],
+		items: [
+			{boxlabel: $.su.CHAR.MAC_FITLERING.ENABLE_EDIT, uncheckedValue:"off", inputValue: "on", id: "chk_enable"}
+		]
+	});
+
+	
+
+	$("#view").button({
+		text: $.su.CHAR.MAC_FITLERING.BTN_VIEW,
+		// cls: 'button-pop',
+		cls: 'inline ml5',
+		handler:function(){
+			// $("div#result").grid("getStore").load();
+			$("div#adv_mac_filter_survey").msg("show");
+			result_store.load();
+		}
+	});
+
+	$("div#adv_mac_filter_survey").msg({
+		autoshow:false,
+		title:$.su.CHAR.MAC_FITLERING.ACCESS_DEVICE,
+		type: "window"
+	});
+
+	//$("div#adv_mac_filter_survey").css("top", ($(window).height()-$("div#adv_mac_filter_survey").height()-76)/2);
+	//$("div#adv_mac_filter_survey").css("left", ($(window).width()-$("div#adv_mac_filter_survey").width()-100)/2 );
+
+	// $("#title").html($.su.CHAR.MAC_FITLERING.ACCESS_DEVICE);
+
+	/*$('#mac-filtering-form').form({
+		proxy: {
+			url: "./data/macFiltering.set.json"
+		},
+		fields: [
+			{name: "enable", mapping: "enable"}
+		],
+		autoLoad:true,
+		submitBtn: "default"
+	});*/
+
+	var result_store = new $.su.Store({
+		proxy: {
+			url: "./data/macFiltering.result.json"
+		},
+		fields: [
+			{name: "mac"},
+			{name: "ip"},
+			{name: "name"}
+		],
+		autoLoad: false
+	});
+
+	var result_grid = $("div#result").grid({
+		store:result_store,
+		maxLines: 8,
+		paging: {
+
+		},
+		columns: [
+					{
+						text: $.su.CHAR.MAC_FITLERING.ID, 
+						xtype: "rownumberer",
+						width:40
+					},
+					{
+						text: $.su.CHAR.MAC_FITLERING.DEVICE_NAME, 
+						width:140,
+						dataIndex: "name"
+					},
+					{
+						text: $.su.CHAR.MAC_FITLERING.IP_ADDRESS, 
+						width:150,
+						dataIndex: "ip"
+					},
+					{
+						text: $.su.CHAR.MAC_FITLERING.MAC_ADDRESS, 
+						width:150,
+						dataIndex: "mac"
+					},
+					{
+						text: $.su.CHAR.GRID.OPERATION, 
+						renderer:function(){
+							
+							return "<a href=\"javascript:void(0);\" class=\"choose\" >"+$.su.CHAR.OPERATION.CHOOSE+"</a>"
+						}
+					}
+				]
+	});
+
+
+	$("div#result").delegate("a.choose","click",function(e){
+		e.preventDefault();
+		var tr = $(this).parents("tr.grid-content-tr")[0];
+		var mac = $(tr).find("td.grid-content-td-mac span").eq(0).html();
+		var editor = $("div#result").grid("getEditor");
+		$("input#mac").textbox("setValue", mac);
+		$("div#adv_mac_filter_survey").msg("close");
+	});
+	
+	
+	
+	var o = $("div#mac-filtering-black-grid").grid({
+		store:{
+			proxy: {
+			url: "./data/macFiltering.json"
+			},
+			fields: [
+				{name: "mac"},
+				{name: "enable"},
+				{name: "note"}
+			],
+			autoLoad: true
+		},
+		editor: {
+			content: "#own_editor",
+			validator:function(){
+				var store = o.grid("getStore");
+					keyProperty = store.keyProperty;
+					grid_array = store.data;
+				var editor = $(o.grid("getEditor"));
+				var edit_mac = editor.find("input[name=mac]").val();
+				var len = grid_array.length;
+
+				if ($.isArray(grid_array) && len > 0) {
+					for(var k = 0; k < len; k++){
+						if(editor[0].editing)
+						{
+							// //console.log(grid_array[k].key, editor.editingId);
+							if(grid_array[k].key == editor[0].editingId)
+						    {
+								continue;
+							}
+						}
+						var data = grid_array[k];
+						if (data["mac"].toUpperCase() == edit_mac.toUpperCase()) {
+							editor.find("input[name=mac]").textbox("setError");
+							$(o.grid("getEditor")).form("setError",$.su.CHAR.ERROR["00000007"]);
+							return false;
+						}
+					}
+				}
+				return true;
+			},
+			fields: [
+				{name: "mac"},
+				{name: "enable"},
+				{name: "note"}			
+			]
+		},
+		paging: {
+		},
+		columns: [
+			{
+				xtype: "checkcolumn",
+				width: 32
+			},{
+				text: $.su.CHAR.MAC_FITLERING.ID, 
+				xtype: "rownumberer",
+				width:40
+			},{
+				text: $.su.CHAR.MAC_FITLERING.MAC_ADDRESS, 
+				width:240,
+				dataIndex: "mac",
+				// editor: {
+				// 	xtype: "textbox"
+				// },
+				
+			}/*,{
+				text: "button",
+				xtype: "actioncolumn",
+				width : 100,
+				items: [{
+					xtype: "button",
+					text: "Enable"
+				},{
+					xtype: "button",
+					text: "Disable"
+				}]
+			},{
+				text: "Time",
+				xtype: "actioncolumn",
+				width: 40,
+				items: [
+					{
+						xtype: "timepicker",
+						fieldLabel: null,
+					}
+				]
+			},*/,{
+				text: $.su.CHAR.MAC_FITLERING.DESCRIPTION,
+				width:160,
+				dataIndex: "note",
+				// editor: {
+				// 	xtype: "textbox"
+				// }
+			},
+			{
+				// text: $.su.CHAR.MAC_FITLERING.STATUS_GRID, 
+				// width:100,
+				// xtype: "statuscolumn",
+				// dataIndex: "enable"
+				text: $.su.CHAR.MAC_FITLERING.ENABLE,
+				width:100,
+				name:"enable",
+				xtype: "statuscolumn"
+			},
+			{
+				name:"index",
+				xtype: "settings"
+			}
+		],
+		operation: "prompt|add|delete"
+	});
+
+	var helpMacFiltering = new $.su.Help({
+		container: "div#help-mac-filtering",
+		content: ["MAC_FITLERING_SETTINGS", 'MAC_FITLERING_RULES', 'MAC_FITLERING_LIST']
+	});
+
+	
+});
+</script>
+</body>
+
+</html>

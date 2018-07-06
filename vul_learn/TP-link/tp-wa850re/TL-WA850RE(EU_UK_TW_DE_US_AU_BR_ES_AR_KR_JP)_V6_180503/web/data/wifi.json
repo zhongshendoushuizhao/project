@@ -1,0 +1,9 @@
+{
+	"timeout": false,
+	"success": true,
+	"data": {
+			"max": "max",
+			"mid": "off",
+			"min": "off"
+	}
+}

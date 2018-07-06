@@ -1,0 +1,7 @@
+{
+	"success": true,
+	"data": {
+		"passwordOnly": true,
+		"isSetup": true
+	}
+}

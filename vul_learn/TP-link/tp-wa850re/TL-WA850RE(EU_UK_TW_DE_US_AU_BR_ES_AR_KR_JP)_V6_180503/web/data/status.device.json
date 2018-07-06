@@ -1,0 +1,10 @@
+{
+    "success" : true,
+    "timeout" : false,
+    "data" :
+    {
+		"wired_dhcp": "3",
+		"wired_ip":  "192.168.0.254",
+		"wired_type": "2"
+    }
+}

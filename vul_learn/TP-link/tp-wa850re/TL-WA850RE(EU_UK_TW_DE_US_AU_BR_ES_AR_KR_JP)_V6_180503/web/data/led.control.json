@@ -1,0 +1,11 @@
+{
+	"success": true,
+	"errorcode": "timeout",
+	"data": {
+		"night_mode": "on",
+		"start_hour": "3",
+		"start_min": "12",
+		"end_hour": "7",
+		"end_min": "34"
+	}
+}

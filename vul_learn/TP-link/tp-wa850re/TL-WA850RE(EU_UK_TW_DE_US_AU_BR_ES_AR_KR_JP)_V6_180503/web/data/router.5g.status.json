@@ -1,0 +1,11 @@
+{
+	"errorcode": false,
+	"success": true,
+	"data": {
+		"ap_ssid_5g": "TP-Link_0BEC_5G",
+		"ap_signal_5g": "1",
+		"ap_mac_5g": "00-14-78-B1-09-45",
+		"ap_channel_5g": "Auto",
+		"ap_security_5g": "4"
+	}
+}

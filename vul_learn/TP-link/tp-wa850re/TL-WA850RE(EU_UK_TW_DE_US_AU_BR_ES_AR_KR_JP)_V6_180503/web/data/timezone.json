@@ -1,0 +1,41 @@
+{
+	"success": true,
+	"data":[			
+			{"value": "0", "name": "ENIWETOK"},
+			{"value": "60", "name": "MIDWAY_ISLAND_SAMOA"},
+			{"value": "120", "name": "HAWAII"},
+			{"value": "180", "name": "ALASKA"},
+			{"value": "240", "name": "PACIFIC_TIME"},
+			{"value": "300", "name": "MOUNTAIN_TIME"},
+			{"value": "360", "name": "CENTRAL_TIME"},
+			{"value": "420", "name": "EASTERN_TIME"},
+			{"value": "450", "name": "CARACAS"},
+			
+			{"value": "480", "name": "ATLANTIC_TIME"},
+			{"value": "510", "name": "NEWFOUNDLAND"},
+			{"value": "540", "name": "BRASILIA_BUENOS_AIRES"},
+			{"value": "600", "name": "MID_ATLANTIC"},
+			{"value": "660", "name": "AZORES_CAPE_VERDE_IS"},
+			{"value": "720", "name": "GREENWICH_MEAN_TIME"},
+			{"value": "780", "name": "BERLIN_STOCKHOLM"},
+			{"value": "840", "name": "ATHENS_HELSINKI"},
+			{"value": "900", "name": "BAGHDAD_KUWAIT"},
+			{"value": "930", "name": "TEHERAN"},
+			{"value": "960", "name": "ABU_DHABI"},
+			{"value": "990", "name": "KABUL"},
+			{"value": "1020", "name": "ISLAMABAD_KARACHI"},
+			{"value": "1050", "name": "MADRAS_CALCUTTA"},
+			{"value": "1065", "name": "KATMANDU"},
+			{"value": "1080", "name": "ALMA_ATA_DHAKA"},
+			{"value": "1110", "name": "RANGOON"},
+			{"value": "1140", "name": "BANGKOK_JAKARTA_HANOI"},
+			{"value": "1200", "name": "BEIJING_HONGKONG"},
+			{"value": "1260", "name": "TOKYO_OSAKA_SAPPORO"},
+			{"value": "1290", "name": "ADELAIDE"},
+			{"value": "1320", "name": "BRISBANE_CANBERRA"},
+			{"value": "1380", "name": "MAGADAN_SOLOMAN_IS"},
+
+			{"value": "1440", "name": "FIJI_KAMCHATKA"},
+			{"value": "1500", "name": "NUKU"}
+		]
+}

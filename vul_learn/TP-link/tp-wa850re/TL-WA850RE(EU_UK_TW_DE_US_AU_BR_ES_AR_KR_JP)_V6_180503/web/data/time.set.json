@@ -1,0 +1,17 @@
+{
+	"comments": "----实际使用中，请删除所有comments字段----",	
+	"comments": "说明：time setting页面中获取所有条目数据",
+	
+	"timeout": false,
+	"success": true,
+	"errorcode":"747301",
+	
+	"data":{
+		"time_zone": "450",
+		"date": "8/26/2015",
+		"time": "22:11:59",
+		"ntp_svr1": "openwrt.pool.ntp.org",
+		"status":"747301",
+		"ntp_svr2": "ac-ntp0.net.cmu.edu"
+	}
+}

@@ -1,0 +1,8 @@
+{
+	"timeout": false,
+	"success": true,
+	"data": [
+		{ "name": "TP-Link_Test_Device_1", "mac": "74-D4-35-A1-87-50" },
+		{ "name": "TP-Link_Test_Device_2", "mac": "A1-D4-C8-B1-09-45" }
+	]
+}

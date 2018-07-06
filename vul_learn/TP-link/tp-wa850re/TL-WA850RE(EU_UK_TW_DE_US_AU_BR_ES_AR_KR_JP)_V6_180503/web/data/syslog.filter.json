@@ -1,0 +1,13 @@
+{
+	"comments": "----实际使用中，请删除所有comments字段----",	
+	"comments": "说明：log页面中acc获取所有条目数据",
+	
+	"timeout": false,
+	"success": true,
+	"data":{
+		"type": "ALL", 
+		"level":"ALL",
+		"filter":[
+		]
+	}
+}

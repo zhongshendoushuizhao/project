@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>LED</title>
+</head>
+
+<body>
+
+<div class="func-container">
+	<div id="TIME_SETTINGS">
+
+		<form id="time_settings_form">
+
+				<input id="schedule_zone" name="time_zone"/>
+
+		</form>
+	</div>
+
+	<div id="time_help"></div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+try{
+    $
+}catch(e){
+    location.href = "/";
+};
+
+$(document).ready(function(e){
+
+
+	$("div#TIME_SETTINGS").panel({
+		title: $.su.CHAR.TIME_SETTINGS.TITLE,
+		collapsible: false
+	});
+
+	var scheduleProxy = new $.su.Proxy({
+		url: "./data/timeSettings.json"
+	});
+
+	$("form#time_settings_form").form({
+		proxy: scheduleProxy,
+		fields: [
+			{name: "time_zone"}
+		],
+		submitBtn: 'default'
+	});
+	
+	$('input#schedule_zone').combobox({
+		fieldLabel: $.su.CHAR.TIME_SETTINGS.TIME_ZONE,
+		labelCls: 's',
+		inputCls: 'xxxxl',
+		items:[
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0000, value:'0'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0060, value:'60'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0120, value:'120'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0180, value:'180'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0240, value:'240'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0300, value:'300'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0360, value:'360'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0420, value:'420'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0450, value:'450'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0480, value:'480'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0510, value:'510'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0540, value:'540'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0600, value:'600'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0660, value:'660'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0720, value:'720'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0780, value:'780'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0840, value:'840'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0900, value:'900'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0930, value:'930'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0960, value:'960'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT0990, value:'990'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1020, value:'1020'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1050, value:'1050'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1065, value:'1065'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1080, value:'1080'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1110, value:'1110'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1140, value:'1140'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1200, value:'1200'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1260, value:'1260'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1290, value:'1290'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1320, value:'1320'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1380, value:'1380'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1440, value:'1440'},
+			{name: $.su.CHAR.TIME_SETTINGS.GMT1500, value:'1500'}
+		]
+	});
+
+
+	var helpLED = new $.su.Help({
+		container: "div#time_help",
+		content: ['TIME_SETTINGS']
+	});
+
+
+});
+//]]>
+</script>	
+</body>
+</html>

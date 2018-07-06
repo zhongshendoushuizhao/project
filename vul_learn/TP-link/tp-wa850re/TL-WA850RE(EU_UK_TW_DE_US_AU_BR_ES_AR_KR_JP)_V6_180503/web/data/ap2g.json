@@ -1,0 +1,13 @@
+{
+	"success": true,
+	"errorcode":"err_check",
+	"data": [
+		{"ssid": "TP-Link_5423", "signal": "1", "mac": "00-19-E0-34-32-45", "channel": "11", "security": "wep"},
+		{"ssid": "TP-Link_0BEC", "signal": "2", "mac": "00-19-E0-A9-E2-92", "channel": "11", "security": "none"},
+		{"ssid": "TP-Link_F2E4", "signal": "3", "mac": "00-19-E0-79-34-E2", "channel": "11", "security": "wpa"},
+		{"ssid": "TP-Link_34EC", "signal": "4", "mac": "00-19-E0-F5-E3-A3", "channel": "11", "security": "wpa2"},
+		{"ssid": "TP-Link_9385", "signal": "5", "mac": "00-19-E0-EA-F2-D4", "channel": "11", "security": "wep"},
+		{"ssid": "TP-Link_0BEF", "signal": "5", "mac": "00-19-E0-EA-F2-E0", "channel": "11", "security": "none"},
+		{"ssid": "TP-Link_0BA0", "signal": "4", "mac": "00-19-E0-EA-93-E0", "channel": "11", "security": "wpa"}
+	]
+}

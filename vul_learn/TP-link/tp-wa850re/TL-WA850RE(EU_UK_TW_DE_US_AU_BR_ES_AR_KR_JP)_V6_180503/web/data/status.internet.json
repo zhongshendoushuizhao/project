@@ -1,0 +1,9 @@
+{
+    "success" : true,
+    "timeout" : false,
+    "data" :
+    {
+        "internet_status": "unplugged",
+        "phyconn" : "connected"
+    }
+}

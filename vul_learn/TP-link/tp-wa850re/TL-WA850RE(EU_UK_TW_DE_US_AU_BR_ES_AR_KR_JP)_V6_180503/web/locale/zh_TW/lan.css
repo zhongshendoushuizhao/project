@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document */
+div.top-header div.top-control a.top-control-btn{
+	width:auto;
+}
+#quicksetup-form .quicksetup_wireless{
+	margin-left: -15px;
+}
+#quicksetup-form .quicksetup_2g_connect{
+	margin-left: -35px;
+}
+#quicksetup-form .quicksetup_5g_connect{
+	margin-left: -30px;
+}
+#time_dst .combobox-text.s,
+#time_dst .xs{
+	width:50px;
+}
+div.quick-setup-wizard span.quicksetup_summary {
+    margin-left: -8px;
+}

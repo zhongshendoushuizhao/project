@@ -1,0 +1,21 @@
+{
+	"errorcode": false,
+	"success": true,
+	"data": {
+		"region_status": true,
+
+		"show2gFlag": "true",
+		"show5gFlag": "true",		
+
+		"enable_2g": "on",
+		"ssid_2g": "TP-Link_0BEC",
+		"security_2g": "wpa/wpa2",
+		"password_2g": "tplinkpassword",
+		"index_2g": "3",
+		"enable_5g": "on",
+		"ssid_5g": "TP-Link_0BEC_5G",
+		"security_5g": "wpa",
+		"password_5g": "tplinkpassword",
+		"index_5g": "2"
+	}
+}

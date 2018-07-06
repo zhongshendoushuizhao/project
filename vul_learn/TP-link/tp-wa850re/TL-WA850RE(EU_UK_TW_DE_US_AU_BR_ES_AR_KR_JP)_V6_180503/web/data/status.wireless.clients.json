@@ -1,0 +1,17 @@
+{
+    "success" : true,
+    "timeout" : false,
+    "data" :
+    {
+        "wirelessCount" : "6",
+        "wirelessGrid"  :[
+            { "hostname": "TP-Link_Test_Device_1", "ipaddr": "192.168.1.111", "macaddr": "74-D4-35-A1-87-50", "wire_type": "2.4G"},
+            { "hostname": "TP-Link_Test_Device_2", "ipaddr": "192.168.1.110", "macaddr": "A1-D4-C8-B1-09-45", "wire_type": "5G"},
+            { "hostname": "TP-Link_Test_Device_3", "ipaddr": "192.168.1.112", "macaddr": "C2-43-E5-42-D5-68", "wire_type": "2.4G"},
+            { "hostname": "TP-Link_Test_Device_4", "ipaddr": "192.168.1.113", "macaddr": "9E-3A-D3-32-EF-90", "wire_type": "2.4G"},
+            { "hostname": "TP-Link_Test_Device_5", "ipaddr": "192.168.1.114", "macaddr": "9A-34-7F-4C-B3-70", "wire_type": "5G"},
+            { "hostname": "TP-Link_Test_Device_6", "ipaddr": "192.168.1.115", "macaddr": "00-14-78-B1-09-45", "wire_type": "5G"}
+        ] 
+    }
+}
+

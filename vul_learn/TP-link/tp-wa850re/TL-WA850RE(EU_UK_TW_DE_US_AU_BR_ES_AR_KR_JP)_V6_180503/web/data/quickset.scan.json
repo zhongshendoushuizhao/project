@@ -1,0 +1,21 @@
+{
+	"success": true,
+	"errorcode":"err_check",
+	"data": {
+		"ap2g": [
+			{"ssid": "TP-Link_0BEC", "signal": "1", "mac": "00-0A-EB-4C-B3-70", "channel": "11", "security": "wep", "key":"101"},
+			{"ssid": "TP-Link_E903", "signal": "2", "mac": "00-0A-EB-32-EF-90", "channel": "11", "security": "none", "key":"102"},
+			{"ssid": "TP-Link_A938", "signal": "3", "mac": "00-0A-EB-B1-09-45", "channel": "11", "security": "wpa", "key":"103"},
+			{"ssid": "TP-Link_0C3B", "signal": "4", "mac": "00-0A-EB-93-4B-71", "channel": "11", "security": "wpa2", "key":"104"},
+			{"ssid": "TP-Link_4823", "signal": "5", "mac": "00-0A-EB-42-D5-68", "channel": "11", "security": "wpa/wpa2", "key":"105"},
+			{"ssid": "TP-Link_9809", "signal": "5", "mac": "00-0A-EB-A1-87-50", "channel": "11", "security": "wep", "key":"1101"}
+		],
+		"ap5g": [
+			{"ssid": "TP-Link_0BEC_5G", "signal": "5", "mac": "00-0A-EB-4C-B3-70", "channel": "11", "security": "wep", "key":"301"},
+			{"ssid": "TP-Link_E903_5G", "signal": "4", "mac": "00-0A-EB-32-EF-90", "channel": "11", "security": "wpa", "key":"302"},
+			{"ssid": "TP-Link_39C2_5G", "signal": "3", "mac": "00-0A-EB-A1-87-50", "channel": "11", "security": "wpa2", "key":"303"},
+			{"ssid": "TP-Link_3457_5G", "signal": "2", "mac": "00-0A-EB-42-D5-68", "channel": "11", "security": "none", "key":"304"},
+			{"ssid": "TP-Link_0975_5G", "signal": "1", "mac": "00-0A-EB-93-4B-71", "channel": "11", "security": "wep", "key":"3031"}
+		]
+	}
+}

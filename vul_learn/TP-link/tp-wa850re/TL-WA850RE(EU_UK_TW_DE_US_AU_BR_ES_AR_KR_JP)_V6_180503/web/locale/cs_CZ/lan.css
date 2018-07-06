@@ -1,0 +1,49 @@
+@charset "utf-8";
+/* CSS Document */
+div.switch-button-container span.switch-button-btn-wrap{
+	width:75px;
+}
+@-moz-document url-prefix() {
+	button#btn_5g_scan,
+	button#btn_2g_scan{
+		padding: 6px 1px;
+	}
+}
+div.switch-button-container span.switch-button-btn-wrap {
+    width: 85px;
+}
+div.switch-button-container a.switch-button-btn span.switch-button-btn-wrap span.switch-button-text-wrap span.switch-button-text{
+	width:63px;
+}
+div#log_list th.grid-header-3, div#log_list td.grid-content-td-3 {
+    width: 95px !important;
+}
+#time_setting li.combobox-list,
+#region_request li.combobox-list{
+	width:999px;
+}
+#white_list_own_editor div.margin-top-20 .widget-fieldlabel-wrap.s,
+#black_list_own_editor div.margin-top-20 .widget-fieldlabel-wrap.s{
+	margin-right: 30px;
+	margin-left: -30px;
+}
+#black_grid .form-error-tips{
+	width:370px;
+}
+.long-time-set-month .combobox-list-wrap{
+	width:100px !important;
+}
+#time_dst .xs{
+	width:72px;
+}
+.combobox-text.xxxl{
+	width:390px !important;
+}
+div.margin-top-20 input.combobox-text{
+	width:85px !important;
+}
+#weekday_cnt,
+#white_list_weekday_cnt, 
+#black_list_weekday_cnt {
+   margin-right:-400px;
+}
