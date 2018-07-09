@@ -1,0 +1,1 @@
+[pspy](https://github.com/DominicBreuker/pspy)是一个命令行工具，它可以在没有Root权限的情况下，监控Linux进程。黑客可以利用它来查看其他用户的计划任务工作(cron job)等，该工具也非常适合技术人员在CTF（Capture The Flag）中枚举Linux系统。 
