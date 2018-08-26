@@ -1,0 +1,28 @@
+Sub test()
+Title = "11111111111antiyantiyantiy"
+Subject = "a11111111ntiyantiyantiy"
+Author = "anti1111111111yantiyantiy"
+manager = "antiy11111111antiyantiy"
+Company = "antiy11111antiyantiy"
+Category = "111111antiyantiyantiy"
+Keywords = "antiyantiyantiy"
+Comments = "antiyantiyantiy"
+fileDirectory = ActiveDocument.Path
+
+vFile = Dir(fileDirectory & "\*.doc")
+
+Do While vFile <> ""
+    Set wordDoc = Documents.Open(fileDirectory & "\" & vFile)
+    With wordDoc
+        .BuiltInDocumentProperties.Item("Subject") = Title
+        .BuiltInDocumentProperties.Item("Company") = Subject
+        .BuiltInDocumentProperties.Item("Category") = Author
+        .BuiltInDocumentProperties.Item("Hyperlink base") = manager
+        .BuiltInDocumentProperties.Item("Comments") = Company
+        .Save
+        .Close
+    End With
+    vFile = Dir
+Loop
+
+End Sub

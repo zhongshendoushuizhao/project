@@ -1,0 +1,41 @@
+ps -ef　　查看可疑进程
+netstat -tanp 开放端口
+ss -tanp  开放端口
+top       资源占用
+last　　登录时间能不能跟运维人员时间对上
+crontab -l   查看例行任务，很多后门程序可以通过crontab完成自启
+或
+cd /etc/crontab
+ls
+提权痕迹   cat /etc/passwd  极有可能其他用户出现id，组id 0、0的情况
+lsof -g gid号   通常能找到恶意文件关联的lib文件
+chattr  +i   处理过一起病毒自己会改写crontab的，可以用这个命令把crontab锁住
+chmod 000  在删除一些病毒文件时候需要先去除执行权限
+find / *.jsp  -perm 4777  查找777的权限的文件
+查看所用用户  cat /etc/passwd |cut -f 1 -d :
+查看最近被修改的文件等
+find /path/ -mtime -1 -type f -print
+find /path/ -ctime -1 -type f -print
+ls -alt
+
+
+
+日志关注：
+cat /var/log/secure #登录日志，成功失败都有
+var/log/cron    记录crontab命令是否被正确的执行，一般会被黑客删除
+var/log/lastlog　　记录登录的用户，可以使用命令lastlog查看，一般会被黑客删除
+var/log/secure　　记录大多数应用输入的账号与密码，登录成功与否，一般会被黑客删除
+var/log/wtmp　　记录登录系统成功的账户信息，等同于命令last，一般会被黑客删除<br>
+var/log/faillog　　记录登录系统不成功的账号信息，一般会被黑客删除
+~/.bash_history  至关重要的日志，往往黑客会使用history -c清理相关的日志，然后使用cat ~/.bash_history
+
+WEB类日志
+
+find . access_log |grep xargs ip攻击地址
+find . access_log| grep xargs 木马文件名
+find . -name *.php -ctime -1
+
+
+
+
+
