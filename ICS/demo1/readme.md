@@ -153,11 +153,11 @@ Coils  value 为1值  系统启动正常
 
 通过脚本 访问其端口可以轻易获取其 Coils 对象 状态值
 
-
+![20181204172418.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204172418.jpg?raw=true)
 
 通过脚本 访问其端口可以轻易获取其Holding registers 对象 9位值
 
-
+![20181204172435.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204172435.jpg?raw=true)
 
 通过脚本 访问502端口对其数据进行篡改 
 
