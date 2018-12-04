@@ -36,9 +36,9 @@ mobus 数据帧 有RTU 等格式，暂时只看TCP 帧格式
 
 功能码:
 
+![20181204122243.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204122243.jpg?raw=true)
 
-
-
+![20181204122324.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204122324.jpg?raw=true)
 
 同时wiki 上也有多种协议交互过程
 
@@ -69,7 +69,7 @@ ModbusPal是一个开发基于PC的Modbus模拟器的项目。它的目标是重
 
 通过添加slave 从站 模拟 工控设备
 
-
+![20181204164545.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204164545.jpg?raw=true)
 
 ##### [mbtget](https://github.com/sourceperl/mbtget)
 
@@ -141,18 +141,36 @@ word write ok
 
 场景 在 slave 设备 如下控制状态
 
+![20181204165103.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204165103.jpg?raw=true)
+
 Coils  value 为1值  系统启动正常
+
+![20181204170636.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204170636.jpg?raw=true)
 
 其Holding registers 对象 value 9位存储值为 741     当前记录设备运行正常运行次数值
 
+![20181204170655.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204170655.jpg?raw=true)
+
 通过脚本 访问其端口可以轻易获取其 Coils 对象 状态值
+
+
 
 通过脚本 访问其端口可以轻易获取其Holding registers 对象 9位值
 
+
+
 通过脚本 访问502端口对其数据进行篡改 
+
+![20181204171606.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204171606.jpg?raw=true)
+
+![20181204171717.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204171717.jpg?raw=true)
 
 篡改 Coils 对象 1位值为 0
 
+![20181204171743.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204171743.jpg?raw=true)
+
 篡改  Holding registers  对象  3位值为   855
+
+![20181204171806.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/ICS/demo1/20181204171806.jpg?raw=true)
 
 常规系统在该操作下会造成故障
