@@ -1,4 +1,4 @@
-## 《Extracting a 19 Year Old Code Execution from WinRAR》winrar目录穿越漏洞分析学习
+## 《Extracting a 19 Year Old Code Execution from WinRAR》winrar目录穿越漏洞分析学习笔记
 
 **背景说明：**
 
@@ -44,7 +44,7 @@ sprintf(final_file_path, "%s%s", "", file_relative_path);
 
 1. 对**GetDevicePathLen** 进行解析
 
-![fig16](E:\工作---备份文件均压缩\安天\2019-工作存档\分析\漏洞\winrar\fig16.jpg)
+![fig16.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/vul_learn/windows/app/winrar/fig16.jpg?raw=true)
 
 GetDevicePathLen(a2, file_relative_path) 
 
@@ -64,7 +64,7 @@ GetDevicePathLen(a2, file_relative_path)
 
 2. 但是调动 GetDevicePathLen 之前还有 **CleanPath**函数，功能主要为过滤一些路劲序列
 
-   ![fig17](E:\工作---备份文件均压缩\安天\2019-工作存档\分析\漏洞\winrar\fig17.jpg)
+   ![fig17.jpg](https://github.com/zhongshendoushuizhao/project/blob/master/vul_learn/windows/app/winrar/fig17.jpg?raw=true)
 
 ```
  \..\   -->   去掉..\   -->  \
